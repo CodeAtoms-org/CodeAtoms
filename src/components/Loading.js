@@ -12,7 +12,7 @@ export default function Loading() {
         className="flex items-center gap-3 mb-8"
       >
         
-        <span className="text-2xl font-bold text-[#006D77]">CodeAtoms</span>
+        <span className="text-2xl text-[#006D77]">CodeAtoms</span>
       </motion.div>
 
       {/* Spinner */}

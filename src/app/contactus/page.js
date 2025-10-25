@@ -8,7 +8,7 @@ export default function Contact() {
       <Header />
       <section className="min-h-screen bg-white text-gray-800 px-6 md:px-20 py-16">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-2xl md:text-3xl  font-bold text-center mb-10 text-[#006D77]">
+          <h1 className="text-2xl md:text-3xl text-center mb-10 text-[#006D77]">
             Contact Us
           </h1>
           <p className="text-lg text-gray-600 text-center max-w-2xl mx-auto mb-16">
@@ -19,7 +19,7 @@ export default function Contact() {
           <div className="grid md:grid-cols-2 gap-10">
             {/* Contact Form */}
             <div className="bg-gray-50 rounded-2xl p-8 ">
-              <h2 className="text-2xl font-semibold mb-6 text-[#006D77]">Send us a message</h2>
+              <h2 className="text-2xl  mb-6 text-[#006D77]">Send us a message</h2>
               <form className="space-y-5">
                 <input
                   type="text"
@@ -43,7 +43,7 @@ export default function Contact() {
                 ></textarea>
                 <button
                   type="submit"
-                  className="w-full bg-[#006D77] text-white font-semibold py-3 rounded-xl hover:bg-[#00545C] transition-all duration-300"
+                  className="w-full bg-[#006D77] text-white  py-3 rounded-xl hover:bg-[#00545C] transition-all duration-300"
                 >
                   Send Message
                 </button>
@@ -52,7 +52,7 @@ export default function Contact() {
 
             {/* Contact Info */}
             <div className="flex flex-col justify-center bg-[#f8f8f8] rounded-2xl p-8 ">
-              <h2 className="text-2xl font-semibold mb-6 text-[#006D77]">Get in Touch</h2>
+              <h2 className="text-2xl  mb-6 text-[#006D77]">Get in Touch</h2>
               <p className="text-gray-600 mb-6 leading-relaxed">
                 We are always open to new ideas, collaborations, and opportunities.  
                 Reach out to us using the details below, and we will respond as soon as possible.
@@ -60,21 +60,18 @@ export default function Contact() {
 
               <div className="space-y-4">
                 <p>
-                  <span className="font-semibold text-gray-800">📍 Address:</span>  
+                  <span className=" text-gray-800">Address:</span>  
                   <br /> Necrozma Labs HQ, Bengaluru, India
                 </p>
                 <p>
-                  <span className="font-semibold text-gray-800">📞 Phone:</span>  
-                  <br /> +91 98765 43210
-                </p>
-                <p>
-                  <span className="font-semibold text-gray-800">📧 Email:</span>  
+                  <span className=" text-gray-800">Email:</span>  
                   <br /> contact@necrozmalabs.com
                 </p>
                 <p>
-                  <span className="font-semibold text-gray-800">🌐 Website:</span>  
-                  <br /> www.necrozmalabs.com
+                  <span className=" text-gray-800">CEO Email:</span>  
+                  <br /> abhinav@necrozmalabs.com
                 </p>
+                
               </div>
             </div>
           </div>

@@ -27,7 +27,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full bg-[#006D77] border-b border-b-gray-200">
       <div className="mx-auto flex items-center justify-between px-6 md:px-10 py-4">
         {/* Logo / Brand */}
-        <Link href="/" className="text-2xl text-white hover:text-gray-200 transition font-bold">
+        <Link href="/" className="text-2xl text-white hover:text-gray-200 transition">
           CodeAtoms
         </Link>
 
@@ -35,6 +35,9 @@ export default function Header() {
         <nav className="hidden md:flex text-white space-x-6 items-center">
           <Link href="/explore" className="hover:text-gray-200 transition">
             Explore
+          </Link>
+          <Link href="/orders" className="hover:text-gray-200 transition">
+            Your Orders
           </Link>
           {user ? (
             <Link href="/profile" className="hover:text-gray-200 transition">
@@ -60,6 +63,9 @@ export default function Header() {
         <nav className="md:hidden bg-[#006D77] px-6 pb-4 flex flex-col space-y-3 text-white">
           <Link href="/explore" className="hover:text-gray-200 transition" onClick={() => setIsOpen(false)}>
             Explore
+          </Link>
+          <Link href="/orders" className="hover:text-gray-200 transition" onClick={() => setIsOpen(false)}>
+            Your Orders
           </Link>
           {user ? (
             <Link href="/profile" className="hover:text-gray-200 transition" onClick={() => setIsOpen(false)}>

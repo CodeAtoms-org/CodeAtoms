@@ -4,7 +4,8 @@ import { supabase } from "../../../supabase";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useRouter } from "next/navigation";
-import { PlusCircle, DollarSign, BarChart2, ToolCase } from "lucide-react";
+import { PlusCircle, DollarSign, BarChart2, ToolCase, Package } from "lucide-react";
+import Loading from "@/components/Loading";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -56,7 +57,6 @@ export default function ProfilePage() {
 
   const handleCompleteProfile = async () => {
     if (!user) return;
-    // Insert a new row for this user
     const { data, error } = await supabase
       .from("user_data")
       .insert({
@@ -76,23 +76,16 @@ export default function ProfilePage() {
     }
   };
 
-  if (loading || !user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500 text-lg">Loading profile...</p>
-      </div>
-    );
-  }
+  if (loading || !user) return <Loading />;
 
   return (
     <>
       <Header />
-
       <div className="min-h-screen bg-gray-50 px-6 md:px-16 py-10">
-
-        <h2 className="text-2xl mb-8 md:text-3xl font-bold text-[#006D77]">
+        <h2 className="text-2xl mb-8 md:text-3xl text-[#006D77]">
           Profile
         </h2>
+
         {!profile ? (
           <div className="flex justify-center">
             <button
@@ -121,6 +114,21 @@ export default function ProfilePage() {
                 </button>
               </div>
 
+              {/* Your Orders */}
+              <div
+                className="bg-white rounded-2xl shadow-sm p-6 flex items-center justify-between cursor-pointer hover:shadow-lg transition"
+                onClick={() => router.push("/orders")}
+              >
+                <div className="flex items-center gap-4">
+                  <Package size={32} className="text-[#006D77]" />
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-800">Your Orders</h3>
+                    <p className="text-gray-500 text-sm">View purchased tools</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Upload Your Tool */}
               <div
                 className="bg-white rounded-2xl shadow-sm p-6 flex items-center justify-between cursor-pointer hover:shadow-lg transition"
                 onClick={() => router.push("/upload")}
@@ -133,33 +141,29 @@ export default function ProfilePage() {
                   </div>
                 </div>
               </div>
-
-              <div className="bg-white rounded-2xl shadow-sm p-6 flex items-center gap-4">
-                <DollarSign size={32} className="text-[#006D77]" />
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800">Earnings</h3>
-                  <p className="text-gray-500 text-sm">₹{profile.earnings}</p>
-                </div>
-              </div>
             </div>
 
             {/* Right Column */}
             <div className="md:w-1/2 flex flex-col gap-6">
               <div className="bg-white rounded-2xl shadow-sm p-6 flex items-center gap-4">
-                <ToolCase size={32} className="text-[#006D77]" />
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800">Your Tools</h3>
-                  <p className="text-gray-500 text-sm">{profile.tools} tools uploaded</p>
-                </div>
-              </div>
+  <ToolCase size={32} className="text-[#006D77]" />
+  <div>
+    <h3 className="text-lg font-semibold text-gray-800">Your Tools</h3>
+    <p className="text-gray-500 text-sm">
+      {profile.sell_tools ? profile.sell_tools.length : 0} tools uploaded
+    </p>
+  </div>
+</div>
 
+
+              
+
+              {/* Earnings moved here */}
               <div className="bg-white rounded-2xl shadow-sm p-6 flex items-center gap-4">
-                <BarChart2 size={32} className="text-[#006D77]" />
+                <DollarSign size={32} className="text-[#006D77]" />
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800">Stats</h3>
-                  <p className="text-gray-500 text-sm">
-                    Total views: {profile.stats?.views || 0}
-                  </p>
+                  <h3 className="text-lg font-semibold text-gray-800">Earnings</h3>
+                  <p className="text-gray-500 text-sm">₹{profile.earning}</p>
                 </div>
               </div>
             </div>

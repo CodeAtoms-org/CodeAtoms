@@ -8,7 +8,7 @@ export default function About() {
       <Header />
       <section className="min-h-screen bg-white text-gray-800 px-6 md:px-20 py-16">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-2xl mb-8 md:text-3xl  font-bold text-center text-[#006D77]">
+          <h1 className="text-2xl mb-8 md:text-3xl  text-center text-[#006D77]">
             About Us
           </h1>
           <p className="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-16">
@@ -18,7 +18,7 @@ export default function About() {
           {/* Mission Section */}
           <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
             <div>
-              <h2 className="text-2xl font-semibold mb-4 text-[#006D77]">Our Mission</h2>
+              <h2 className="text-2xl  mb-4 text-[#006D77]">Our Mission</h2>
               <p className="text-gray-600 leading-relaxed">
                 Our mission is to democratize access to cutting-edge technology and AI tools that drive real-world impact.  
                 From robotics to next-gen software, we strive to make innovation open, transparent, and accessible to everyone.  
@@ -40,7 +40,7 @@ export default function About() {
               className="rounded-2xl shadow-md"
             />
             <div>
-              <h2 className="text-2xl font-semibold mb-4 text-[#006D77]">Our Vision</h2>
+              <h2 className="text-2xl  mb-4 text-[#006D77]">Our Vision</h2>
               <p className="text-gray-600 leading-relaxed">
                 We envision a world where technology fuels creativity,  
                 where open collaboration bridges boundaries,  
@@ -52,7 +52,7 @@ export default function About() {
 
           {/* Team Section */}
           <div className="text-center mb-20">
-            <h2 className="text-3xl font-semibold mb-8 text-[#006D77]">Our Team</h2>
+            <h2 className="text-3xl  mb-8 text-[#006D77]">Our Team</h2>
             <p className="text-gray-600 max-w-2xl mx-auto mb-10">
               We are a diverse team of engineers, designers, and dreamers — united by the belief that technology can solve problems previously unimaginable.
             </p>
@@ -68,7 +68,7 @@ export default function About() {
                     alt={member.name}
                     className="w-28 h-28 mx-auto rounded-full mb-4 object-cover"
                   />
-                  <h3 className="text-xl font-semibold">{member.name}</h3>
+                  <h3 className="text-xl ">{member.name}</h3>
                   <p className="text-gray-500">{member.role}</p>
                 </div>
               ))}
@@ -77,7 +77,7 @@ export default function About() {
 
           {/* Values Section */}
           <div className="text-center">
-            <h2 className="text-3xl font-semibold mb-6 text-[#006D77]">Our Values</h2>
+            <h2 className="text-3xl  mb-6 text-[#006D77]">Our Values</h2>
             <p className="text-gray-600 max-w-3xl mx-auto mb-10">
               Integrity, innovation, and impact — these three words define everything we do.  
               We are not just building tools; we are building the foundation for a smarter, more connected future.

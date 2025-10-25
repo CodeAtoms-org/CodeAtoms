@@ -9,6 +9,8 @@ import Footer from "@/components/Footer";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "./style.css";
+import toast from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 
 export default function ToolPage() {
   const router = useRouter();
@@ -16,6 +18,7 @@ export default function ToolPage() {
   const [tool, setTool] = useState(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [alreadyPurchased, setAlreadyPurchased] = useState(false);
 
   // Fetch current user
   useEffect(() => {
@@ -44,16 +47,33 @@ export default function ToolPage() {
         .eq("uid", id)
         .single();
 
-      if (error) {
-        console.error("Error fetching tool:", error.message);
-      } else {
-        setTool(data);
-      }
+      if (error) console.error("Error fetching tool:", error.message);
+      else setTool(data);
+
       setLoading(false);
     };
 
     fetchTool();
   }, [id]);
+
+  // Check if purchased
+  useEffect(() => {
+    if (!user || !id) return;
+
+    const checkPurchased = async () => {
+      const { data, error } = await supabase
+        .from("user_data")
+        .select("purchased_tools")
+        .eq("user_uid", user.id)
+        .single();
+
+      if (!error && data?.purchased_tools?.includes(id)) {
+        setAlreadyPurchased(true);
+      }
+    };
+
+    checkPurchased();
+  }, [user, id]);
 
   if (loading) return <Loading />;
 
@@ -68,13 +88,60 @@ export default function ToolPage() {
     );
   }
 
-  const handleBuy = () => {
-    if (!user) {
-      alert("Please log in to buy this tool!");
-      router.push("/onboard");
-      return;
-    }
-    window.open(tool.buynow, "_blank");
+  // Handle Buy simulation
+ const handleBuy = async () => {
+  if (!user) {
+    toast.error("Please log in to buy this tool!");
+    router.push("/onboard");
+    return;
+  }
+
+  // Simulate payment success
+  toast.success("Payment successful!");
+
+  // Fetch the current purchased tools
+  const { data: userData, error: fetchError } = await supabase
+    .from("user_data")
+    .select("purchased_tools")
+    .eq("user_uid", user.id)
+    .single();
+
+  if (fetchError) {
+    console.error("Error fetching user data:", fetchError);
+    toast.error("Could not fetch your account info. Please try again.");
+    return;
+  }
+
+  const existingTools = userData?.purchased_tools || [];
+
+  // Avoid duplicates
+  if (existingTools.includes(id)) {
+    toast.error("You already own this tool!");
+    setAlreadyPurchased(true);
+    return;
+  }
+
+  const updatedTools = [...existingTools, id];
+
+  // Update the array in Supabase
+  const { error: updateError } = await supabase
+    .from("user_data")
+    .update({ purchased_tools: updatedTools })
+    .eq("user_uid", user.id);
+
+  if (updateError) {
+    console.error("Error updating purchases:", updateError);
+    toast.error("Something went wrong while saving your purchase.");
+  } else {
+    toast.success("Order saved successfully");
+    setAlreadyPurchased(true);
+  }
+};
+
+
+  // Handle download
+  const handleDownload = () => {
+    window.open(tool.download, "_blank");
   };
 
   return (
@@ -103,36 +170,50 @@ export default function ToolPage() {
             {/* Right Column */}
             <div className="w-full h-full md:w-1/3 bg-[#f0f0f0] text-black flex flex-col items-center justify-center rounded-2xl p-8 space-y-6">
               <div className="flex flex-col sm:flex-col gap-2 w-full justify-center ">
-  {/* Buy Now Button */}
-  <button
-    onClick={handleBuy}
-    className={`w-full px-6 py-3 text-white font-semibold rounded-xl shadow-md transition-all duration-300 transform hover:scale-105
-      ${user ? "bg-[#006D77] hover:bg-[#00545C]" : "bg-gray-400 cursor-not-allowed"}`}
-    disabled={!user}
-  >
-    Buy Now
-  </button>
+                {/* Conditional Button */}
+                {alreadyPurchased ? (
+                  <>
+                    <button
+                      onClick={handleDownload}
+                      className="w-full px-6 py-3 bg-[#006D77] hover:bg-[#00545C] text-white font-semibold rounded-xl shadow-md transition-all duration-300 transform hover:scale-105"
+                    >
+                      Download
+                    </button>
+                    <p className="text-gray-600 italic text-sm text-start mb-2">
+                      Already purchased ✓
+                    </p>
+                  </>
+                ) : (
+                  <button
+                    onClick={handleBuy}
+                    className={`w-full px-6 py-3 text-white font-semibold rounded-xl shadow-md transition-all duration-300 transform hover:scale-105
+                    ${user ? "bg-[#006D77] hover:bg-[#00545C]" : "bg-gray-400 cursor-not-allowed"}`}
+                    disabled={!user}
+                  >
+                    Buy Now
+                  </button>
+                )}
 
-  {/* Login message */}
-  {!user && (
-    <p className="text-gray-500 italic text-sm text-start mb-2">
-      *Login to purchase*
-    </p>
-  )}
+                {/* Login message */}
+                {!user && (
+                  <p className="text-gray-500 italic text-sm text-start mb-2">
+                    *Login to purchase*
+                  </p>
+                )}
 
-  {/* View Demo Button */}
-  <button
-    onClick={() => window.open(tool.link, "_blank")}
-    className="w-full px-6 py-3 bg-transparent border-2 border-[#006D77] text-[#006D77] font-semibold rounded-xl hover:bg-[#006D77] hover:text-white shadow-md transition-all duration-300 transform hover:scale-105"
-  >
-    View Demo
-  </button>
-</div>
-
+                {/* View Demo Button */}
+                <button
+                  onClick={() => window.open(tool.link, "_blank")}
+                  className="w-full px-6 py-3 bg-transparent border-2 border-[#006D77] text-[#006D77] font-semibold rounded-xl hover:bg-[#006D77] hover:text-white shadow-md transition-all duration-300 transform hover:scale-105"
+                >
+                  View Demo
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
       <Footer />
     </>
   );
