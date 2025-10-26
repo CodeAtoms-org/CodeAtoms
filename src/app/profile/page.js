@@ -83,7 +83,7 @@ export default function ProfilePage() {
       <Header />
       <div className="min-h-screen bg-gray-50 px-6 md:px-16 py-10">
         <h2 className="text-2xl mb-8 md:text-3xl text-[#006D77]">
-          Profile
+          Your Profile
         </h2>
 
         {!profile ? (
@@ -116,7 +116,7 @@ export default function ProfilePage() {
 
               {/* Your Orders */}
               <div
-                className="bg-white rounded-2xl shadow-sm p-6 flex items-center justify-between cursor-pointer hover:shadow-lg transition"
+                className="bg-white rounded-2xl shadow-sm p-6 flex items-center justify-between cursor-pointer transition"
                 onClick={() => router.push("/orders")}
               >
                 <div className="flex items-center gap-4">
@@ -130,7 +130,7 @@ export default function ProfilePage() {
 
               {/* Upload Your Tool */}
               <div
-                className="bg-white rounded-2xl shadow-sm p-6 flex items-center justify-between cursor-pointer hover:shadow-lg transition"
+                className="bg-white rounded-2xl shadow-sm p-6 flex items-center justify-between cursor-pointer  transition"
                 onClick={() => router.push("/upload")}
               >
                 <div className="flex items-center gap-4">

@@ -39,11 +39,10 @@ export default function BelowSection() {
     <>
       {/* Benefits Section */}
        <section className="px-10 md:px-20 py-20">
-                <div className="mx-auto flex flex-col gap-10 text-start md:text-center">
+                <div className="mx-auto flex flex-col gap-4 text-start md:text-center">
                     <p className="text-sm text-[#006D77] uppercase">
                         CodeAtoms
                     </p>
-
                     <h2 className="text-lg md:text-xl lg:text-2xl text-gray-900">
                         "Great ideas need the right tools—build, create, and innovate with what you need at your fingertips."
                     </h2>
@@ -65,7 +64,7 @@ export default function BelowSection() {
                 <img
                   src={benefit.image}
                   alt={benefit.title}
-                  className="w-60 h-60 object-cover mb-4"
+                  className="w-52 h-52 object-cover mb-4"
                 />
                 <h3 className="text-lg font-semibold text-gray-800">{benefit.title}</h3>
               </div>
