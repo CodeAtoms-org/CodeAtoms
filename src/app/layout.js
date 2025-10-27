@@ -35,7 +35,7 @@ export const metadata = {
     siteName: "CodeAtoms",
     images: [
       {
-        url: "https://codeatoms.org/og-image.jpg", // replace with your actual OG image
+        url: "https://www.codeatoms.org/og-image.png", // replace with your actual OG image
         width: 1200,
         height: 630,
         alt: "CodeAtoms | Marketplace for Developers",
@@ -50,7 +50,7 @@ export const metadata = {
     description:
       "Discover, share, and sell the best developer tools and SaaS products. Built for tech people, by tech people.",
     creator: "@codeatoms", // your Twitter handle if you have one
-    images: ["https://codeatoms.org/og-image.jpg"], // replace with actual image
+    images: ["https://www.codeatoms.org/og-image.png"], // replace with actual image
   },
   metadataBase: new URL("https://www.codeatoms.org"),
   robots: {
@@ -85,6 +85,35 @@ export default function RootLayout({ children }) {
     }
 
             `,
+          }}
+        />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "CodeAtoms",
+              url: "https://www.codeatoms.org",
+              logo: "https://www.codeatoms.org/logo.png",
+              sameAs: [
+                "https://github.com/codeatoms",
+                "https://twitter.com/codeatoms",
+              ],
+              description:
+                "CodeAtoms is a global marketplace for developers to buy, sell, and discover high-quality tools, APIs, and SaaS products.",
+              founder: {
+                "@type": "Person",
+                name: "Abhinav Sharma",
+                url: "https://www.codeatoms.org",
+              },
+              contactPoint: {
+                "@type": "ContactPoint",
+                contactType: "customer support",
+                email: "hello@codeatoms.org",
+              },
+            }),
           }}
         />
       </head>

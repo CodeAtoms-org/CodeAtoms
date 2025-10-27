@@ -1,6 +1,12 @@
-"use client";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+export const metadata = {
+  title: "About Us | CodeAtoms",
+  description:
+    "Learn more about CodeAtoms, our mission, vision, and the passionate team behind the developer tools marketplace.",
+};
 
 export default function Contact() {
   return (
@@ -16,39 +22,9 @@ export default function Contact() {
             Let us collaborate to push the boundaries of what technology can do.
           </p>
 
-          <div className="grid md:grid-cols-2 gap-10">
+          <div className="grid gap-10">
             {/* Contact Form */}
-            <div className="bg-gray-50 rounded-2xl p-8 ">
-              <h2 className="text-2xl  mb-6 text-[#006D77]">Send us a message</h2>
-              <form className="space-y-5">
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-[#006D77]"
-                />
-                <input
-                  type="email"
-                  placeholder="Email Address"
-                  className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-[#006D77]"
-                />
-                <input
-                  type="text"
-                  placeholder="Subject"
-                  className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-[#006D77]"
-                />
-                <textarea
-                  rows="5"
-                  placeholder="Your Message"
-                  className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-[#006D77]"
-                ></textarea>
-                <button
-                  type="submit"
-                  className="w-full bg-[#006D77] text-white  py-3 rounded-xl hover:bg-[#00545C] transition-all duration-300"
-                >
-                  Send Message
-                </button>
-              </form>
-            </div>
+            
 
             {/* Contact Info */}
             <div className="flex flex-col justify-center bg-[#f8f8f8] rounded-2xl p-8 ">
@@ -61,16 +37,13 @@ export default function Contact() {
               <div className="space-y-4">
                 <p>
                   <span className=" text-gray-800">Address:</span>  
-                  <br /> Necrozma Labs HQ, Bengaluru, India
+                  <br /> CodeAtoms HQ, India
                 </p>
                 <p>
                   <span className=" text-gray-800">Email:</span>  
-                  <br /> contact@necrozmalabs.com
+                  <br /> hello@codeatoms.org
                 </p>
-                <p>
-                  <span className=" text-gray-800">CEO Email:</span>  
-                  <br /> abhinav@necrozmalabs.com
-                </p>
+                
                 
               </div>
             </div>

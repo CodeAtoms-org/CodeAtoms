@@ -1,6 +1,12 @@
-"use client";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+export const metadata = {
+  title: "About Us | CodeAtoms",
+  description:
+    "Learn more about CodeAtoms, our mission, vision, and the passionate team behind the developer tools marketplace.",
+};
 
 export default function About() {
   return (

@@ -1,7 +1,12 @@
-"use client";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
+export const metadata = {
+  title: "Terms & Conditions | CodeAtoms",
+  description:
+    "Read the terms and conditions for using CodeAtoms, the developer tools marketplace. Understand your rights and responsibilities while using our platform.",
+};
 export default function Terms() {
   return (
     <>

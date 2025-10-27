@@ -1,6 +1,12 @@
-"use client";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+export const metadata = {
+  title: "Privacy Policy | CodeAtoms",
+  description:
+    "Read the privacy policy of CodeAtoms to understand how we collect, use, and protect your personal data on our developer tools marketplace.",
+};
 
 export default function Terms() {
   return (
