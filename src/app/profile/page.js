@@ -52,7 +52,7 @@ export default function ProfilePage() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push("/onboard");
+    router.push("/");
   };
 
   const handleCompleteProfile = async () => {

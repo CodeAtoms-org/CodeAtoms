@@ -64,7 +64,7 @@ export default function BelowSection() {
                 <img
                   src={benefit.image}
                   alt={benefit.title}
-                  className="w-52 h-52 object-cover mb-4"
+                  className="w-32 h-32 object-cover mb-4"
                 />
                 <h3 className="text-lg font-semibold text-gray-800">{benefit.title}</h3>
               </div>

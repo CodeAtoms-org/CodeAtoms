@@ -11,16 +11,17 @@ export default function OrdersPage() {
   const [user, setUser] = useState(null);
   const [tools, setTools] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [checked, setChecked] = useState(false);
 
   // Fetch user session
   useEffect(() => {
     const fetchSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session?.user) setUser(session.user);
-      else router.push("/onboard");
+      setChecked(true);
     };
     fetchSession();
-  }, [router]);
+  }, []);
 
   // Fetch user_meta and tools
   useEffect(() => {
@@ -52,40 +53,70 @@ export default function OrdersPage() {
     fetchOrders();
   }, [user]);
 
+  if (!checked) return <Loading />;
+
+  // If user is not logged in
+  if (!user) {
+    return (
+      <>
+        <Header />
+        <section className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-6 text-center">
+          <h2 className="text-2xl md:text-3xl text-gray-800 mb-4">
+            Please login to view your orders
+          </h2>
+          <button
+            onClick={() => router.push("/onboard")}
+            className="bg-[#006D77] text-white px-6 py-3 rounded-xl hover:bg-[#00545C] transition-all duration-300"
+          >
+            Login
+          </button>
+        </section>
+        <Footer />
+      </>
+    );
+  }
+
   if (loading) return <Loading />;
+
   return (
     <>
-<Header />
-<h2 className="text-2xl text-center mt-10 mb-8 md:text-3xl  text-[#006D77]">
-          Your Orders
-        </h2>
-    <div className="px-6 md:px-16 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      
-      {tools.map((tool) => (
-        <div
-          key={tool.id}
-          onClick={() => router.push(`/${tool.uid}`)}
-          className="group p-6 bg-white shadow-md cursor-pointer flex flex-col justify-between h-64 border border-gray-100 transition-colors duration-200"
-        >
-          <div>
-            <h3 className="text-lg text-gray-900 group-hover:text-[#006D77] transition-colors duration-200">
-              {tool.title}
-            </h3>
-            <p className="text-sm text-gray-500 mt-1 transition-colors duration-200">
-              {tool.owner}
-            </p>
-            <p className="text-gray-500 mt-3 text-sm leading-relaxed line-clamp-4 group-hover:text-[#006D77] transition-colors duration-200">
-              {tool.description}
-            </p>
-          </div>
-          <p className="text-gray-600 mt-4 text-sm font-medium group-hover:text-[#006D77] transition-colors duration-200">
-            {tool.type}
-          </p>
+      <Header />
+      <h2 className="text-2xl text-center mt-10 mb-8 md:text-3xl text-[#006D77]">
+        Your Orders
+      </h2>
+
+      {tools.length === 0 ? (
+        <p className="text-center text-gray-600 mb-16">
+          You haven’t purchased any tools yet.
+        </p>
+      ) : (
+        <div className="px-6 md:px-16 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {tools.map((tool) => (
+            <div
+              key={tool.id}
+              onClick={() => router.push(`/${tool.uid}`)}
+              className="group p-6 bg-white shadow-md cursor-pointer flex flex-col justify-between h-64 border border-gray-100 transition-colors duration-200 rounded-xl"
+            >
+              <div>
+                <h3 className="text-lg text-gray-900 group-hover:text-[#006D77] transition-colors duration-200">
+                  {tool.title}
+                </h3>
+                <p className="text-sm text-gray-500 mt-1">
+                  {tool.owner}
+                </p>
+                <p className="text-gray-500 mt-3 text-sm leading-relaxed line-clamp-4 group-hover:text-[#006D77] transition-colors duration-200">
+                  {tool.description}
+                </p>
+              </div>
+              <p className="text-gray-600 mt-4 text-sm font-medium group-hover:text-[#006D77] transition-colors duration-200">
+                {tool.type}
+              </p>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-    <Footer />
+      )}
+
+      <Footer />
     </>
   );
 }
-
