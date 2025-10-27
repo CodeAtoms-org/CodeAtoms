@@ -6,7 +6,7 @@ export default function HeroSection() {
     <section className="relative px-4 sm:px-6 md:px-12 mt-10 md:mt-20 mb-10 md:mb-20 flex items-center overflow-hidden pt-12 md:pt-0">
       {/* Content */}
       <div className="grid grid-cols-1 md:grid-cols-2 mt-10 gap-6 md:gap-8 w-full max-w-7xl mx-auto relative z-10 items-center">
-        
+
         {/* Left Content */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -14,7 +14,7 @@ export default function HeroSection() {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="flex flex-col gap-4 text-center md:text-left"
         >
-          
+
 
           <p className="text-black text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extralight leading-snug mx-auto md:mx-0 whitespace-normal md:whitespace-nowrap">
             A Marketplace for Tech people <br />Get Tools to build your Dreams.
@@ -43,7 +43,7 @@ export default function HeroSection() {
             />
           </div>
         </motion.div>
-        
+
       </div>
     </section>
   );

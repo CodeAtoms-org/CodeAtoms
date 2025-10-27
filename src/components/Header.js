@@ -25,9 +25,9 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-[#006D77] border-b border-b-gray-200">
-      <div className="mx-auto flex items-center justify-between px-6 md:px-10 py-4">
+      <div className="mx-auto flex items-center justify-between px-6 md:pr-10 py-4">
         {/* Logo / Brand */}
-        <Link href="/" className="text-2xl text-white hover:text-gray-200 transition">
+        <Link href="/" className="text-2xl text-white font-bold hover:text-gray-200 transition">
           CodeAtoms
         </Link>
 
