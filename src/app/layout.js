@@ -98,7 +98,7 @@ export default function RootLayout({ children }) {
               url: "https://www.codeatoms.org",
               logo: "https://www.codeatoms.org/logo.png",
               sameAs: [
-                "https://github.com/codeatoms",
+                "https://github.com/codeatoms-org",
                 "https://twitter.com/codeatoms",
               ],
               description:

@@ -49,7 +49,7 @@ export default function BelowSection() {
                 </div>
 
             </section>
-      <section className="px-10 bg-white md:px-20 py-16">
+      <section className="px-10 bg-white md:px-20 py-12">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-[#006D77] text-xl md:text-2xl font-bold uppercase mb-10">
             Benefits of Using CodeAtoms...
@@ -59,7 +59,7 @@ export default function BelowSection() {
             {benefits.map((benefit, index) => (
               <div
                 key={index}
-                className="bg-white  rounded-2xl p-6 flex flex-col items-center text-center transition"
+                className="bg-white rounded-2xl flex flex-col items-center text-center transition"
               >
                 <img
                   src={benefit.image}

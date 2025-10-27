@@ -14,9 +14,7 @@ export default function HeroSection() {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="flex flex-col gap-4 text-center md:text-left"
         >
-          <h1 className="text-xl lg:text-xl font-medium text-gray-900 leading-tight">
-            Welcome to CodeAtoms
-          </h1>
+          
 
           <p className="text-black text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extralight leading-snug mx-auto md:mx-0 whitespace-normal md:whitespace-nowrap">
             A Marketplace for Tech people <br />Get Tools to build your Dreams.
