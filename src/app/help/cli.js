@@ -6,16 +6,13 @@ export default function Help() {
   const faqs = [
     {
       q: "How can I upload my project?",
-      a: "Simply sign in to your account and navigate to the 'Upload Project' section. You can add your repository link, demo, and documentation directly from there.",
+      a: "Simply sign in to your account and navigate to Profile and then the 'Upload Tool' section. Fill in the required details about your project and submit it for review.",
     },
     {
       q: "Is there any cost to use the platform?",
-      a: "No, our core platform is completely free to use. We aim to support developers and researchers by providing open-source visibility and collaboration opportunities.",
+      a: "No, our core platform is completely free to use.",
     },
-    {
-      q: "Can I collaborate on existing projects?",
-      a: "Yes! Each project page includes links to repositories and contributor sections where you can submit pull requests or contact the owner directly.",
-    },
+    
     {
       q: "How do I report an issue or bug?",
       a: "You can use the 'Contact Us' page to report any issues. Our support team will review and respond within 24 to 48 hours.",
@@ -23,6 +20,14 @@ export default function Help() {
     {
       q: "How can I get featured on the homepage?",
       a: "Featured projects are selected based on innovation, documentation quality, and community impact. Focus on clarity and open collaboration for the best chance.",
+    },
+    {
+      q: "How can I get paid?",
+      a: "You will get paid through the payment method you set up in your profile once your project is purchased by users.",
+    },
+    {
+      q: "How much take will CodeAtoms take from my sales?",
+      a: "CodeAtoms takes a 20% commission on each sale made through the platform.",
     },
   ];
 
