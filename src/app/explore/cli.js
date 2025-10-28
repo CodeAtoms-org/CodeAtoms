@@ -50,7 +50,7 @@ export default function ToolsSection() {
   return (
     <>
     <Header />
-    <section className="px-6 md:mx-20 py-20 rounded-md bg-white">
+    <section className="px-6 md:mx-20 pt-20 md:pt-10 rounded-md bg-white">
       
       {/* TAG FILTERS */}
       <div className="flex flex-wrap flex-col mx-4 md:mx-10 gap-3 mb-10">
@@ -105,7 +105,7 @@ export default function ToolsSection() {
       {tool.description}
     </p>
   </div>
-  <p className="text-gray-600 mt-4 text-sm font-medium group-hover:text-[#006D77] transition-colors duration-200">
+  <p className="text-gray-600 mt-4 text-sm font-bold group-hover:text-[#006D77] transition-colors duration-200">
     {tool.type}
   </p>
 </motion.div>
@@ -134,7 +134,7 @@ export default function ToolsSection() {
       {tool.description}
     </p>
   </div>
-  <p className="text-gray-600 mt-4 text-sm font-medium group-hover:text-[#006D77] transition-colors duration-200">
+  <p className="text-gray-600 mt-4 text-sm font-bold group-hover:text-[#006D77] transition-colors duration-200">
     {tool.type}
   </p>
 </motion.div>

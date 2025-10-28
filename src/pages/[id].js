@@ -153,7 +153,7 @@ export default function ToolPage() {
           <span className="text-sm font-medium text-white bg-[#006D77] px-3 py-1 rounded-full">
             {tool.type || "N/A"}
           </span>
-          <hr className="mt-10"></hr>
+          <hr className="mt-10 max-w-2xl"></hr>
           <div className="h-20"></div>
 
           {/* Two-column layout */}
@@ -184,6 +184,8 @@ export default function ToolPage() {
                     </p>
                   </>
                 ) : (
+                  <div>
+                    <p className="mb-4 text-[#00545C] font-bold">Price: {tool.price}</p>
                   <button
                     onClick={handleBuy}
                     className={`w-full px-6 py-3 text-white font-semibold rounded-xl shadow-md transition-all duration-300 transform hover:scale-105
@@ -192,6 +194,7 @@ export default function ToolPage() {
                   >
                     Buy Now
                   </button>
+                  </div>
                 )}
 
                 {/* Login message */}

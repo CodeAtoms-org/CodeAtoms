@@ -20,6 +20,7 @@ export default function UploadTool() {
     content: "",
     buynow: "",
     link: "",
+    price:"",
   });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -71,6 +72,7 @@ export default function UploadTool() {
       content: form.content,
       download: form.buynow,
       link: form.link,
+      price: form.price,
     },
   ]);
 
@@ -220,6 +222,19 @@ export default function UploadTool() {
                 }}
                 className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
                 placeholder="https://example.com/demo"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">Price (in Rupee)</label>
+              <input
+                type="number"
+                name="price"
+                value={form.price}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
+                placeholder="E.g., 199.99"
+                min="0"
+                step="0.01"
               />
             </div>
 

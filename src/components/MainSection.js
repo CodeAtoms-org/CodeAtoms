@@ -114,7 +114,7 @@ export default function ToolsSection() {
                           {tool.description}
                         </p>
                       </div>
-                      <p className="text-gray-600 mt-4 text-sm font-medium group-hover:text-[#006D77] transition-colors duration-200">
+                      <p className="text-gray-600 font-bold mt-4 text-sm  group-hover:text-[#006D77] transition-colors duration-200">
                         {tool.type}
                       </p>
                     </div>
@@ -141,7 +141,7 @@ export default function ToolsSection() {
                       {tool.description}
                     </p>
                   </div>
-                  <p className="text-gray-600 mt-4 text-sm font-medium group-hover:text-[#006D77] transition-colors duration-200">
+                  <p className="text-gray-600 mt-4 text-sm font-bold group-hover:text-[#006D77] transition-colors duration-200">
                     {tool.type}
                   </p>
                 </div>
