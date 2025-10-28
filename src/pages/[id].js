@@ -180,7 +180,7 @@ export default function ToolPage() {
                       Download
                     </button>
                     <p className="text-gray-600 italic text-sm text-start mb-2">
-                      Already purchased ✓
+                     Purchased ✓
                     </p>
                   </>
                 ) : (

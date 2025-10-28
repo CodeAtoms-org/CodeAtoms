@@ -47,34 +47,34 @@ export default function UploadTool() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
-  if (!form.title || !form.type) {
-    setError("Title and Type are required!");
-    return;
-  }
+    e.preventDefault();
+    setError("");
+    if (!form.title || !form.type) {
+      setError("Title and Type are required!");
+      return;
+    }
 
-  setSubmitting(true);
+    setSubmitting(true);
 
-  const { error: insertError } = await supabase.from("tools").insert([{
-    owner: user.email,
-    title: form.title,
-    description: form.description,
-    type: form.type,
-    content: form.content,
-    buynow: form.buynow,
-    link: form.link
-    // DO NOT include uid, let Postgres generate it
-  }]);
+    const { error: insertError } = await supabase.from("tools").insert([{
+      owner: user.email,
+      title: form.title,
+      description: form.description,
+      type: form.type,
+      content: form.content,
+      download: form.buynow,
+      link: form.link
+      // DO NOT include uid, let Postgres generate it
+    }]);
 
-  setSubmitting(false);
+    setSubmitting(false);
 
-  if (insertError) {
-    setError(insertError.message);
-  } else {
-    router.push("/profile");
-  }
-};
+    if (insertError) {
+      setError(insertError.message);
+    } else {
+      router.push("/profile");
+    }
+  };
 
 
   if (loading) {
@@ -89,7 +89,19 @@ export default function UploadTool() {
     <>
       <Header />
       <div className="min-h-screen bg-gray-50 px-6 md:px-16 py-10">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Upload Your Tool</h1>
+        <h1 className="text-3xl font-bold  mb-6">Upload Your Tool</h1>
+        <p className="text-gray-600 text-lg mb-10 mt-4">
+          You can refer to the Publishing guide
+          <a
+            href="/guides/how-to-publish-your-tool"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#006D77] font-medium hover:underline ml-1"
+          >
+            here
+          </a>.
+        </p>
+
         <div className="bg-white rounded-2xl shadow-md p-8 max-w-3xl mx-auto">
           {error && (
             <p className="text-red-500 mb-4 font-medium">{error}</p>
@@ -115,7 +127,7 @@ export default function UploadTool() {
                 value={form.type}
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
-                placeholder="E.g., Software, Hardware"
+                placeholder="E.g., API, SaaS, CLI Tool"
                 required
               />
             </div>
@@ -143,7 +155,7 @@ export default function UploadTool() {
             </div>
 
             <div>
-              <label className="block text-gray-700 font-medium mb-1">Buy Now URL</label>
+              <label className="block text-gray-700 font-medium mb-1">Download URL</label>
               <input
                 type="url"
                 name="buynow"
