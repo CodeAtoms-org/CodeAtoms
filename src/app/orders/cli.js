@@ -104,7 +104,7 @@ export default function OrdersPage() {
                 <p className="text-sm text-gray-500 mt-1">
                   {tool.owner}
                 </p>
-                <p className="text-gray-500 mt-3 text-sm leading-relaxed line-clamp-4 group-hover:text-[#006D77] transition-colors duration-200">
+                <p className="text-gray-500 mt-3 text-md leading-relaxed line-clamp-4 group-hover:text-[#006D77] transition-colors duration-200">
                   {tool.description}
                 </p>
               </div>

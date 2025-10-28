@@ -5,17 +5,21 @@ import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
+import toast from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
+
 export default function UploadTool() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({
+    name: "", // ✅ user’s name (will be used as owner)
     title: "",
     description: "",
     type: "",
     content: "",
     buynow: "",
-    link: ""
+    link: "",
   });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -47,34 +51,37 @@ export default function UploadTool() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    if (!form.title || !form.type) {
-      setError("Title and Type are required!");
-      return;
-    }
+  e.preventDefault();
+  setError("");
 
-    setSubmitting(true);
+  if (!form.name || !form.title || !form.type) {
+    setError("Name, Title, and Type are required!");
+    return;
+  }
 
-    const { error: insertError } = await supabase.from("tools").insert([{
-      owner: user.email,
+  setSubmitting(true);
+
+  const { error: insertError } = await supabase.from("tools").insert([
+    {
+      owner: form.name,              // user's entered name
+      owner_uid: user?.id,           // ✅ store Supabase user UID
       title: form.title,
       description: form.description,
       type: form.type,
       content: form.content,
       download: form.buynow,
-      link: form.link
-      // DO NOT include uid, let Postgres generate it
-    }]);
+      link: form.link,
+    },
+  ]);
 
-    setSubmitting(false);
+  setSubmitting(false);
 
-    if (insertError) {
-      setError(insertError.message);
-    } else {
-      router.push("/profile");
-    }
-  };
+  if (insertError) {
+    setError(insertError.message);
+  } else {
+    router.push("/profile");
+  }
+};
 
 
   if (loading) {
@@ -89,7 +96,8 @@ export default function UploadTool() {
     <>
       <Header />
       <div className="min-h-screen bg-gray-50 px-6 md:px-16 py-10">
-        <h1 className="text-3xl font-bold  mb-6">Upload Your Tool</h1>
+        <h1 className="text-3xl font-bold mb-6">Upload Your Tool</h1>
+
         <p className="text-gray-600 text-lg mb-10 mt-4">
           You can refer to the Publishing guide
           <a
@@ -103,10 +111,23 @@ export default function UploadTool() {
         </p>
 
         <div className="bg-white rounded-2xl shadow-md p-8 max-w-3xl mx-auto">
-          {error && (
-            <p className="text-red-500 mb-4 font-medium">{error}</p>
-          )}
+          {error && <p className="text-red-500 mb-4 font-medium">{error}</p>}
+
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            {/* ✅ Owner Name Field */}
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">Your Name *</label>
+              <input
+                type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
+                placeholder="E.g., Abhinav Sharma"
+                required
+              />
+            </div>
+
             <div>
               <label className="block text-gray-700 font-medium mb-1">Title *</label>
               <input
@@ -124,13 +145,18 @@ export default function UploadTool() {
               <input
                 type="text"
                 name="type"
-                value={form.type}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
-                placeholder="E.g., API, SaaS, CLI Tool"
+                value={form.type.toUpperCase()} // ensures uppercase in the field
+                onChange={(e) =>
+                  handleChange({
+                    target: { name: "type", value: e.target.value.toUpperCase() }, // store in uppercase
+                  })
+                }
+                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77] uppercase"
+                placeholder="E.g., API, SaaS, CLI TOOL"
                 required
               />
             </div>
+
 
             <div>
               <label className="block text-gray-700 font-medium mb-1">Description</label>
@@ -155,13 +181,23 @@ export default function UploadTool() {
             </div>
 
             <div>
-              <label className="block text-gray-700 font-medium mb-1">Download URL</label>
+              <label className="block text-gray-700 font-medium mb-1">Download URL *</label>
               <input
                 type="url"
                 name="buynow"
                 value={form.buynow}
                 onChange={handleChange}
+                onBlur={(e) => {
+                  try {
+                    new URL(e.target.value);
+                  } catch {
+                    toast.error("Please enter a valid Download URL");
+                    e.target.focus();
+                  }
+                }}
                 className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
+                placeholder="https://example.com/download"
+                required
               />
             </div>
 
@@ -172,9 +208,21 @@ export default function UploadTool() {
                 name="link"
                 value={form.link}
                 onChange={handleChange}
+                onBlur={(e) => {
+                  const value = e.target.value.trim();
+                  if (value.length === 0) return; // Skip validation if empty
+                  try {
+                    new URL(value);
+                  } catch {
+                    toast.error("Please enter a valid Demo / Tool URL");
+                    e.target.focus();
+                  }
+                }}
                 className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
+                placeholder="https://example.com/demo"
               />
             </div>
+
 
             <button
               type="submit"
@@ -186,6 +234,8 @@ export default function UploadTool() {
           </form>
         </div>
       </div>
+
+      <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
       <Footer />
     </>
   );

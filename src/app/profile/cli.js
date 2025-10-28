@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import { PlusCircle, DollarSign, BarChart2, ToolCase, Package } from "lucide-react";
 import Loading from "@/components/Loading";
 
+import toast from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
+
 export default function ProfilePage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
@@ -145,18 +148,60 @@ export default function ProfilePage() {
 
             {/* Right Column */}
             <div className="md:w-1/2 flex flex-col gap-6">
-              <div className="bg-white rounded-2xl shadow-sm p-6 flex items-center gap-4">
-  <ToolCase size={32} className="text-[#006D77]" />
-  <div>
-    <h3 className="text-lg font-semibold text-gray-800">Your Tools</h3>
-    <p className="text-gray-500 text-sm">
-      {profile.sell_tools ? profile.sell_tools.length : 0} tools uploaded
-    </p>
-  </div>
-</div>
+              {/* Your Tools */}
+              <div className="bg-white rounded-2xl shadow-sm p-6 flex flex-col gap-4">
+                <div className="flex items-center gap-4">
+                  <ToolCase size={32} className="text-[#006D77]" />
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-800">Your Tools</h3>
+                    <p className="text-gray-500 text-sm">
+                      {profile?.sell_tools ? profile.sell_tools.length : 0} tools uploaded
+                    </p>
+                  </div>
+                </div>
+
+                {/* ✅ Refresh button */}
+                <button
+                  onClick={async () => {
+                    if (!user) return;
+                    try {
+                      // 1️⃣ Fetch tools owned by the current user
+                      const { data: userTools, error: fetchError } = await supabase
+                        .from("tools")
+                        .select("uid")
+                        .eq("owner_uid", user.id);
+
+                      if (fetchError) throw fetchError;
+
+                      // 2️⃣ Extract tool IDs
+                      const toolIds = userTools.map((tool) => tool.uid);
+
+                      // 3️⃣ Update sell_tools column in user_data
+                      const { error: updateError } = await supabase
+                        .from("user_data")
+                        .update({ sell_tools: toolIds })
+                        .eq("user_uid", user.id);
+
+                      if (updateError) throw updateError;
+
+                      // 4️⃣ Update local profile state instantly
+                      setProfile((prev) => ({ ...prev, sell_tools: toolIds }));
+
+                      toast.success(" Refreshed successfully!");
+                    } catch (err) {
+
+                      toast.error(" Failed to refresh tools. Please try again.");
+                    }
+                  }}
+                  className="self-start text-white bg-[#006D77] px-4 rounded-3xl  py-2 font-semibold text-sm "
+                >
+                  Refresh
+                </button>
+              </div>
 
 
-              
+
+
 
               {/* Earnings moved here */}
               <div className="bg-white rounded-2xl shadow-sm p-6 flex items-center gap-4">
@@ -170,6 +215,7 @@ export default function ProfilePage() {
           </div>
         )}
       </div>
+      <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
       <Footer />
     </>
   );

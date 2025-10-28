@@ -89,54 +89,54 @@ export default function ToolPage() {
   }
 
   // Handle Buy simulation
- const handleBuy = async () => {
-  if (!user) {
-    toast.error("Please log in to buy this tool!");
-    router.push("/onboard");
-    return;
-  }
+  const handleBuy = async () => {
+    if (!user) {
+      toast.error("Please log in to buy this tool!");
+      router.push("/onboard");
+      return;
+    }
 
-  // Simulate payment success
-  toast.success("Payment successful!");
+    // Simulate payment success
+    toast.success("Payment successful!");
 
-  // Fetch the current purchased tools
-  const { data: userData, error: fetchError } = await supabase
-    .from("user_data")
-    .select("purchased_tools")
-    .eq("user_uid", user.id)
-    .single();
+    // Fetch the current purchased tools
+    const { data: userData, error: fetchError } = await supabase
+      .from("user_data")
+      .select("purchased_tools")
+      .eq("user_uid", user.id)
+      .single();
 
-  if (fetchError) {
-    console.error("Error fetching user data:", fetchError);
-    toast.error("Could not fetch your account info. Please try again.");
-    return;
-  }
+    if (fetchError) {
 
-  const existingTools = userData?.purchased_tools || [];
+      toast.error("Could not fetch your account info. Please try again.");
+      return;
+    }
 
-  // Avoid duplicates
-  if (existingTools.includes(id)) {
-    toast.error("You already own this tool!");
-    setAlreadyPurchased(true);
-    return;
-  }
+    const existingTools = userData?.purchased_tools || [];
 
-  const updatedTools = [...existingTools, id];
+    // Avoid duplicates
+    if (existingTools.includes(id)) {
+      toast.error("You already own this tool!");
+      setAlreadyPurchased(true);
+      return;
+    }
 
-  // Update the array in Supabase
-  const { error: updateError } = await supabase
-    .from("user_data")
-    .update({ purchased_tools: updatedTools })
-    .eq("user_uid", user.id);
+    const updatedTools = [...existingTools, id];
 
-  if (updateError) {
-    console.error("Error updating purchases:", updateError);
-    toast.error("Something went wrong while saving your purchase.");
-  } else {
-    toast.success("Order saved successfully");
-    setAlreadyPurchased(true);
-  }
-};
+    // Update the array in Supabase
+    const { error: updateError } = await supabase
+      .from("user_data")
+      .update({ purchased_tools: updatedTools })
+      .eq("user_uid", user.id);
+
+    if (updateError) {
+      console.error("Error updating purchases:", updateError);
+      toast.error("Something went wrong while saving your purchase.");
+    } else {
+      toast.success("Order saved successfully");
+      setAlreadyPurchased(true);
+    }
+  };
 
 
   // Handle download
@@ -153,7 +153,7 @@ export default function ToolPage() {
           <span className="text-sm font-medium text-white bg-[#006D77] px-3 py-1 rounded-full">
             {tool.type || "N/A"}
           </span>
-
+          <hr className="mt-10"></hr>
           <div className="h-20"></div>
 
           {/* Two-column layout */}
@@ -180,7 +180,7 @@ export default function ToolPage() {
                       Download
                     </button>
                     <p className="text-gray-600 italic text-sm text-start mb-2">
-                     Purchased ✓
+                      Purchased ✓
                     </p>
                   </>
                 ) : (
@@ -202,12 +202,16 @@ export default function ToolPage() {
                 )}
 
                 {/* View Demo Button */}
-                <button
-                  onClick={() => window.open(tool.link, "_blank")}
-                  className="w-full px-6 py-3 bg-transparent border-2 border-[#006D77] text-[#006D77] font-semibold rounded-xl hover:bg-[#006D77] hover:text-white shadow-md transition-all duration-300 transform hover:scale-105"
-                >
-                  View Demo
-                </button>
+                {tool.link && tool.link.trim() !== "" && (
+                  <button
+                    onClick={() => window.open(tool.link, "_blank")}
+                    className="w-full px-6 py-3 bg-transparent border-2 border-[#006D77] text-[#006D77] font-semibold rounded-xl hover:bg-[#006D77] hover:text-white shadow-md transition-all duration-300 transform hover:scale-105"
+                  >
+                    View Demo
+                  </button>
+                )}
+
+
               </div>
             </div>
           </div>

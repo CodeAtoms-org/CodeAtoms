@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-white text-black py-12 px-6 md:px-24">
+    <footer className="bg-white cursor-pointer text-black py-12 px-6 md:px-24">
       <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between gap-12">
         {/* Left: Logo and Company */}
         <div className="flex flex-col gap-4 md:w-1/3">
@@ -13,37 +13,42 @@ export default function Footer() {
             <span className="text-2xl ">CodeAtoms</span>
           </div>
           <p className="text-gray-700 text-sm">
-For Tech People.
+            For Tech People.
           </p>
         </div>
 
         {/* Right: Links */}
         <div className="flex flex-wrap gap-8 md:gap-16 md:w-2/3">
-        <div className="flex flex-col gap-3">
-<h4 className=" text-lg">CodeAtoms</h4>
-            <a href="/explore" className="text-gray-700 hover:text-black transition">Explore</a>
-            <a href="/orders" className="text-gray-700 hover:text-black transition">Your Orders</a>
-            <a href="/profile" className="text-gray-700 hover:text-black transition">Profile</a>
-          </div> 
+          <div className="flex flex-col gap-3">
+            <h4 className=" text-lg">CodeAtoms</h4>
+            <a href="/explore" className="text-gray-700 hover:text-[#006D77] transition">Explore</a>
+            <a href="/orders" className="text-gray-700 hover:text-[#006D77] transition">Your Orders</a>
+            <a href="/profile" className="text-gray-700 hover:text-[#006D77] transition">Profile</a>
+          </div>
 
           <div className="flex flex-col gap-3">
             <h4 className=" text-lg">Company</h4>
-            <a href="/about" className="text-gray-700 hover:text-black transition">About Us</a>
+            <a href="/about" className="text-gray-700 hover:text-[#006D77] transition">About Us</a>
           </div>
 
           {/* Column 2 */}
           <div className="flex flex-col gap-3">
             <h4 className=" text-lg">Support</h4>
-            <a href="/help" className="text-gray-700 hover:text-black transition">Help Center</a>
-            <a href="/contactus" className="text-gray-700 hover:text-black transition">Contact Us</a>
-            <a href="/help" className="text-gray-700 hover:text-black transition">FAQs</a>
+            <a href="/help" className="text-gray-700 hover:text-[#006D77] transition">Help Center</a>
+            <a href="/contactus" className="text-gray-700 hover:text-[#006D77] transition">Contact Us</a>
+            <a href="/help" className="text-gray-700 hover:text-[#006D77] transition">FAQs</a>
           </div>
 
           {/* Column 3 */}
           <div className="flex flex-col gap-3">
             <h4 className=" text-lg">Legal</h4>
-            <a href="/privacy-policy" className="text-gray-700 hover:text-black transition">Privacy Policy</a>
-            <a href="/terms" className="text-gray-700 hover:text-black transition">Terms of Service</a>
+            <a href="/privacy-policy" className="text-gray-700 hover:text-[#006D77] transition">Privacy Policy</a>
+            <a href="/terms" className="text-gray-700 hover:text-[#006D77] transition">Terms of Service</a>
+          </div>
+          <div className="flex flex-col max-w-40 gap-3">
+            <h4 className=" text-lg">Guides</h4>
+            <a href="/guides/how-to-publish-your-tool" className="text-gray-700 hover:text-[#006D77] transition">How to Publish your Tool</a>
+            <a href="/terms" className="text-gray-700 hover:text-[#006D77] transition">Terms of Service</a>
           </div>
         </div>
       </div>
