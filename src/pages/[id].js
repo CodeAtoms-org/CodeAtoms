@@ -150,9 +150,23 @@ export default function ToolPage() {
       <div className="min-h-screen flex flex-col mt-10 md:mt-20 px-4 md:px-16">
         <div className="w-full bg-white rounded-2xl p-8">
           <h1 className="text-4xl text-gray-900 mb-4">{tool.title}</h1>
-          <span className="text-sm font-medium text-white bg-[#006D77] px-3 py-1 rounded-full">
-            {tool.type || "N/A"}
-          </span>
+          <div className="flex flex-wrap gap-2 mt-4">
+  {Array.isArray(tool.type) && tool.type.length > 0 ? (
+    tool.type.map((tag, i) => (
+      <span
+        key={i}
+        className="text-sm font-medium text-white bg-[#006D77] px-3 py-1 rounded-full"
+      >
+        {tag}
+      </span>
+    ))
+  ) : (
+    <span className="text-sm font-medium text-white bg-gray-400 px-3 py-1 rounded-full">
+      Dev Tools
+    </span>
+  )}
+</div>
+
           <hr className="mt-10 max-w-2xl"></hr>
           <div className="h-20"></div>
 
@@ -185,7 +199,7 @@ export default function ToolPage() {
                   </>
                 ) : (
                   <div>
-                    <p className="mb-4 text-[#00545C] font-bold">Price: {tool.price}</p>
+                    <p className="mb-4 text-[#00545C] font-bold">Price in INR: {tool.price}</p>
                   <button
                     onClick={handleBuy}
                     className={`w-full px-6 py-3 text-white font-semibold rounded-xl shadow-md transition-all duration-300 transform hover:scale-105

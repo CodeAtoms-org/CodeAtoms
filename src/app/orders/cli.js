@@ -108,9 +108,22 @@ export default function OrdersPage() {
                   {tool.description}
                 </p>
               </div>
-              <p className="text-gray-600 mt-4 text-sm font-medium group-hover:text-[#006D77] transition-colors duration-200">
-                {tool.type}
-              </p>
+              <div className="flex flex-wrap gap-2 mt-4">
+  {Array.isArray(tool.type) && tool.type.length > 0 ? (
+    tool.type.map((tag, i) => (
+      <span
+        key={i}
+        className="text-sm font-medium text-white bg-[#006D77] px-3 py-1 rounded-full"
+      >
+        {tag}
+      </span>
+    ))
+  ) : (
+    <span className="text-sm font-medium text-white bg-gray-400 px-3 py-1 rounded-full">
+      Dev Tools
+    </span>
+  )}
+</div>
             </div>
           ))}
         </div>
