@@ -57,10 +57,28 @@ export default function ExploreSection() {
     }
   });
 
-  const typeOrder = ["API", "AI TOOL", "CLI TOOL", "MACOS APP", "OPEN SOURCE"];
-  const sortedTypes = Object.keys(groupedTools).sort(
-    (a, b) => typeOrder.indexOf(a) - typeOrder.indexOf(b)
-  );
+  // ✅ Define the order in which you want the tags/groups to appear
+const typeOrder = [
+  "PRODUCTIVITY",
+  "AI TOOL",
+  "API",
+  "CLI TOOL",
+  "MACOS APP",
+  "OPEN SOURCE",
+];
+
+// ✅ Sort types so that those in `typeOrder` come first (in order),
+// and others appear afterward alphabetically.
+const sortedTypes = Object.keys(groupedTools).sort((a, b) => {
+  const indexA = typeOrder.indexOf(a);
+  const indexB = typeOrder.indexOf(b);
+
+  if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+  if (indexA === -1) return 1;
+  if (indexB === -1) return -1;
+  return indexA - indexB;
+});
+
 
   return (
     <>

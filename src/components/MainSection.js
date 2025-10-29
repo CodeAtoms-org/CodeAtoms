@@ -41,9 +41,9 @@ export default function ToolsSection() {
     selectedTag === "All"
       ? tools
       : tools.filter(
-          (tool) =>
-            Array.isArray(tool.type) && tool.type.includes(selectedTag)
-        );
+        (tool) =>
+          Array.isArray(tool.type) && tool.type.includes(selectedTag)
+      );
 
   // ✅ Group tools by type for “All” view
   const groupedTools = {};
@@ -56,10 +56,29 @@ export default function ToolsSection() {
     }
   });
 
-  const typeOrder = ["API", "AI TOOL", "CLI TOOL", "MACOS APP", "OPEN SOURCE"];
-  const sortedTypes = Object.keys(groupedTools).sort(
-    (a, b) => typeOrder.indexOf(a) - typeOrder.indexOf(b)
-  );
+
+  // ✅ Define the order in which you want the tags/groups to appear
+const typeOrder = [
+  "PRODUCTIVITY",
+  "AI TOOL",
+  "API",
+  "CLI TOOL",
+  "MACOS APP",
+  "OPEN SOURCE",
+];
+
+// ✅ Sort types so that those in `typeOrder` come first (in order),
+// and others appear afterward alphabetically.
+const sortedTypes = Object.keys(groupedTools).sort((a, b) => {
+  const indexA = typeOrder.indexOf(a);
+  const indexB = typeOrder.indexOf(b);
+
+  if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+  if (indexA === -1) return 1;
+  if (indexB === -1) return -1;
+  return indexA - indexB;
+});
+
 
   return (
     <section className="px-6 md:mx-20 py-10 rounded-md bg-white">
@@ -92,11 +111,10 @@ export default function ToolsSection() {
               <button
                 key={tag}
                 onClick={() => setSelectedTag(tag)}
-                className={`px-4 py-2 rounded-full border transition-all ${
-                  selectedTag === tag
+                className={`px-4 py-2 rounded-full border transition-all ${selectedTag === tag
                     ? "bg-black text-white"
                     : "text-gray-700 hover:bg-gray-100"
-                }`}
+                  }`}
               >
                 {tag}
               </button>
@@ -116,34 +134,34 @@ export default function ToolsSection() {
                 <div className="mx-auto grid grid-cols-1 md:px-10 px-4 sm:grid-cols-2 md:grid-cols-4 gap-6">
                   {groupedTools[type].map((tool) => (
                     <div
-  key={tool.id}
-  onClick={() => router.push(`/${tool.uid}`)}
-  className="group p-6 bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg"
->
-  <div className="flex-grow">
-    <h3 className="text-lg text-gray-900 group-hover:text-[#006D77] transition-colors duration-200">
-      {tool.title}
-    </h3>
-    <p className="text-sm text-gray-500 mt-1">{tool.owner}</p>
-    <p className="text-gray-500 mt-3 text-md leading-relaxed line-clamp-4 group-hover:text-[#006D77] transition-colors duration-200">
-      {tool.description}
-    </p>
-  </div>
+                      key={tool.id}
+                      onClick={() => router.push(`/${tool.uid}`)}
+                      className="group p-6 bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg"
+                    >
+                      <div className="flex-grow">
+                        <h3 className="text-lg text-gray-900 group-hover:text-[#006D77] transition-colors duration-200">
+                          {tool.title}
+                        </h3>
+                        <p className="text-sm text-gray-500 mt-1">{tool.owner}</p>
+                        <p className="text-gray-500 mt-3 text-md leading-relaxed line-clamp-4 group-hover:text-[#006D77] transition-colors duration-200">
+                          {tool.description}
+                        </p>
+                      </div>
 
-  {/* ✅ Render tags neatly */}
-  {Array.isArray(tool.type) && tool.type.length > 0 && (
-    <div className="flex flex-wrap gap-2 mt-4">
-      {tool.type.map((tag, i) => (
-        <span
-          key={i}
-          className="text-xs font-medium text-gray-700 bg-gray-100 border border-gray-200 px-3 py-1 rounded-full group-hover:text-[#006D77]"
-        >
-          {tag}
-        </span>
-      ))}
-    </div>
-  )}
-</div>
+                      {/* ✅ Render tags neatly */}
+                      {Array.isArray(tool.type) && tool.type.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-4">
+                          {tool.type.map((tag, i) => (
+                            <span
+                              key={i}
+                              className="text-xs font-medium text-gray-700 bg-gray-100 border border-gray-200 px-3 py-1 rounded-full group-hover:text-[#006D77]"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
 
                   ))}
                 </div>
@@ -153,34 +171,34 @@ export default function ToolsSection() {
             <div className="mx-auto grid grid-cols-1 md:px-10 px-4 sm:grid-cols-2 md:grid-cols-4 gap-6">
               {filteredTools.slice(0, 8).map((tool) => (
                 <div
-  key={tool.id}
-  onClick={() => router.push(`/${tool.uid}`)}
-  className="group p-6 bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg"
->
-  <div className="flex-grow">
-    <h3 className="text-lg text-gray-900 group-hover:text-[#006D77] transition-colors duration-200">
-      {tool.title}
-    </h3>
-    <p className="text-sm text-gray-500 mt-1">{tool.owner}</p>
-    <p className="text-gray-500 mt-3 text-md leading-relaxed line-clamp-4 group-hover:text-[#006D77] transition-colors duration-200">
-      {tool.description}
-    </p>
-  </div>
+                  key={tool.id}
+                  onClick={() => router.push(`/${tool.uid}`)}
+                  className="group p-6 bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg"
+                >
+                  <div className="flex-grow">
+                    <h3 className="text-lg text-gray-900 group-hover:text-[#006D77] transition-colors duration-200">
+                      {tool.title}
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-1">{tool.owner}</p>
+                    <p className="text-gray-500 mt-3 text-md leading-relaxed line-clamp-4 group-hover:text-[#006D77] transition-colors duration-200">
+                      {tool.description}
+                    </p>
+                  </div>
 
-  {/* ✅ Render tags neatly */}
-  {Array.isArray(tool.type) && tool.type.length > 0 && (
-    <div className="flex flex-wrap gap-2 mt-4">
-      {tool.type.map((tag, i) => (
-        <span
-          key={i}
-          className="text-xs font-medium text-gray-700 bg-gray-100 border border-gray-200 px-3 py-1 rounded-full group-hover:text-[#006D77]"
-        >
-          {tag}
-        </span>
-      ))}
-    </div>
-  )}
-</div>
+                  {/* ✅ Render tags neatly */}
+                  {Array.isArray(tool.type) && tool.type.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      {tool.type.map((tag, i) => (
+                        <span
+                          key={i}
+                          className="text-xs font-medium text-gray-700 bg-gray-100 border border-gray-200 px-3 py-1 rounded-full group-hover:text-[#006D77]"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
               ))}
             </div>
