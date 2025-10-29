@@ -13,7 +13,7 @@ export default function Footer() {
             <span className="text-2xl ">CodeAtoms</span>
           </div>
           <p className="text-gray-700 text-sm">
-            For Tech People.
+            Made with love for Tech People.
           </p>
         </div>
 

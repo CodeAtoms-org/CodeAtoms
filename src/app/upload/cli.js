@@ -91,7 +91,7 @@ export default function UploadTool() {
         content: form.content,
         download: form.buynow,
         link: form.link,
-        price: form.price,
+        price: form.price ? Number(form.price) : 0,
       },
     ]);
 
