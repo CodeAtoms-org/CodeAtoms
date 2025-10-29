@@ -258,6 +258,7 @@ export default function UploadTool() {
                 name="description"
                 value={form.description}
                 onChange={handleChange}
+                required
                 className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
                 rows={3}
               />
@@ -269,6 +270,7 @@ export default function UploadTool() {
                 name="content"
                 value={form.content}
                 onChange={handleChange}
+                required
                 className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
                 rows={5}
               />
@@ -329,7 +331,6 @@ export default function UploadTool() {
                 step="0.01"
               />
             </div>
-
 
             <button
               type="submit"
