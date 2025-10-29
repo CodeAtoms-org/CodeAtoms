@@ -38,17 +38,17 @@ export default function BelowSection() {
   return (
     <>
       {/* Benefits Section */}
-       <section className="px-10 md:px-20 py-20">
-                <div className="mx-auto flex flex-col gap-4 text-start md:text-center">
-                    <p className="text-sm text-[#006D77] uppercase">
-                        CodeAtoms
-                    </p>
-                    <h2 className="text-lg md:text-xl lg:text-2xl text-gray-900">
-                        "Great ideas need the right tools—build, create, and innovate with what you need at your fingertips."
-                    </h2>
-                </div>
+      <section className="px-10 md:px-20 py-20">
+        <div className="mx-auto flex flex-col gap-4 text-start md:text-center">
+          <p className="text-sm text-[#006D77] uppercase">
+            CodeAtoms
+          </p>
+          <h2 className="text-lg md:text-xl lg:text-2xl text-gray-900">
+            "Great ideas need the right tools—build, create, and innovate with what you need at your fingertips."
+          </h2>
+        </div>
 
-            </section>
+      </section>
       <section className="px-10 bg-white md:px-20 py-12">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-[#006D77] text-xl md:text-2xl font-bold uppercase mb-10">
@@ -64,7 +64,7 @@ export default function BelowSection() {
                 <img
                   src={benefit.image}
                   alt={benefit.title}
-                  className="w-32 h-32 object-cover mb-4"
+                  className="md:w-32 md:h-32 w-42 h-42 object-cover mb-4"
                 />
                 <h3 className="text-lg font-semibold text-gray-800">{benefit.title}</h3>
               </div>
@@ -90,7 +90,7 @@ export default function BelowSection() {
           <div className="text-center md:text-left">
             <p className="text-sm uppercase text-white mb-2">Steps</p>
             <h2 className="text-xl md:text-2xl lg:text-3xl text-white">
-                How to Start Selling Your Tools
+              How to Start Selling Your Tools
             </h2>
           </div>
 
