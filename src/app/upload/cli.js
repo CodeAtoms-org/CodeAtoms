@@ -26,19 +26,19 @@ export default function UploadTool() {
   const [error, setError] = useState("");
 
   const predefinedTags = [
-  "API",
-  "SAAS",
-  "CLI TOOL",
-  "VS CODE EXTENSION",
-  "REACT COMPONENT",
-  "NPM PACKAGE",
-  "AI TOOL",
-  "MACOS APP",
-  "DEV UTILITY",
-  "MOBILE DEVELOPMENT",
-  "DESIGN TOOL",
-  "OPEN SOURCE",
-];
+    "API",
+    "SAAS",
+    "CLI TOOL",
+    "VS CODE EXTENSION",
+    "REACT COMPONENT",
+    "NPM PACKAGE",
+    "AI TOOL",
+    "MACOS APP",
+    "DEV UTILITY",
+    "MOBILE DEVELOPMENT",
+    "DESIGN TOOL",
+    "OPEN SOURCE",
+  ];
 
 
   // Check if user is logged in
@@ -68,41 +68,41 @@ export default function UploadTool() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
+    e.preventDefault();
+    setError("");
 
-  if (!form.name || !form.title || form.type.length === 0) {
-    setError("Name, Title, and at least one Tag are required!");
-    return;
-  }
+    if (!form.name || !form.title || form.type.length === 0) {
+      setError("Name, Title, and at least one Tag are required!");
+      return;
+    }
 
-  setSubmitting(true);
+    setSubmitting(true);
 
-  // Convert JS array → PostgreSQL array format for text[]
-  const formattedTags = `{${form.type.map(tag => `"${tag}"`).join(",")}}`;
+    // Convert JS array → PostgreSQL array format for text[]
+    const formattedTags = `{${form.type.map(tag => `"${tag}"`).join(",")}}`;
 
-  const { error: insertError } = await supabase.from("tools").insert([
-    {
-      owner: form.name,
-      owner_uid: user?.id,
-      title: form.title,
-      description: form.description,
-      type: formattedTags, // ✅ send in correct Postgres array syntax
-      content: form.content,
-      download: form.buynow,
-      link: form.link,
-      price: form.price,
-    },
-  ]);
+    const { error: insertError } = await supabase.from("tools").insert([
+      {
+        owner: form.name,
+        owner_uid: user?.id,
+        title: form.title,
+        description: form.description,
+        type: formattedTags, // ✅ send in correct Postgres array syntax
+        content: form.content,
+        download: form.buynow,
+        link: form.link,
+        price: form.price,
+      },
+    ]);
 
-  setSubmitting(false);
+    setSubmitting(false);
 
-  if (insertError) {
-    setError(insertError.message);
-  } else {
-    router.push("/profile");
-  }
-};
+    if (insertError) {
+      setError(insertError.message);
+    } else {
+      router.push("/profile");
+    }
+  };
 
 
   if (loading) {
@@ -163,94 +163,94 @@ export default function UploadTool() {
 
             {/* Multiple Tags Input for Type */}
             {/* Tags / Type Field */}
-<div>
-  <label className="block text-gray-700 font-medium mb-1">
-    Tags / Type *
-  </label>
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                Tags / Type *
+              </label>
 
-  {/* Tag Chips */}
-  <div className="flex flex-wrap items-center gap-2 border border-gray-300 rounded-xl p-3 focus-within:ring-2 focus-within:ring-[#006D77]">
-    {form.type.map((tag, index) => (
-      <span
-        key={index}
-        className="bg-[#E0F2F1] text-[#006D77] px-3 py-1 rounded-full text-sm flex items-center gap-1"
-      >
-        {tag}
-        <button
-          type="button"
-          onClick={() =>
-            setForm((prev) => ({
-              ...prev,
-              type: prev.type.filter((_, i) => i !== index),
-            }))
-          }
-          className="text-[#006D77] hover:text-red-500 font-bold ml-1"
-        >
-          ×
-        </button>
-      </span>
-    ))}
+              {/* Tag Chips */}
+              <div className="flex flex-wrap items-center gap-2 border border-gray-300 rounded-xl p-3 focus-within:ring-2 focus-within:ring-[#006D77]">
+                {form.type.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="bg-[#E0F2F1] text-[#006D77] px-3 py-1 rounded-full text-sm flex items-center gap-1"
+                  >
+                    {tag}
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setForm((prev) => ({
+                          ...prev,
+                          type: prev.type.filter((_, i) => i !== index),
+                        }))
+                      }
+                      className="text-[#006D77] hover:text-red-500 font-bold ml-1"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
 
-    {/* Custom Tag Input */}
-    <input
-      type="text"
-      placeholder={
-        form.type.length >= 3
-          ? "Maximum 3 tags allowed"
-          : "Type and press Enter"
-      }
-      disabled={form.type.length >= 3}
-      className="flex-grow outline-none p-1 disabled:opacity-50"
-      onKeyDown={(e) => {
-        if (e.key === "Enter" && e.target.value.trim()) {
-          e.preventDefault();
-          const newTag = e.target.value.trim().toUpperCase();
-          if (
-            !form.type.includes(newTag) &&
-            form.type.length < 3
-          ) {
-            setForm((prev) => ({
-              ...prev,
-              type: [...prev.type, newTag],
-            }));
-          }
-          e.target.value = "";
-        }
-      }}
-    />
-  </div>
+                {/* Custom Tag Input */}
+                <input
+                  type="text"
+                  placeholder={
+                    form.type.length >= 3
+                      ? "Maximum 3 tags allowed"
+                      : "Type and press Enter"
+                  }
+                  disabled={form.type.length >= 3}
+                  className="flex-grow outline-none p-1 disabled:opacity-50"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && e.target.value.trim()) {
+                      e.preventDefault();
+                      const newTag = e.target.value.trim().toUpperCase();
+                      if (
+                        !form.type.includes(newTag) &&
+                        form.type.length < 3
+                      ) {
+                        setForm((prev) => ({
+                          ...prev,
+                          type: [...prev.type, newTag],
+                        }));
+                      }
+                      e.target.value = "";
+                    }
+                  }}
+                />
+              </div>
 
-  {/* Dropdown for Predefined Tags */}
-  <select
-    onChange={(e) => {
-      const selectedTag = e.target.value;
-      if (
-        selectedTag &&
-        !form.type.includes(selectedTag) &&
-        form.type.length < 3
-      ) {
-        setForm((prev) => ({
-          ...prev,
-          type: [...prev.type, selectedTag],
-        }));
-      }
-      e.target.value = ""; // reset dropdown
-    }}
-    disabled={form.type.length >= 3}
-    className="mt-3 w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77] disabled:opacity-50"
-  >
-    <option value="">
-      {form.type.length >= 3
-        ? "Maximum 3 tags selected"
-        : "Select Tags"}
-    </option>
-    {predefinedTags.map((tag) => (
-      <option key={tag} value={tag}>
-        {tag}
-      </option>
-    ))}
-  </select>
-</div>
+              {/* Dropdown for Predefined Tags */}
+              <select
+                onChange={(e) => {
+                  const selectedTag = e.target.value;
+                  if (
+                    selectedTag &&
+                    !form.type.includes(selectedTag) &&
+                    form.type.length < 3
+                  ) {
+                    setForm((prev) => ({
+                      ...prev,
+                      type: [...prev.type, selectedTag],
+                    }));
+                  }
+                  e.target.value = ""; // reset dropdown
+                }}
+                disabled={form.type.length >= 3}
+                className="mt-3 w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77] disabled:opacity-50"
+              >
+                <option value="">
+                  {form.type.length >= 3
+                    ? "Maximum 3 tags selected"
+                    : "Select Tags"}
+                </option>
+                {predefinedTags.map((tag) => (
+                  <option key={tag} value={tag}>
+                    {tag}
+                  </option>
+                ))}
+              </select>
+            </div>
 
 
 
