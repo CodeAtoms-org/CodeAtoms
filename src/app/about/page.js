@@ -51,7 +51,7 @@ export default function About() {
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 { name: "Aryan Vishwa", role: "Founder & CEO", img: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740" },
-                { name: "Riya Patel", role: "Head of Engineering", img: "https://images.unsplash.com/photo-1554151228-14d9def656e4?auto=format&fit=crop&w=400&q=60" },
+                { name: "Riya Patel", role: "Product Head", img: "https://images.unsplash.com/photo-1588516903720-8ceb67f9ef84?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=888" },
                 { name: "Arjun Mehta", role: "Community Lead", img: "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&w=400&q=60" },
               ].map((member, i) => (
                 <div key={i} className="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-md transition">

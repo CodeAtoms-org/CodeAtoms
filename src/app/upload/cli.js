@@ -4,26 +4,27 @@ import { supabase } from "../../../supabase";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-import toast from 'react-hot-toast';
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function UploadTool() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
   const [form, setForm] = useState({
-    name: "", // ✅ user’s name (will be used as owner)
+    name: "",
     title: "",
     description: "",
     type: [],
     content: "",
-    buynow: "",
     link: "",
     price: "",
   });
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
+
+  // ✅ Multiple download links (up to 5)
+  const [downloads, setDownloads] = useState([{ platform: "", url: "" }]);
 
   const predefinedTags = [
     "API",
@@ -40,16 +41,12 @@ export default function UploadTool() {
     "OPEN SOURCE",
   ];
 
-
-  // Check if user is logged in
+  // Auth check
   useEffect(() => {
     const fetchSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) {
-        router.push("/onboard");
-      } else {
-        setUser(session.user);
-      }
+      if (!session?.user) router.push("/onboard");
+      else setUser(session.user);
       setLoading(false);
     };
 
@@ -63,8 +60,29 @@ export default function UploadTool() {
     return () => listener.subscription.unsubscribe();
   }, [router]);
 
+  // Handlers
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  // ✅ Handle adding/removing multiple download links
+  const handleDownloadChange = (index, field, value) => {
+    const updated = [...downloads];
+    updated[index][field] = value;
+    setDownloads(updated);
+  };
+
+  const addDownload = () => {
+    if (downloads.length >= 5) {
+      toast.error("You can add up to 5 download links only.");
+      return;
+    }
+    setDownloads([...downloads, { platform: "", url: "" }]);
+  };
+
+  const removeDownload = (index) => {
+    const updated = downloads.filter((_, i) => i !== index);
+    setDownloads(updated);
   };
 
   const handleSubmit = async (e) => {
@@ -76,10 +94,30 @@ export default function UploadTool() {
       return;
     }
 
+    // ✅ Validate download URLs
+    for (const d of downloads) {
+      if (!d.platform || !d.url) {
+        setError("All download entries must have both platform and URL!");
+        return;
+      }
+      try {
+        new URL(d.url);
+      } catch {
+        setError(`Invalid URL: ${d.url}`);
+        return;
+      }
+    }
+
     setSubmitting(true);
 
-    // Convert JS array → PostgreSQL array format for text[]
+    // Convert array to Postgres-compatible text[]
     const formattedTags = `{${form.type.map(tag => `"${tag}"`).join(",")}}`;
+
+    // ✅ Convert to JSON object
+    const downloadJSON = {};
+    downloads.forEach(d => {
+      downloadJSON[d.platform.trim()] = d.url.trim();
+    });
 
     const { error: insertError } = await supabase.from("tools").insert([
       {
@@ -87,9 +125,9 @@ export default function UploadTool() {
         owner_uid: user?.id,
         title: form.title,
         description: form.description,
-        type: formattedTags, // ✅ send in correct Postgres array syntax
+        type: formattedTags,
         content: form.content,
-        download: form.buynow,
+        download: downloadJSON, // ✅ Upload as JSON
         link: form.link,
         price: form.price ? Number(form.price) : 0,
       },
@@ -100,10 +138,10 @@ export default function UploadTool() {
     if (insertError) {
       setError(insertError.message);
     } else {
+      toast.success("Tool uploaded successfully!");
       router.push("/profile");
     }
   };
-
 
   if (loading) {
     return (
@@ -135,7 +173,8 @@ export default function UploadTool() {
           {error && <p className="text-red-500 mb-4 font-medium">{error}</p>}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            {/* ✅ Owner Name Field */}
+
+            {/* Name */}
             <div>
               <label className="block text-gray-700 font-medium mb-1">Your Name *</label>
               <input
@@ -143,12 +182,12 @@ export default function UploadTool() {
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
-                placeholder="E.g., Abhinav Sharma"
                 required
+                className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
               />
             </div>
 
+            {/* Title */}
             <div>
               <label className="block text-gray-700 font-medium mb-1">Title *</label>
               <input
@@ -156,102 +195,45 @@ export default function UploadTool() {
                 name="title"
                 value={form.title}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
                 required
+                className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
               />
             </div>
 
-            {/* Multiple Tags Input for Type */}
-            {/* Tags / Type Field */}
+            {/* Tags */}
             <div>
-              <label className="block text-gray-700 font-medium mb-1">
-                Tags / Type *
-              </label>
+              <label className="block text-gray-700 font-medium mb-1">Tags / Type *</label>
 
-              {/* Tag Chips */}
-              <div className="flex flex-wrap items-center gap-2 border border-gray-300 rounded-xl p-3 focus-within:ring-2 focus-within:ring-[#006D77]">
-                {form.type.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="bg-[#E0F2F1] text-[#006D77] px-3 py-1 rounded-full text-sm flex items-center gap-1"
-                  >
+              <div className="flex flex-wrap gap-2 mb-2">
+                {form.type.map((tag, i) => (
+                  <span key={i} className="bg-[#E0F2F1] text-[#006D77] px-3 py-1 rounded-full text-sm flex items-center gap-1">
                     {tag}
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setForm((prev) => ({
-                          ...prev,
-                          type: prev.type.filter((_, i) => i !== index),
-                        }))
-                      }
-                      className="text-[#006D77] hover:text-red-500 font-bold ml-1"
-                    >
-                      ×
-                    </button>
+                    <button type="button" onClick={() =>
+                      setForm((p) => ({ ...p, type: p.type.filter((_, idx) => idx !== i) }))
+                    }>×</button>
                   </span>
                 ))}
-
-                {/* Custom Tag Input */}
-                <input
-                  type="text"
-                  placeholder={
-                    form.type.length >= 3
-                      ? "Maximum 3 tags allowed"
-                      : "Type and press Enter"
-                  }
-                  disabled={form.type.length >= 3}
-                  className="flex-grow outline-none p-1 disabled:opacity-50"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && e.target.value.trim()) {
-                      e.preventDefault();
-                      const newTag = e.target.value.trim().toUpperCase();
-                      if (
-                        !form.type.includes(newTag) &&
-                        form.type.length < 3
-                      ) {
-                        setForm((prev) => ({
-                          ...prev,
-                          type: [...prev.type, newTag],
-                        }));
-                      }
-                      e.target.value = "";
-                    }
-                  }}
-                />
               </div>
 
-              {/* Dropdown for Predefined Tags */}
-              <select
-                onChange={(e) => {
-                  const selectedTag = e.target.value;
-                  if (
-                    selectedTag &&
-                    !form.type.includes(selectedTag) &&
-                    form.type.length < 3
-                  ) {
-                    setForm((prev) => ({
-                      ...prev,
-                      type: [...prev.type, selectedTag],
-                    }));
-                  }
-                  e.target.value = ""; // reset dropdown
-                }}
+              <input
+                type="text"
+                placeholder={form.type.length >= 3 ? "Maximum 3 tags" : "Press Enter to add tag"}
                 disabled={form.type.length >= 3}
-                className="mt-3 w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77] disabled:opacity-50"
-              >
-                <option value="">
-                  {form.type.length >= 3
-                    ? "Maximum 3 tags selected"
-                    : "Select Tags"}
-                </option>
-                {predefinedTags.map((tag) => (
-                  <option key={tag} value={tag}>
-                    {tag}
-                  </option>
-                ))}
-              </select>
+                className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && e.target.value.trim()) {
+                    e.preventDefault();
+                    const val = e.target.value.trim().toUpperCase();
+                    if (!form.type.includes(val) && form.type.length < 3) {
+                      setForm((p) => ({ ...p, type: [...p.type, val] }));
+                    }
+                    e.target.value = "";
+                  }
+                }}
+              />
             </div>
 
+            {/* Description */}
             <div>
               <label className="block text-gray-700 font-medium mb-1">Description</label>
               <textarea
@@ -259,11 +241,12 @@ export default function UploadTool() {
                 value={form.description}
                 onChange={handleChange}
                 required
-                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
                 rows={3}
+                className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
               />
             </div>
 
+            {/* Content */}
             <div>
               <label className="block text-gray-700 font-medium mb-1">Content / Markdown</label>
               <textarea
@@ -271,32 +254,54 @@ export default function UploadTool() {
                 value={form.content}
                 onChange={handleChange}
                 required
-                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
                 rows={5}
+                className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
               />
             </div>
 
+            {/* ✅ Multiple Download Links */}
             <div>
-              <label className="block text-gray-700 font-medium mb-1">Download URL *</label>
-              <input
-                type="url"
-                name="buynow"
-                value={form.buynow}
-                onChange={handleChange}
-                onBlur={(e) => {
-                  try {
-                    new URL(e.target.value);
-                  } catch {
-                    toast.error("Please enter a valid Download URL");
-                    e.target.focus();
-                  }
-                }}
-                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
-                placeholder="https://example.com/download"
-                required
-              />
+              <label className="block text-gray-700 font-medium mb-2">Download Links *</label>
+
+              {downloads.map((d, i) => (
+                <div key={i} className="flex gap-3 mb-2">
+                  <input
+                    type="text"
+                    placeholder="Platform (e.g., Windows, Mac)"
+                    value={d.platform}
+                    onChange={(e) => handleDownloadChange(i, "platform", e.target.value)}
+                    className="flex-1 border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
+                  />
+                  <input
+                    type="url"
+                    placeholder="https://example.com/download"
+                    value={d.url}
+                    onChange={(e) => handleDownloadChange(i, "url", e.target.value)}
+                    className="flex-[2] border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
+                  />
+                  {downloads.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeDownload(i)}
+                      className="text-red-500 font-bold"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+              ))}
+
+              <button
+                type="button"
+                onClick={addDownload}
+                disabled={downloads.length >= 5}
+                className="text-[#006D77] hover:underline mt-2"
+              >
+                + Add another download link
+              </button>
             </div>
 
+            {/* Demo / Tool Link */}
             <div>
               <label className="block text-gray-700 font-medium mb-1">Demo / Tool Link</label>
               <input
@@ -304,31 +309,23 @@ export default function UploadTool() {
                 name="link"
                 value={form.link}
                 onChange={handleChange}
-                onBlur={(e) => {
-                  const value = e.target.value.trim();
-                  if (value.length === 0) return; // Skip validation if empty
-                  try {
-                    new URL(value);
-                  } catch {
-                    toast.error("Please enter a valid Demo / Tool URL");
-                    e.target.focus();
-                  }
-                }}
-                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
+                className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
                 placeholder="https://example.com/demo"
               />
             </div>
+
+            {/* Price */}
             <div>
-              <label className="block text-gray-700 font-medium mb-1">Price (in INR)</label>
+              <label className="block text-gray-700 font-medium mb-1">Price (INR)</label>
               <input
                 type="number"
                 name="price"
                 value={form.price}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
-                placeholder="E.g., 199.99"
                 min="0"
                 step="0.01"
+                className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
+                placeholder="E.g., 199.99"
               />
             </div>
 
@@ -342,8 +339,7 @@ export default function UploadTool() {
           </form>
         </div>
       </div>
-
-      <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
+      <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
       <Footer />
     </>
   );

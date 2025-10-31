@@ -36,15 +36,13 @@ export default function HowToPublishYourTool() {
 
           <h2 className="font-semibold mt-8 mb-8">2. Fill in the Tool Details</h2>
           <p>
-            The <strong>Title</strong> and <strong>Type</strong> are required
-            fields. Choose a title that clearly describes your tool, and a type
-            that matches what you have built — for example: “API”, “Framework”,
-            “UI Component”, or “CLI Tool”.
+            The <strong>Title</strong> and <strong>Tags</strong> are required. Choose a title that clearly describes your tool, and a tag
+            that matches what you have built.
           </p>
 
           <p>
             Use the <strong>Description</strong> field to summarize your tool
-            purpose, unique features, and how it helps other developers. Keep it
+            purpose and unique features. Keep it
             concise and meaningful.
           </p>
 
