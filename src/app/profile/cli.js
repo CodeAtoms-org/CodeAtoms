@@ -310,64 +310,133 @@ export default function ProfilePage() {
 
       {/* 🧩 Edit Tool Dialog */}
       {showDialog && selectedTool && (
-        <div className="fixed inset-0 bg-[#006D77]/80 flex justify-center items-center z-50">
+  <div className="fixed inset-0 bg-[#006D77]/70 flex justify-center items-center z-50 px-4">
+    <div className="bg-white w-full max-w-lg sm:max-w-xl rounded-2xl shadow-xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
+      <h3 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
+        Edit Tool
+      </h3>
 
-          <div className="bg-white p-6 rounded-2xl w-96 max-h-[90vh] overflow-y-auto">
-            <h3 className="text-xl font-semibold mb-4">Edit Tool</h3>
+      {/* 🧱 Basic Fields */}
+      <div className="space-y-4">
+        {["title", "description", "content", "link", "price"].map((field) => (
+          <div key={field}>
+            <label className="block text-sm font-semibold text-gray-700 mb-1 capitalize">
+              {field}
+            </label>
 
-            {["title", "description", "content", "link", "download", "price"].map(
-              (field) => (
-                <div key={field} className="mb-3">
-                  <label className="block text-sm font-medium text-gray-700 mb-1 capitalize">
-                    {field}
-                  </label>
-                  {field === "description" || field === "content" ? (
-                    <textarea
-                      rows="3"
-                      value={selectedTool[field] || ""}
-                      onChange={(e) =>
-                        setSelectedTool({
-                          ...selectedTool,
-                          [field]: e.target.value,
-                        })
-                      }
-                      className="w-full border rounded-lg px-3 py-2 focus:outline-none"
-                    />
-                  ) : (
-                    <input
-                      type={field === "price" ? "number" : "text"}
-                      value={selectedTool[field] || ""}
-                      onChange={(e) =>
-                        setSelectedTool({
-                          ...selectedTool,
-                          [field]: e.target.value,
-                        })
-                      }
-                      className="w-full border rounded-lg px-3 py-2 focus:outline-none"
-                    />
-                  )}
-                </div>
-              )
+            {field === "description" || field === "content" ? (
+              <textarea
+                rows="3"
+                value={selectedTool[field] || ""}
+                onChange={(e) =>
+                  setSelectedTool({ ...selectedTool, [field]: e.target.value })
+                }
+                className="w-full border border-gray-300 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
+              />
+            ) : (
+              <input
+                type={field === "price" ? "number" : "text"}
+                value={selectedTool[field] || ""}
+                onChange={(e) =>
+                  setSelectedTool({ ...selectedTool, [field]: e.target.value })
+                }
+                className="w-full border border-gray-300 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
+              />
             )}
+          </div>
+        ))}
+      </div>
 
-            <div className="flex justify-end gap-3 mt-4">
+      {/* 🧩 Download JSON Editor */}
+      <div className="mt-6">
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Download Links
+        </label>
+
+        <div className="space-y-3">
+          {Object.entries(selectedTool.download || {}).map(([platform, url], i) => (
+            <div
+              key={i}
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2"
+            >
+              <input
+                type="text"
+                placeholder="Platform (e.g. Windows)"
+                value={platform}
+                onChange={(e) => {
+                  const newKey = e.target.value.trim();
+                  const updated = { ...selectedTool.download };
+                  delete updated[platform];
+                  updated[newKey] = url;
+                  setSelectedTool({ ...selectedTool, download: updated });
+                }}
+                className="flex-1 border border-gray-300 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
+              />
+
+              <input
+                type="url"
+                placeholder="https://example.com"
+                value={url}
+                onChange={(e) => {
+                  const updated = {
+                    ...selectedTool.download,
+                    [platform]: e.target.value,
+                  };
+                  setSelectedTool({ ...selectedTool, download: updated });
+                }}
+                className="flex-[2] border border-gray-300 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
+              />
+
               <button
-                onClick={() => setShowDialog(false)}
-                className="px-4 py-2 rounded-lg border"
+                type="button"
+                onClick={() => {
+                  const updated = { ...selectedTool.download };
+                  delete updated[platform];
+                  setSelectedTool({ ...selectedTool, download: updated });
+                }}
+                className="text-red-500 font-bold text-xl hover:text-red-600 sm:self-center"
               >
-                Cancel
-              </button>
-              <button
-                onClick={handleUpdateTool}
-                disabled={updating}
-                className="px-4 py-2 rounded-lg bg-[#006D77] text-white"
-              >
-                {updating ? "Saving..." : "Save"}
+                ×
               </button>
             </div>
-          </div>
+          ))}
         </div>
-      )}
+
+        <button
+          type="button"
+          onClick={() => {
+            setSelectedTool({
+              ...selectedTool,
+              download: { ...(selectedTool.download || {}), "": "" },
+            });
+          }}
+          className="text-[#006D77] hover:underline text-sm mt-3 block"
+        >
+          + Add another download link
+        </button>
+      </div>
+
+      {/* 🧭 Action Buttons */}
+      <div className="flex justify-end gap-3 mt-6">
+        <button
+          onClick={() => setShowDialog(false)}
+          className="px-4 py-2 rounded-xl border border-gray-300 hover:bg-gray-50"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleUpdateTool}
+          disabled={updating}
+          className="px-5 py-2 rounded-xl bg-[#006D77] text-white hover:bg-[#005a63] transition"
+        >
+          {updating ? "Saving..." : "Save"}
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
 
       <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
       <Footer />

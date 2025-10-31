@@ -12,6 +12,8 @@ export default function UploadTool() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [slugStatus, setSlugStatus] = useState("");
+  const [slugChecking, setSlugChecking] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -21,9 +23,9 @@ export default function UploadTool() {
     content: "",
     link: "",
     price: "",
+    uid: "", // slug field
   });
 
-  // ✅ Multiple download links (up to 5)
   const [downloads, setDownloads] = useState([{ platform: "", url: "" }]);
 
   const predefinedTags = [
@@ -41,7 +43,6 @@ export default function UploadTool() {
     "OPEN SOURCE",
   ];
 
-  // Auth check
   useEffect(() => {
     const fetchSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -51,7 +52,6 @@ export default function UploadTool() {
     };
 
     fetchSession();
-
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session?.user) router.push("/onboard");
       else setUser(session.user);
@@ -60,12 +60,24 @@ export default function UploadTool() {
     return () => listener.subscription.unsubscribe();
   }, [router]);
 
-  // Handlers
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // ✅ Handle adding/removing multiple download links
+  const handleSlugChange = async (value) => {
+    const slug = value.toLowerCase().trim().replace(/[^a-z0-9-]/g, "-");
+    setForm((prev) => ({ ...prev, uid: slug }));
+    setSlugStatus("");
+    if (!slug) return;
+
+    setSlugChecking(true);
+    const { data } = await supabase.from("tools").select("uid").eq("uid", slug).maybeSingle();
+    setSlugChecking(false);
+
+    if (data) setSlugStatus("taken");
+    else setSlugStatus("available");
+  };
+
   const handleDownloadChange = (index, field, value) => {
     const updated = [...downloads];
     updated[index][field] = value;
@@ -89,12 +101,16 @@ export default function UploadTool() {
     e.preventDefault();
     setError("");
 
+    if (!form.uid || slugStatus !== "available") {
+      setError("Please enter a unique and valid URL slug.");
+      return;
+    }
+
     if (!form.name || !form.title || form.type.length === 0) {
       setError("Name, Title, and at least one Tag are required!");
       return;
     }
 
-    // ✅ Validate download URLs
     for (const d of downloads) {
       if (!d.platform || !d.url) {
         setError("All download entries must have both platform and URL!");
@@ -110,10 +126,7 @@ export default function UploadTool() {
 
     setSubmitting(true);
 
-    // Convert array to Postgres-compatible text[]
     const formattedTags = `{${form.type.map(tag => `"${tag}"`).join(",")}}`;
-
-    // ✅ Convert to JSON object
     const downloadJSON = {};
     downloads.forEach(d => {
       downloadJSON[d.platform.trim()] = d.url.trim();
@@ -121,13 +134,14 @@ export default function UploadTool() {
 
     const { error: insertError } = await supabase.from("tools").insert([
       {
+        uid: form.uid,
         owner: form.name,
         owner_uid: user?.id,
         title: form.title,
         description: form.description,
         type: formattedTags,
         content: form.content,
-        download: downloadJSON, // ✅ Upload as JSON
+        download: downloadJSON,
         link: form.link,
         price: form.price ? Number(form.price) : 0,
       },
@@ -135,28 +149,25 @@ export default function UploadTool() {
 
     setSubmitting(false);
 
-    if (insertError) {
-      setError(insertError.message);
-    } else {
+    if (insertError) setError(insertError.message);
+    else {
       toast.success("Tool uploaded successfully!");
       router.push("/profile");
     }
   };
 
-  if (loading) {
+  if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-gray-500">Checking session...</p>
       </div>
     );
-  }
 
   return (
     <>
       <Header />
       <div className="min-h-screen bg-gray-50 px-6 md:px-16 py-10">
         <h1 className="text-3xl font-bold mb-6">Upload Your Tool</h1>
-
         <p className="text-gray-600 text-lg mb-10 mt-4">
           You can refer to the Publishing guide
           <a
@@ -173,6 +184,31 @@ export default function UploadTool() {
           {error && <p className="text-red-500 mb-4 font-medium">{error}</p>}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            {/* URL Slug Input */}
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">Enter your URL *</label>
+              <div className="flex items-center border border-gray-300 rounded-xl p-3 focus-within:ring-2 focus-within:ring-[#006D77]">
+                <span className="text-gray-500">codeatoms.org/</span>
+                <input
+                  type="text"
+                  name="uid"
+                  value={form.uid}
+                  onChange={(e) => handleSlugChange(e.target.value)}
+                  required
+                  placeholder="your-tool-name"
+                  className="flex-1 outline-none ml-1"
+                />
+              </div>
+              {slugChecking && (
+                <p className="text-sm text-gray-500 mt-1">Checking availability...</p>
+              )}
+              {slugStatus === "available" && (
+                <p className="text-sm text-green-600 mt-1">Available</p>
+              )}
+              {slugStatus === "taken" && (
+                <p className="text-sm text-red-500 mt-1">Already taken</p>
+              )}
+            </div>
 
             {/* Name */}
             <div>
@@ -200,37 +236,93 @@ export default function UploadTool() {
               />
             </div>
 
-            {/* Tags */}
             <div>
-              <label className="block text-gray-700 font-medium mb-1">Tags / Type *</label>
+              <label className="block text-gray-700 font-medium mb-1">
+                Tags / Type *
+              </label>
 
-              <div className="flex flex-wrap gap-2 mb-2">
-                {form.type.map((tag, i) => (
-                  <span key={i} className="bg-[#E0F2F1] text-[#006D77] px-3 py-1 rounded-full text-sm flex items-center gap-1">
+              {/* Tag Chips */}
+              <div className="flex flex-wrap items-center gap-2 border border-gray-300 rounded-xl p-3 focus-within:ring-2 focus-within:ring-[#006D77]">
+                {form.type.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="bg-[#E0F2F1] text-[#006D77] px-3 py-1 rounded-full text-sm flex items-center gap-1"
+                  >
                     {tag}
-                    <button type="button" onClick={() =>
-                      setForm((p) => ({ ...p, type: p.type.filter((_, idx) => idx !== i) }))
-                    }>×</button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setForm((prev) => ({
+                          ...prev,
+                          type: prev.type.filter((_, i) => i !== index),
+                        }))
+                      }
+                      className="text-[#006D77] hover:text-red-500 font-bold ml-1"
+                    >
+                      ×
+                    </button>
                   </span>
                 ))}
+
+                {/* Custom Tag Input */}
+                <input
+                  type="text"
+                  placeholder={
+                    form.type.length >= 3
+                      ? "Maximum 3 tags allowed"
+                      : "Type and press Enter"
+                  }
+                  disabled={form.type.length >= 3}
+                  className="flex-grow outline-none p-1 disabled:opacity-50"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && e.target.value.trim()) {
+                      e.preventDefault();
+                      const newTag = e.target.value.trim().toUpperCase();
+                      if (
+                        !form.type.includes(newTag) &&
+                        form.type.length < 3
+                      ) {
+                        setForm((prev) => ({
+                          ...prev,
+                          type: [...prev.type, newTag],
+                        }));
+                      }
+                      e.target.value = "";
+                    }
+                  }}
+                />
               </div>
 
-              <input
-                type="text"
-                placeholder={form.type.length >= 3 ? "Maximum 3 tags" : "Press Enter to add tag"}
-                disabled={form.type.length >= 3}
-                className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && e.target.value.trim()) {
-                    e.preventDefault();
-                    const val = e.target.value.trim().toUpperCase();
-                    if (!form.type.includes(val) && form.type.length < 3) {
-                      setForm((p) => ({ ...p, type: [...p.type, val] }));
-                    }
-                    e.target.value = "";
+              {/* Dropdown for Predefined Tags */}
+              <select
+                onChange={(e) => {
+                  const selectedTag = e.target.value;
+                  if (
+                    selectedTag &&
+                    !form.type.includes(selectedTag) &&
+                    form.type.length < 3
+                  ) {
+                    setForm((prev) => ({
+                      ...prev,
+                      type: [...prev.type, selectedTag],
+                    }));
                   }
+                  e.target.value = ""; // reset dropdown
                 }}
-              />
+                disabled={form.type.length >= 3}
+                className="mt-3 w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#006D77] disabled:opacity-50"
+              >
+                <option value="">
+                  {form.type.length >= 3
+                    ? "Maximum 3 tags selected"
+                    : "Select Tags"}
+                </option>
+                {predefinedTags.map((tag) => (
+                  <option key={tag} value={tag}>
+                    {tag}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Description */}
@@ -264,7 +356,7 @@ export default function UploadTool() {
               <label className="block text-gray-700 font-medium mb-2">Download Links *</label>
 
               {downloads.map((d, i) => (
-                <div key={i} className="flex gap-3 mb-2">
+                <div key={i} className="flex gap-3 mb-2 items-center">
                   <input
                     type="text"
                     placeholder="Platform (e.g., Windows, Mac)"
@@ -272,13 +364,18 @@ export default function UploadTool() {
                     onChange={(e) => handleDownloadChange(i, "platform", e.target.value)}
                     className="flex-1 border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
                   />
+
                   <input
                     type="url"
                     placeholder="https://example.com/download"
                     value={d.url}
                     onChange={(e) => handleDownloadChange(i, "url", e.target.value)}
-                    className="flex-[2] border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
+                    className={`flex-[2] border rounded-xl p-3 focus:ring-2 ${/^https?:\/\/.+/.test(d.url)
+                        ? "border-gray-300 focus:ring-[#006D77]"
+                        : "border-red-400 focus:ring-red-400"
+                      }`}
                   />
+
                   {downloads.length > 1 && (
                     <button
                       type="button"
@@ -300,6 +397,7 @@ export default function UploadTool() {
                 + Add another download link
               </button>
             </div>
+
 
             {/* Demo / Tool Link */}
             <div>
@@ -336,6 +434,7 @@ export default function UploadTool() {
             >
               {submitting ? "Uploading..." : "Upload Tool"}
             </button>
+
           </form>
         </div>
       </div>

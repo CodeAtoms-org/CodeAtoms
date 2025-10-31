@@ -28,24 +28,47 @@ export default function ToolsSection() {
     setLoading(false);
   };
 
-  // ✅ Flatten all tags from text[] into a single array
+  // 🎨 Gradient banner styles (20 modern palettes)
+  const gradients = [
+    "linear-gradient(90deg, #ff9a9e 0%, #fad0c4 100%)",
+    "linear-gradient(90deg, #a1c4fd 0%, #c2e9fb 100%)",
+    "linear-gradient(90deg, #f6d365 0%, #fda085 100%)",
+    "linear-gradient(90deg, #84fab0 0%, #8fd3f4 100%)",
+    "linear-gradient(90deg, #fccb90 0%, #d57eeb 100%)",
+    "linear-gradient(90deg, #e0c3fc 0%, #8ec5fc 100%)",
+    "linear-gradient(90deg, #f093fb 0%, #f5576c 100%)",
+    "linear-gradient(90deg, #5ee7df 0%, #b490ca 100%)",
+    "linear-gradient(90deg, #667eea 0%, #764ba2 100%)",
+    "linear-gradient(90deg, #89f7fe 0%, #66a6ff 100%)",
+    "linear-gradient(90deg, #ff9966 0%, #ff5e62 100%)",
+    "linear-gradient(90deg, #00c6ff 0%, #0072ff 100%)",
+    "linear-gradient(90deg, #43e97b 0%, #38f9d7 100%)",
+    "linear-gradient(90deg, #fa709a 0%, #fee140 100%)",
+    "linear-gradient(90deg, #30cfd0 0%, #330867 100%)",
+    "linear-gradient(90deg, #fbc2eb 0%, #a6c1ee 100%)",
+    "linear-gradient(90deg, #ffecd2 0%, #fcb69f 100%)",
+    "linear-gradient(90deg, #cfd9df 0%, #e2ebf0 100%)",
+    "linear-gradient(90deg, #a8edea 0%, #fed6e3 100%)",
+    "linear-gradient(90deg, #d299c2 0%, #fef9d7 100%)",
+  ];
+
+  // ✅ Flatten tags
   const tags = [
     "All",
     ...new Set(
-      tools.flatMap((tool) => Array.isArray(tool.type) ? tool.type : [])
+      tools.flatMap((tool) => (Array.isArray(tool.type) ? tool.type : []))
     ),
   ];
 
-  // ✅ Filter tools by selected tag
+  // ✅ Filter tools
   const filteredTools =
     selectedTag === "All"
       ? tools
       : tools.filter(
-        (tool) =>
-          Array.isArray(tool.type) && tool.type.includes(selectedTag)
-      );
+          (tool) => Array.isArray(tool.type) && tool.type.includes(selectedTag)
+        );
 
-  // ✅ Group tools by type for “All” view
+  // ✅ Group by type
   const groupedTools = {};
   tools.forEach((tool) => {
     if (Array.isArray(tool.type)) {
@@ -56,29 +79,27 @@ export default function ToolsSection() {
     }
   });
 
+  const typeOrder = [
+    "PRODUCTIVITY",
+    "AI TOOL",
+    "API",
+    "CLI TOOL",
+    "MACOS APP",
+    "OPEN SOURCE",
+  ];
 
-  // ✅ Define the order in which you want the tags/groups to appear
-const typeOrder = [
-  "PRODUCTIVITY",
-  "AI TOOL",
-  "API",
-  "CLI TOOL",
-  "MACOS APP",
-  "OPEN SOURCE",
-];
+  const sortedTypes = Object.keys(groupedTools).sort((a, b) => {
+    const indexA = typeOrder.indexOf(a);
+    const indexB = typeOrder.indexOf(b);
+    if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
+  });
 
-// ✅ Sort types so that those in `typeOrder` come first (in order),
-// and others appear afterward alphabetically.
-const sortedTypes = Object.keys(groupedTools).sort((a, b) => {
-  const indexA = typeOrder.indexOf(a);
-  const indexB = typeOrder.indexOf(b);
-
-  if (indexA === -1 && indexB === -1) return a.localeCompare(b);
-  if (indexA === -1) return 1;
-  if (indexB === -1) return -1;
-  return indexA - indexB;
-});
-
+  // 🌈 Helper: get random gradient for each card
+  const getRandomGradient = () =>
+    gradients[Math.floor(Math.random() * gradients.length)];
 
   return (
     <section className="px-6 md:mx-20 py-10 rounded-md bg-white">
@@ -88,13 +109,11 @@ const sortedTypes = Object.keys(groupedTools).sort((a, b) => {
         </p>
       </Link>
 
-      {/* LOADING STATE */}
       {loading ? (
         <div className="flex justify-center items-center h-64">
           <ClipLoader color="#000" size={45} />
         </div>
       ) : tools.length === 0 ? (
-        // EMPTY STATE MESSAGE
         <div className="flex flex-col items-center justify-center h-64 text-center">
           <p className="text-gray-700 text-lg font-medium">
             We are currently building this platform.
@@ -105,23 +124,24 @@ const sortedTypes = Object.keys(groupedTools).sort((a, b) => {
         </div>
       ) : (
         <>
-          {/* TAG FILTER BUTTONS */}
+          {/* TAGS */}
           <div className="flex flex-wrap mx-4 md:mx-10 gap-3 mb-10">
             {tags.map((tag) => (
               <button
                 key={tag}
                 onClick={() => setSelectedTag(tag)}
-                className={`px-4 py-2 rounded-full border transition-all ${selectedTag === tag
+                className={`px-4 py-2 rounded-full border transition-all ${
+                  selectedTag === tag
                     ? "bg-black text-white"
                     : "text-gray-700 hover:bg-gray-100"
-                  }`}
+                }`}
               >
                 {tag}
               </button>
             ))}
           </div>
 
-          {/* DISPLAY TOOLS */}
+          {/* ALL TOOLS VIEW */}
           {selectedTag === "All" ? (
             sortedTypes.map((type) => (
               <div key={type} className="mb-10">
@@ -132,23 +152,75 @@ const sortedTypes = Object.keys(groupedTools).sort((a, b) => {
                 </Link>
 
                 <div className="mx-auto grid grid-cols-1 md:px-10 px-4 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                  {groupedTools[type].map((tool) => (
-                    <div
-                      key={tool.id}
-                      onClick={() => router.push(`/${tool.uid}`)}
-                      className="group p-6 bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg"
-                    >
-                      <div className="flex-grow">
-                        <h3 className="text-lg text-gray-900 group-hover:text-[#006D77] transition-colors duration-200">
-                          {tool.title}
-                        </h3>
-                        <p className="text-sm text-gray-500 mt-1">{tool.owner}</p>
-                        <p className="text-gray-500 mt-3 text-md leading-relaxed line-clamp-4 group-hover:text-[#006D77] transition-colors duration-200">
-                          {tool.description}
-                        </p>
-                      </div>
+                  {groupedTools[type].map((tool) => {
+                    const bg = getRandomGradient();
+                    return (
+                      <div
+                        key={tool.id}
+                        onClick={() => router.push(`/${tool.uid}`)}
+                        className="group relative bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg overflow-hidden"
+                      >
+                        {/* Gradient Header */}
+                        <div
+                          className="h-10 w-full rounded-t-2xl"
+                          style={{ background: bg }}
+                        ></div>
 
-                      {/* ✅ Render tags neatly */}
+                        <div className="p-6 flex-grow">
+                          <h3 className="text-lg text-gray-900 group-hover:text-[#006D77] transition-colors duration-200">
+                            {tool.title}
+                          </h3>
+                          <p className="text-sm text-gray-500 mt-1">
+                            {tool.owner}
+                          </p>
+                          <p className="text-gray-500 mt-3 text-md leading-relaxed line-clamp-4 group-hover:text-[#006D77] transition-colors duration-200">
+                            {tool.description}
+                          </p>
+
+                          {Array.isArray(tool.type) && tool.type.length > 0 && (
+                            <div className="flex flex-wrap gap-2 mt-4">
+                              {tool.type.map((tag, i) => (
+                                <span
+                                  key={i}
+                                  className="text-xs font-medium text-gray-700 bg-gray-100 border border-gray-200 px-3 py-1 rounded-full group-hover:text-[#006D77]"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))
+          ) : (
+            // FILTERED VIEW
+            <div className="mx-auto grid grid-cols-1 md:px-10 px-4 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              {filteredTools.slice(0, 8).map((tool) => {
+                const bg = getRandomGradient();
+                return (
+                  <div
+                    key={tool.id}
+                    onClick={() => router.push(`/${tool.uid}`)}
+                    className="group relative bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg overflow-hidden"
+                  >
+                    <div
+                      className="h-10 w-full rounded-t-2xl"
+                      style={{ background: bg }}
+                    ></div>
+
+                    <div className="p-6 flex-grow">
+                      <h3 className="text-lg text-gray-900 group-hover:text-[#006D77] transition-colors duration-200">
+                        {tool.title}
+                      </h3>
+                      <p className="text-sm text-gray-500 mt-1">{tool.owner}</p>
+                      <p className="text-gray-500 mt-3 text-md leading-relaxed line-clamp-4 group-hover:text-[#006D77] transition-colors duration-200">
+                        {tool.description}
+                      </p>
+
                       {Array.isArray(tool.type) && tool.type.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-4">
                           {tool.type.map((tag, i) => (
@@ -162,45 +234,9 @@ const sortedTypes = Object.keys(groupedTools).sort((a, b) => {
                         </div>
                       )}
                     </div>
-
-                  ))}
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="mx-auto grid grid-cols-1 md:px-10 px-4 sm:grid-cols-2 md:grid-cols-4 gap-6">
-              {filteredTools.slice(0, 8).map((tool) => (
-                <div
-                  key={tool.id}
-                  onClick={() => router.push(`/${tool.uid}`)}
-                  className="group p-6 bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg"
-                >
-                  <div className="flex-grow">
-                    <h3 className="text-lg text-gray-900 group-hover:text-[#006D77] transition-colors duration-200">
-                      {tool.title}
-                    </h3>
-                    <p className="text-sm text-gray-500 mt-1">{tool.owner}</p>
-                    <p className="text-gray-500 mt-3 text-md leading-relaxed line-clamp-4 group-hover:text-[#006D77] transition-colors duration-200">
-                      {tool.description}
-                    </p>
                   </div>
-
-                  {/* ✅ Render tags neatly */}
-                  {Array.isArray(tool.type) && tool.type.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-4">
-                      {tool.type.map((tag, i) => (
-                        <span
-                          key={i}
-                          className="text-xs font-medium text-gray-700 bg-gray-100 border border-gray-200 px-3 py-1 rounded-full group-hover:text-[#006D77]"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-              ))}
+                );
+              })}
             </div>
           )}
         </>

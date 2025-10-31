@@ -51,7 +51,7 @@ export default function BelowSection() {
       </section>
       <section className="px-10 bg-white md:px-20 py-12">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-[#006D77] text-xl md:text-2xl font-bold uppercase mb-10">
+          <h2 className="text-[#006D77] text-xl md:text-2xl  uppercase mb-10">
             Benefits of Using CodeAtoms...
           </h2>
 
@@ -66,7 +66,7 @@ export default function BelowSection() {
                   alt={benefit.title}
                   className="md:w-32 md:h-32 w-42 h-42 object-cover mb-4"
                 />
-                <h3 className="text-lg font-semibold text-gray-800">{benefit.title}</h3>
+                <h3 className="text-lg text-gray-800">{benefit.title}</h3>
               </div>
             ))}
           </div>

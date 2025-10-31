@@ -13,6 +13,19 @@ export default function OrdersPage() {
   const [loading, setLoading] = useState(true);
   const [checked, setChecked] = useState(false);
 
+  const gradients = [
+    "linear-gradient(90deg, #ff9a9e 0%, #fad0c4 100%)",
+    "linear-gradient(90deg, #a1c4fd 0%, #c2e9fb 100%)",
+    "linear-gradient(90deg, #f6d365 0%, #fda085 100%)",
+    "linear-gradient(90deg, #84fab0 0%, #8fd3f4 100%)",
+    "linear-gradient(90deg, #fccb90 0%, #d57eeb 100%)",
+    "linear-gradient(90deg, #e0c3fc 0%, #8ec5fc 100%)",
+    "linear-gradient(90deg, #f093fb 0%, #f5576c 100%)",
+    "linear-gradient(90deg, #5ee7df 0%, #b490ca 100%)",
+    "linear-gradient(90deg, #667eea 0%, #764ba2 100%)",
+    "linear-gradient(90deg, #89f7fe 0%, #66a6ff 100%)",
+  ];
+
   // Fetch user session
   useEffect(() => {
     const fetchSession = async () => {
@@ -23,7 +36,7 @@ export default function OrdersPage() {
     fetchSession();
   }, []);
 
-  // Fetch user_meta and tools
+  // Fetch purchased tools
   useEffect(() => {
     if (!user) return;
 
@@ -91,41 +104,49 @@ export default function OrdersPage() {
         </p>
       ) : (
         <div className="px-6 md:px-16 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tools.map((tool) => (
-            <div
-              key={tool.id}
-              onClick={() => router.push(`/${tool.uid}`)}
-              className="group p-6 bg-white shadow-md cursor-pointer flex flex-col justify-between h-64 border border-gray-100 transition-colors duration-200 rounded-xl"
-            >
-              <div>
-                <h3 className="text-lg text-gray-900 group-hover:text-[#006D77] transition-colors duration-200">
-                  {tool.title}
-                </h3>
-                <p className="text-sm text-gray-500 mt-1">
-                  {tool.owner}
-                </p>
-                <p className="text-gray-500 mt-3 text-md leading-relaxed line-clamp-4 group-hover:text-[#006D77] transition-colors duration-200">
-                  {tool.description}
-                </p>
+          {tools.map((tool, index) => {
+            const gradient = gradients[index % gradients.length];
+            return (
+              <div
+                key={tool.id}
+                onClick={() => router.push(`/${tool.uid}`)}
+                className="group relative p-6 pt-14 bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg overflow-hidden"
+              >
+                {/* 🌈 Gradient Banner */}
+                <div
+                  className="absolute top-0 left-0 right-0 h-10 rounded-t-xl"
+                  style={{ background: gradient }}
+                />
+
+                <div className="flex-grow">
+                  <h3 className="text-lg text-gray-900 group-hover:text-[#006D77] transition-colors duration-200">
+                    {tool.title}
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-1">{tool.owner}</p>
+                  <p className="text-gray-500 mt-3 text-md leading-relaxed line-clamp-4 group-hover:text-[#006D77] transition-colors duration-200">
+                    {tool.description}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {Array.isArray(tool.type) && tool.type.length > 0 ? (
+                    tool.type.map((tag, i) => (
+                      <span
+                        key={i}
+                        className="text-xs font-medium text-gray-700 bg-gray-100 px-3 py-1 rounded-full border border-gray-200 group-hover:text-[#006D77]"
+                      >
+                        {tag}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-xs font-medium text-gray-700 bg-gray-100 px-3 py-1 rounded-full border border-gray-200">
+                      Dev Tools
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-2 mt-4">
-  {Array.isArray(tool.type) && tool.type.length > 0 ? (
-    tool.type.map((tag, i) => (
-      <span
-        key={i}
-        className="text-sm font-medium text-white bg-[#006D77] px-3 py-1 rounded-full"
-      >
-        {tag}
-      </span>
-    ))
-  ) : (
-    <span className="text-sm font-medium text-white bg-gray-400 px-3 py-1 rounded-full">
-      Dev Tools
-    </span>
-  )}
-</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
