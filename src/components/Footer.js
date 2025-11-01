@@ -48,7 +48,7 @@ export default function Footer() {
           <div className="flex flex-col max-w-40 gap-3">
             <h4 className=" text-lg">Guides</h4>
             <a href="/guides/how-to-publish-your-tool" className="text-gray-700 hover:text-[#006D77] transition">How to Publish your Tool</a>
-
+            <a href="/guides/codeatoms-initial-launch-offer" className="text-gray-700 hover:text-[#006D77] transition">CodeAtoms Initial Launch Offer</a>
           </div>
         </div>
       </div>

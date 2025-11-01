@@ -57,7 +57,7 @@ export default function Terms() {
               <h2 className="text-2xl  text-[#006D77] mb-2">5. Contact</h2>
               <p className="text-gray-600">
                 If you have questions regarding this policy, please contact us at{" "}
-                <span className=" text-[#006D77]">privacy@necrozmalabs.com</span>.
+                <span className=" text-[#006D77]">hello@codeatoms.com</span>.
               </p>
             </div>
           </div>
