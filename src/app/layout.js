@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "CodeAtoms | The Developer Tools Marketplace",
   description:
-    "CodeAtoms is a modern marketplace built for tech people, by tech people. Discover, share, and sell the best developer tools, APIs, and SaaS products — all in one place.",
+    "CodeAtoms is a developer marketplace where you can discover, buy, and sell the best developer tools, APIs, and SaaS products.",
   keywords: [
     "developer tools",
     "developer marketplace",
@@ -30,7 +30,7 @@ export const metadata = {
   openGraph: {
     title: "CodeAtoms | The Developer Tools Marketplace",
     description:
-      "A global marketplace where developers discover, share, and sell cutting edge tools, APIs, and SaaS products.",
+      "Build faster with CodeAtoms, the marketplace for developers",
     url: "https://www.codeatoms.org",
     siteName: "CodeAtoms",
     images: [
@@ -48,7 +48,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "CodeAtoms | The Developer Tools Marketplace",
     description:
-      "Discover, share, and sell the best developer tools and SaaS products. Built for tech people, by tech people.",
+      "Build faster with CodeAtoms, the marketplace for developers",
     creator: "@codeatoms", // your Twitter handle if you have one
     images: ["https://www.codeatoms.org/og-image.png"], // replace with actual image
   },
@@ -102,7 +102,7 @@ export default function RootLayout({ children }) {
                 "https://twitter.com/codeatoms",
               ],
               description:
-                "CodeAtoms is a global marketplace for developers to buy, sell, and discover high-quality tools, APIs, and SaaS products.",
+                "Build faster with CodeAtoms, the marketplace for developers",
               founder: {
                 "@type": "Person",
                 name: "Abhinav Sharma",

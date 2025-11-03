@@ -12,11 +12,11 @@ export default function DashboardPage() {
       {/* Header */}
       <Header />
       <h1 className="hidden">CodeAtoms</h1>
-<p className="hidden">CodeAtoms is a modern marketplace built for tech people, by tech people. Discover, share, and sell the best developer tools, APIs, and SaaS products — all in one place.</p>
-      <HeroSection/>
-      <MainSection/>
-<BelowSection />
-<Footer/>
+      <p className="hidden">CodeAtoms is a developer marketplace where you can discover, buy, and sell the best developer tools, APIs, and SaaS products.</p>
+      <HeroSection />
+      <MainSection />
+      <BelowSection />
+      <Footer />
 
     </main>
   );

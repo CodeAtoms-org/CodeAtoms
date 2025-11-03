@@ -27,7 +27,7 @@ export default function HeroSection() {
           className="flex flex-col gap-4 text-center md:text-left"
         >
           <p className="text-black text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extralight leading-snug mx-auto md:mx-0 whitespace-normal md:whitespace-nowrap">
-            A Marketplace for Tech People <br />Get Tools to Build Your Dreams.
+            Build faster with CodeAtoms<br />Get Tools to Build Your Dreams.
           </p>
 
           <p className="text-black text-lg sm:text-xl md:text-2xl mt-6 mx-auto md:mx-0">

@@ -25,7 +25,7 @@ export default function HowToPublishYourTool() {
 
           <div className="bg-white/70 backdrop-blur-lg shadow-md rounded-2xl p-6 border border-gray-100">
             <p className="text-gray-700 text-md leading-relaxed mb-5">
-              CodeAtoms is excited to share our{" "}
+              CodeAtoms is excited to share{" "}
               <span className="font-semibold text-[#006D77]">
                 Initial Launch Offer
               </span>
@@ -99,7 +99,7 @@ export default function HowToPublishYourTool() {
 
           <div className="bg-[#006D77]/5 p-6 rounded-2xl mt-10 border border-[#006D77]/10">
             <p className="text-gray-700 text-md">
-              Don not miss this chance to be part of the{" "}
+              Do not miss this chance to be part of the{" "}
               <span className="font-semibold text-[#006D77]">
                 CodeAtoms launch
               </span>
@@ -136,10 +136,7 @@ export default function HowToPublishYourTool() {
               </a>
               .
             </p>
-            <p className="text-gray-700 text-md">
-              Be part of something big — publish your tool today and join the
-              CodeAtoms movement.
-            </p>
+            
           </div>
 
           {/* ================= OUR FUTURE PLAN SECTION ================= */}
