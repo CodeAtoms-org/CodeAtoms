@@ -126,7 +126,7 @@ export default function ToolClient({ tool }) {
                     <div className="h-20"></div>
 
                     {/* Two-column layout */}
-<div className="flex flex-col-reverse md:flex-row md:items-start gap-12 mb-10 px-8 md:px-16 lg:px-22">
+                    <div className="flex flex-col-reverse md:flex-row md:items-start gap-12 mb-10 px-8 md:px-16 lg:px-22">
 
 
 
@@ -141,7 +141,7 @@ export default function ToolClient({ tool }) {
                         </div>
 
                         {/* Right Column */}
-<div className="w-full md:w-2/3 text-black space-y-6 self-start flex justify-center">
+                        <div className="w-full md:w-1/3 text-black space-y-6 self-start flex justify-center">
 
 
                             <div className="flex flex-col bg-[#f0f0f0]  rounded-2xl p-8  sm:flex-col gap-2 w-full justify-center">

@@ -118,7 +118,7 @@ export default function ToolsSection() {
           Explore
         </p>
       </Link>
-      
+
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
@@ -142,8 +142,8 @@ export default function ToolsSection() {
                 key={tag}
                 onClick={() => setSelectedTag(tag)}
                 className={`px-4 py-2 rounded-full border transition-all ${selectedTag === tag
-                    ? "bg-black text-white"
-                    : "text-gray-700 hover:bg-gray-100"
+                  ? "bg-black text-white"
+                  : "text-gray-700 hover:bg-gray-100"
                   }`}
               >
                 {tag}
@@ -251,7 +251,7 @@ export default function ToolsSection() {
           )}
         </>
       )}
-<LoadingBar className="gradient-bar" ref={loadingBar} />
+      <LoadingBar className="gradient-bar" ref={loadingBar} />
 
     </section>
   );

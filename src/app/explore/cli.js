@@ -36,9 +36,9 @@ export default function ExploreSection() {
     "linear-gradient(90deg, #d299c2 0%, #fef9d7 100%)",
   ];
   const loadingBar = useRef(null);
-    const [pageLoading, setPageLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(false);
 
-    const handleCardClick = (uid) => {
+  const handleCardClick = (uid) => {
     setPageLoading(true);
     loadingBar.current.continuousStart();
     router.push(`/${uid}`);
@@ -160,7 +160,7 @@ export default function ExploreSection() {
                         <motion.div
                           key={tool.id}
                           viewport={{ once: true }}
-onClick={() => handleCardClick(tool.uid)}
+                          onClick={() => handleCardClick(tool.uid)}
                           className="group relative p-6 pt-14 bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg overflow-hidden"
                         >
                           {/* 🌈 Gradient Banner */}
@@ -209,7 +209,7 @@ onClick={() => handleCardClick(tool.uid)}
                     <motion.div
                       key={tool.id}
                       viewport={{ once: true }}
-onClick={() => handleCardClick(tool.uid)}
+                      onClick={() => handleCardClick(tool.uid)}
                       className="group relative bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg overflow-hidden"
                     >
                       {/* 🌈 Gradient Banner (Normal Flow) */}
