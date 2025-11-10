@@ -44,7 +44,7 @@ export default function BelowSection() {
             CodeAtoms
           </p>
           <h2 className="text-lg md:text-xl lg:text-2xl text-gray-900">
-            "Great ideas need the right tools—build, create, and innovate with what you need at your fingertips."
+            "Every great idea deserves the right tools - so you can build boldly, Freely, and innovate without limits."
           </h2>
         </div>
 

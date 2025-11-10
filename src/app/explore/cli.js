@@ -1,10 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "../../../supabase";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import ClipLoader from "react-spinners/ClipLoader";
 import Header from "@/components/Header";
+import LoadingBar from "react-top-loading-bar";
 import Footer from "@/components/Footer";
 
 export default function ExploreSection() {
@@ -34,6 +35,14 @@ export default function ExploreSection() {
     "linear-gradient(90deg, #a8edea 0%, #fed6e3 100%)",
     "linear-gradient(90deg, #d299c2 0%, #fef9d7 100%)",
   ];
+  const loadingBar = useRef(null);
+    const [pageLoading, setPageLoading] = useState(false);
+
+    const handleCardClick = (uid) => {
+    setPageLoading(true);
+    loadingBar.current.continuousStart();
+    router.push(`/${uid}`);
+  };
 
   useEffect(() => {
     fetchTools();
@@ -151,7 +160,7 @@ export default function ExploreSection() {
                         <motion.div
                           key={tool.id}
                           viewport={{ once: true }}
-                          onClick={() => router.push(`/${tool.uid}`)}
+onClick={() => handleCardClick(tool.uid)}
                           className="group relative p-6 pt-14 bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg overflow-hidden"
                         >
                           {/* 🌈 Gradient Banner */}
@@ -200,7 +209,7 @@ export default function ExploreSection() {
                     <motion.div
                       key={tool.id}
                       viewport={{ once: true }}
-                      onClick={() => router.push(`/${tool.uid}`)}
+onClick={() => handleCardClick(tool.uid)}
                       className="group relative bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg overflow-hidden"
                     >
                       {/* 🌈 Gradient Banner (Normal Flow) */}
@@ -241,6 +250,7 @@ export default function ExploreSection() {
             )}
           </>
         )}
+        <LoadingBar className="gradient-bar" ref={loadingBar} />
       </section>
       <Footer />
     </>

@@ -1,15 +1,18 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "../../supabase";
 import { useRouter } from "next/navigation";
 import ClipLoader from "react-spinners/ClipLoader";
 import Link from "next/link";
+import LoadingBar from "react-top-loading-bar";
 
 export default function ToolsSection() {
   const [tools, setTools] = useState([]);
   const [selectedTag, setSelectedTag] = useState("All");
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const loadingBar = useRef(null);
+  const [pageLoading, setPageLoading] = useState(false);
 
   useEffect(() => {
     fetchTools();
@@ -26,6 +29,12 @@ export default function ToolsSection() {
     if (error) console.error("Error fetching tools:", error);
     else setTools(data || []);
     setLoading(false);
+  };
+
+  const handleCardClick = (uid) => {
+    setPageLoading(true);
+    loadingBar.current.continuousStart();
+    router.push(`/${uid}`);
   };
 
   // 🎨 Gradient banner styles (20 modern palettes)
@@ -60,13 +69,14 @@ export default function ToolsSection() {
     ),
   ];
 
+
   // ✅ Filter tools
   const filteredTools =
     selectedTag === "All"
       ? tools
       : tools.filter(
-          (tool) => Array.isArray(tool.type) && tool.type.includes(selectedTag)
-        );
+        (tool) => Array.isArray(tool.type) && tool.type.includes(selectedTag)
+      );
 
   // ✅ Group by type
   const groupedTools = {};
@@ -108,6 +118,7 @@ export default function ToolsSection() {
           Explore
         </p>
       </Link>
+      
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
@@ -130,11 +141,10 @@ export default function ToolsSection() {
               <button
                 key={tag}
                 onClick={() => setSelectedTag(tag)}
-                className={`px-4 py-2 rounded-full border transition-all ${
-                  selectedTag === tag
+                className={`px-4 py-2 rounded-full border transition-all ${selectedTag === tag
                     ? "bg-black text-white"
                     : "text-gray-700 hover:bg-gray-100"
-                }`}
+                  }`}
               >
                 {tag}
               </button>
@@ -157,7 +167,7 @@ export default function ToolsSection() {
                     return (
                       <div
                         key={tool.id}
-                        onClick={() => router.push(`/${tool.uid}`)}
+                        onClick={() => handleCardClick(tool.uid)}
                         className="group relative bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg overflow-hidden"
                       >
                         {/* Gradient Header */}
@@ -204,7 +214,7 @@ export default function ToolsSection() {
                 return (
                   <div
                     key={tool.id}
-                    onClick={() => router.push(`/${tool.uid}`)}
+                    onClick={() => handleCardClick(tool.uid)}
                     className="group relative bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg overflow-hidden"
                   >
                     <div
@@ -241,6 +251,8 @@ export default function ToolsSection() {
           )}
         </>
       )}
+<LoadingBar className="gradient-bar" ref={loadingBar} />
+
     </section>
   );
 }

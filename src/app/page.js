@@ -1,5 +1,6 @@
 
 import BelowSection from "@/components/BelowSection";
+import FeedbackButton from "@/components/FeedbackButton";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
@@ -16,8 +17,9 @@ export default function DashboardPage() {
       <HeroSection />
       <MainSection />
       <BelowSection />
+     
       <Footer />
-
+ <FeedbackButton />
     </main>
   );
 }

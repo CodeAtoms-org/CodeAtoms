@@ -122,11 +122,13 @@ export default function ToolClient({ tool }) {
                         )}
                     </div>
 
-                    <hr className="mt-10 max-w-2xl"></hr>
+                    <hr className="mt-10 max-w-xl"></hr>
                     <div className="h-20"></div>
 
                     {/* Two-column layout */}
-                    <div className="flex flex-col-reverse md:flex-row md:items-start gap-8 mb-10">
+<div className="flex flex-col-reverse md:flex-row md:items-start gap-12 mb-10 px-8 md:px-16 lg:px-22">
+
+
 
 
                         {/* Markdown (Left Half) */}
@@ -139,7 +141,8 @@ export default function ToolClient({ tool }) {
                         </div>
 
                         {/* Right Column */}
-                        <div className="w-full md:w-1/3  text-blackspace-y-6 self-start">
+<div className="w-full md:w-2/3 text-black space-y-6 self-start flex justify-center">
+
 
                             <div className="flex flex-col bg-[#f0f0f0]  rounded-2xl p-8  sm:flex-col gap-2 w-full justify-center">
 

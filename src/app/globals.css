@@ -12,9 +12,50 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* === Feedback Button Styling (Flipped Horizontally) === */
+.feedback-button {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) rotate(180deg) scaleX(1); /* 👈 added scaleX(-1) to flip horizontally */
+  writing-mode: vertical-rl;
+  letter-spacing: 2px;
+  background: #006d77;
+  color: white;
+  font-weight: 600;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  padding: 10px 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  z-index: 50;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.feedback-button:hover {
+  transform: translateY(-50%) rotate(180deg) scaleX(1) scale(1.05);
+  opacity: 0.95;
+}
+
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.gradient-bar {
+  background: linear-gradient(90deg, #0072ff, #ff8c00, #ffd700, #00c6ff, #0072ff);
+  background-size: 300% 100%;
+  animation: gradientMove 3s linear infinite;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
