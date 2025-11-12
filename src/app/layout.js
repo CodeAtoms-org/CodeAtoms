@@ -23,7 +23,7 @@ export const metadata = {
     "open source tools",
     "software tools for programmers",
     "CodeAtoms",
-    "tech tools marketplace",
+    "developer tools marketplace",
     "AI developer apps",
   ],
   authors: [{ name: "Abhinav Sharma", url: "https://www.codeatoms.org" }],
