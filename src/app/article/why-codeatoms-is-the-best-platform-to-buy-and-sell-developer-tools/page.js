@@ -28,20 +28,30 @@ export const metadata = {
     title: "Why CodeAtoms Is the Best Platform to Buy and Sell Developer Tools",
     description:
       "Discover how CodeAtoms empowers developers to buy and sell their APIs, SaaS, and CLI tools — a marketplace built by developers, for developers.",
-    url: "https://www.codeatoms.org/article/why-codeatoms-is-the-best-platform-to-buy-and-sell-developer-tools",
+    url: "https://www.codeatoms.org/og-image.png",
     siteName: "CodeAtoms",
     type: "article",
     publishedTime: "2025-11-12T00:00:00.000Z",
     authors: ["CodeAtoms Management Team"],
+    images: [
+      {
+        url: "https://www.codeatoms.org/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "CodeAtoms Developer Marketplace",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Why CodeAtoms Is the Best Platform to Buy and Sell Developer Tools",
     description:
       "CodeAtoms is redefining how developers buy and sell tools. Explore the future of the developer marketplace.",
+    images: ["https://www.codeatoms.org/og-image.png"],
     creator: "@CodeAtomsHQ",
   },
 };
+
 
 
 
