@@ -163,6 +163,11 @@ export default function ExploreSection() {
                           onClick={() => handleCardClick(tool.uid)}
                           className="group relative p-6 pt-14 bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg overflow-hidden"
                         >
+                          {tool.featured === "yes" && (
+    <div className="absolute top-2 left-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md z-20">
+      ⭐ Featured
+    </div>
+  )}
                           {/* 🌈 Gradient Banner */}
                           <div
                             className="absolute top-0 left-0 right-0 h-10 rounded-t-xl"
@@ -213,6 +218,12 @@ export default function ExploreSection() {
                       className="group relative bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg overflow-hidden"
                     >
                       {/* 🌈 Gradient Banner (Normal Flow) */}
+                      {tool.featured === "yes" && (
+    <div className="absolute top-2 left-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md z-20">
+      ⭐ Featured
+    </div>
+  )}
+
                       <div
                         className="h-10 w-full rounded-t-2xl"
                         style={{ background: gradient }}

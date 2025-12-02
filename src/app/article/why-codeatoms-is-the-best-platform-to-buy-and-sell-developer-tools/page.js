@@ -52,10 +52,6 @@ export const metadata = {
   },
 };
 
-
-
-
-
 export default function WhyCodeAtomsIsBest() {
   return (
     <>
