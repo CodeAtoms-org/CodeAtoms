@@ -133,6 +133,7 @@ export default function ProfilePage() {
       link: selectedTool.link,
       download: selectedTool.download,
       price: selectedTool.price ? Number(selectedTool.price) : 0,
+      type: selectedTool.type || [],  
     };
 
     console.log("🟢 Update payload:", updateData);
@@ -415,6 +416,71 @@ export default function ProfilePage() {
                 + Add another download link
               </button>
             </div>
+
+            {/* 🏷️ Type (Tags) Editor */}
+{/* 🏷️ Type (Tags) Editor */}
+<div className="mt-6">
+  <label className="block text-sm font-semibold text-gray-700 mb-2">
+Tags
+  </label>
+
+  <div className="flex flex-wrap gap-2 mb-3">
+    {(selectedTool.type || []).map((t, index) => (
+      <div
+        key={index}
+        className="flex items-center gap-2 bg-gray-200 px-3 py-1 rounded-xl"
+      >
+        <span>{t}</span>
+        <button
+          type="button"
+          onClick={() => {
+            const updated = selectedTool.type.filter((_, i) => i !== index);
+            setSelectedTool({ ...selectedTool, type: updated });
+          }}
+          className="text-red-500 font-bold hover:text-red-600"
+        >
+          ×
+        </button>
+      </div>
+    ))}
+  </div>
+
+  <input
+    type="text"
+    placeholder="Add a TYPE (press Enter)"
+    onKeyDown={(e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+
+        let value = e.target.value.trim().toUpperCase();
+        if (!value) return;
+
+        let current = selectedTool.type || [];
+
+        // Limit to max 3 tags
+        if (current.length >= 3) {
+          toast.error("You can add maximum 3 tags.");
+          e.target.value = "";
+          return;
+        }
+
+        // Prevent duplicates
+        if (current.includes(value)) {
+          toast.error("Tag already exists.");
+          e.target.value = "";
+          return;
+        }
+
+        const updated = [...current, value];
+        setSelectedTool({ ...selectedTool, type: updated });
+        e.target.value = "";
+      }
+    }}
+    className="w-full border border-gray-300 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
+  />
+</div>
+
+
 
             {/* 🧭 Action Buttons */}
             <div className="flex justify-end gap-3 mt-6">
