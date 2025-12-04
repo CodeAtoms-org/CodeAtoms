@@ -299,7 +299,7 @@ export default function ProfilePage() {
                     Earnings
                   </h3>
                   <p className="text-gray-500 text-sm">
-                    ₹{profile.earning || 0}
+                    ₹{profile.earnings || 0}
                   </p>
                 </div>
               </div>
