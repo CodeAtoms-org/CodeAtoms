@@ -151,6 +151,32 @@ export default function ToolsSection() {
             ))}
           </div>
 
+          {/* 🔥 PROMOTIONAL BANNER */}
+<a
+  href="https://tracekit.dev/?ref=codeatoms" // 🔁 replace with actual website
+  target="_blank"
+  rel="noopener noreferrer"
+  className="block mx-4 md:mx-10 mb-12"
+>
+  <div className="relative overflow-hidden rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl transition">
+    
+    {/* PROMO LABEL */}
+    <div className="absolute top-3 left-3 z-20">
+      <span className="bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">
+        PROMOTIONAL
+      </span>
+    </div>
+
+    {/* BANNER IMAGE */}
+    <img
+      src="/images/promotionbanner.png" // 🔁 your banner image path
+      alt="Trace Kit – Fix Production Bugs in Minutes"
+      className="w-full h-[140px] sm:h-[180px] md:h-[220px] object-cover"
+    />
+  </div>
+</a>
+
+
           {/* ALL TOOLS VIEW */}
           {selectedTag === "All" ? (
             sortedTypes.map((type) => (
@@ -171,10 +197,10 @@ export default function ToolsSection() {
                         className="group relative bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg overflow-hidden"
                       >
                         {tool.featured === "yes" && (
-    <div className="absolute top-2 left-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md z-20">
-      ⭐ Featured
-    </div>
-  )}
+                          <div className="absolute top-2 left-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md z-20">
+                            ⭐ Featured
+                          </div>
+                        )}
                         {/* Gradient Header */}
                         <div
                           className="h-10 w-full rounded-t-2xl"
@@ -223,10 +249,10 @@ export default function ToolsSection() {
                     className="group relative bg-white shadow-md cursor-pointer flex flex-col justify-between min-h-[16rem] border border-gray-100 transition-all duration-200 rounded-xl hover:shadow-lg overflow-hidden"
                   >
                     {tool.featured === "yes" && (
-    <div className="absolute top-2 left-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md z-20">
-      ⭐ Featured
-    </div>
-  )}
+                      <div className="absolute top-2 left-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md z-20">
+                        ⭐ Featured
+                      </div>
+                    )}
                     <div
                       className="h-10 w-full rounded-t-2xl"
                       style={{ background: bg }}
