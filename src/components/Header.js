@@ -39,6 +39,9 @@ export default function Header() {
           <Link href="/orders" className="hover:text-gray-200 transition">
             Your Orders
           </Link>
+          <Link href="/opensource" className="hover:text-gray-200 transition">
+            Open Source
+          </Link>
           {user ? (
             <Link href="/profile" className="hover:text-gray-200 transition">
               Profile
@@ -66,6 +69,9 @@ export default function Header() {
           </Link>
           <Link href="/orders" className="hover:text-gray-200 transition" onClick={() => setIsOpen(false)}>
             Your Orders
+          </Link>
+          <Link href="/opensource" className="hover:text-gray-200 transition" onClick={() => setIsOpen(false)}>
+            Open Source
           </Link>
           {user ? (
             <Link href="/profile" className="hover:text-gray-200 transition" onClick={() => setIsOpen(false)}>

@@ -49,24 +49,41 @@ export default function ExploreSection() {
   }, []);
 
   const fetchTools = async () => {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("tools")
-      .select("*")
-      .order("created_at", { ascending: false });
+  setLoading(true);
 
-    if (error) console.error("Error fetching tools:", error);
-    else setTools(data || []);
-    setLoading(false);
-  };
+  const { data, error } = await supabase
+    .from("tools")
+    .select("*")
+    .eq("home", "yes")
+    .not("type", "cs", '{"OPEN SOURCE"}') // 🚫 exclude open source
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching tools:", error);
+    setTools([]);
+  } else {
+    setTools(data || []);
+  }
+
+  setLoading(false);
+};
+
 
   // ✅ Flatten tags from Postgres text[] arrays
-  const tags = [
-    "All",
-    ...new Set(
-      tools.flatMap((tool) => (Array.isArray(tool.type) ? tool.type : []))
-    ),
-  ];
+  // ✅ Base tags (exclude OPEN SOURCE from filters)
+const baseTags = [
+  "All",
+  ...new Set(
+    tools.flatMap((tool) =>
+      Array.isArray(tool.type)
+        ? tool.type.filter((t) => t !== "OPEN SOURCE")
+        : []
+    )
+  ),
+];
+
+// ➕ Append OPEN SOURCE as last CTA tag
+const FINAL_TAGS = [...baseTags, "OPEN SOURCE"];
 
   // ✅ Filter by tag (works for multiple tags per tool)
   const filteredTools =
@@ -95,7 +112,7 @@ export default function ExploreSection() {
     "API",
     "CLI TOOL",
     "MACOS APP",
-    "OPEN SOURCE",
+
   ];
 
   // ✅ Sort types so that those in `typeOrder` come first (in order),
@@ -122,18 +139,36 @@ export default function ExploreSection() {
           </p>
 
           <div className="flex flex-wrap gap-3 justify-start">
-            {tags.map((tag) => (
-              <button
-                key={tag}
-                onClick={() => setSelectedTag(tag)}
-                className={`px-4 py-2 rounded-full border transition-all ${selectedTag === tag
-                  ? "bg-black text-white"
-                  : "text-gray-700 hover:bg-gray-100"
-                  }`}
-              >
-                {tag}
-              </button>
-            ))}
+            {FINAL_TAGS.map((tag) => {
+  // 🚀 OPEN SOURCE → redirect
+  if (tag === "OPEN SOURCE") {
+    return (
+      <button
+        key={tag}
+        onClick={() => router.push("/opensource")}
+        className="px-4 py-2 rounded-full border border-[#006D77]  text-[#006D77] hover:border-black transition-all"
+      >
+OPEN SOURCE
+      </button>
+    );
+  }
+
+  // 🔍 Normal filtering tags
+  return (
+    <button
+      key={tag}
+      onClick={() => setSelectedTag(tag)}
+      className={`px-4 py-2 rounded-full border transition-all ${
+        selectedTag === tag
+          ? "bg-black text-white"
+          : "text-gray-700 hover:bg-gray-100"
+      }`}
+    >
+      {tag}
+    </button>
+  );
+})}
+
           </div>
         </div>
 

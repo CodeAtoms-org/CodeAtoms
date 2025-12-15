@@ -20,16 +20,24 @@ export default function ToolsSection() {
 
   const fetchTools = async () => {
     setLoading(true);
+
     const { data, error } = await supabase
       .from("tools")
       .select("*")
       .eq("home", "yes")
+      .not("type", "cs", '{"OPEN SOURCE"}') // 🚫 exclude open source
       .order("created_at", { ascending: false });
 
-    if (error) console.error("Error fetching tools:", error);
-    else setTools(data || []);
+    if (error) {
+      console.error("Error fetching tools:", error);
+      setTools([]);
+    } else {
+      setTools(data || []);
+    }
+
     setLoading(false);
   };
+
 
   const handleCardClick = (uid) => {
     setPageLoading(true);
@@ -62,12 +70,20 @@ export default function ToolsSection() {
   ];
 
   // ✅ Flatten tags
-  const tags = [
-    "All",
-    ...new Set(
-      tools.flatMap((tool) => (Array.isArray(tool.type) ? tool.type : []))
-    ),
-  ];
+  // ✅ Flatten tags (exclude OPEN SOURCE from filtering tags)
+const baseTags = [
+  "All",
+  ...new Set(
+    tools.flatMap((tool) =>
+      Array.isArray(tool.type)
+        ? tool.type.filter((t) => t !== "OPEN SOURCE")
+        : []
+    )
+  ),
+];
+
+// ➕ Manually append OPEN SOURCE as last CTA tag
+const FINAL_TAGS = [...baseTags, "OPEN SOURCE"];
 
 
   // ✅ Filter tools
@@ -95,7 +111,7 @@ export default function ToolsSection() {
     "API",
     "CLI TOOL",
     "MACOS APP",
-    "OPEN SOURCE",
+
   ];
 
   const sortedTypes = Object.keys(groupedTools).sort((a, b) => {
@@ -137,44 +153,62 @@ export default function ToolsSection() {
         <>
           {/* TAGS */}
           <div className="flex flex-wrap mx-4 md:mx-10 gap-3 mb-10">
-            {tags.map((tag) => (
-              <button
-                key={tag}
-                onClick={() => setSelectedTag(tag)}
-                className={`px-4 py-2 rounded-full border transition-all ${selectedTag === tag
-                  ? "bg-black text-white"
-                  : "text-gray-700 hover:bg-gray-100"
-                  }`}
-              >
-                {tag}
-              </button>
-            ))}
+            {FINAL_TAGS.map((tag) => {
+  // 🚀 OPEN SOURCE → redirect CTA
+  if (tag === "OPEN SOURCE") {
+    return (
+      <button
+        key={tag}
+        onClick={() => router.push("/opensource")}
+        className="px-4 py-2 rounded-full border border-[#006D77]  text-[#006D77] hover:border-black transition-all"
+      >
+OPEN SOURCE
+      </button>
+    );
+  }
+
+  // 🔍 Normal filtering tags
+  return (
+    <button
+      key={tag}
+      onClick={() => setSelectedTag(tag)}
+      className={`px-4 py-2 rounded-full border transition-all ${
+        selectedTag === tag
+          ? "bg-black text-white"
+          : "text-gray-700 hover:bg-gray-100"
+      }`}
+    >
+      {tag}
+    </button>
+  );
+})}
+
           </div>
 
           {/* 🔥 PROMOTIONAL BANNER */}
-<a
-  href="https://tracekit.dev/?ref=codeatoms" // 🔁 replace with actual website
-  target="_blank"
-  rel="noopener noreferrer"
-  className="block mx-4 md:mx-10 mb-12"
->
-  <div className="relative overflow-hidden rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl transition">
-    
-    {/* PROMO LABEL */}
-    <div className="absolute top-3 left-3 z-20">
-      <span className="bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">
-        PROMOTIONAL
-      </span>
-    </div>
+          <a
+            href="https://tracekit.dev/?ref=codeatoms" // 🔁 replace with actual website
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block mx-4 md:mx-10 mb-12"
+          >
+            <div className="relative overflow-hidden rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl transition">
 
-    {/* BANNER IMAGE */}
-    <img
-      src="/images/promotionbanner.png" // 🔁 your banner image path
-      alt="Trace Kit – Fix Production Bugs in Minutes"
-      className="w-full h-[140px] sm:h-[180px] md:h-[220px] object-cover"
-    />
-  </div>
-</a>
+              {/* PROMO LABEL */}
+              <div className="absolute top-3 left-3 z-20">
+                <span className="bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">
+                  PROMOTIONAL
+                </span>
+              </div>
+
+              {/* BANNER IMAGE */}
+              <img
+                src="/images/promotionbanner.png" // 🔁 your banner image path
+                alt="Trace Kit – Fix Production Bugs in Minutes"
+                className="w-full h-[140px] sm:h-[180px] md:h-[220px] object-cover"
+              />
+            </div>
+          </a>
 
 
           {/* ALL TOOLS VIEW */}
