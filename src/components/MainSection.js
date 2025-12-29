@@ -196,7 +196,7 @@ OPEN SOURCE
 
               {/* PROMO LABEL */}
               <div className="absolute top-3 left-3 z-20">
-                <span className="bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">
+                <span className="bg-yellow-400 text-black text-[10px] md:text-xs font-bold px-3 py-1 rounded-full">
                   PROMOTIONAL
                 </span>
               </div>
@@ -205,7 +205,7 @@ OPEN SOURCE
               <img
                 src="/images/promotionbanner.png" // 🔁 your banner image path
                 alt="Trace Kit – Fix Production Bugs in Minutes"
-                className="w-full h-[140px] sm:h-[180px] md:h-[220px] object-cover"
+                className="w-full h-[100px] sm:h-[180px] md:h-[280px] object-fill"
               />
             </div>
           </a>
