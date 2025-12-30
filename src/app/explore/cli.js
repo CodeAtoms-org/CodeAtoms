@@ -54,7 +54,6 @@ export default function ExploreSection() {
   const { data, error } = await supabase
     .from("tools")
     .select("*")
-    .eq("home", "yes")
     .not("type", "cs", '{"OPEN SOURCE"}') // 🚫 exclude open source
     .order("created_at", { ascending: false });
 

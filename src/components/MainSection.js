@@ -71,19 +71,19 @@ export default function ToolsSection() {
 
   // ✅ Flatten tags
   // ✅ Flatten tags (exclude OPEN SOURCE from filtering tags)
-const baseTags = [
-  "All",
-  ...new Set(
-    tools.flatMap((tool) =>
-      Array.isArray(tool.type)
-        ? tool.type.filter((t) => t !== "OPEN SOURCE")
-        : []
-    )
-  ),
-];
+  const baseTags = [
+    "All",
+    ...new Set(
+      tools.flatMap((tool) =>
+        Array.isArray(tool.type)
+          ? tool.type.filter((t) => t !== "OPEN SOURCE")
+          : []
+      )
+    ),
+  ];
 
-// ➕ Manually append OPEN SOURCE as last CTA tag
-const FINAL_TAGS = [...baseTags, "OPEN SOURCE"];
+  // ➕ Manually append OPEN SOURCE as last CTA tag
+  const FINAL_TAGS = [...baseTags, "OPEN SOURCE"];
 
 
   // ✅ Filter tools
@@ -154,34 +154,32 @@ const FINAL_TAGS = [...baseTags, "OPEN SOURCE"];
           {/* TAGS */}
           <div className="flex flex-wrap mx-4 md:mx-10 gap-3 mb-10">
             {FINAL_TAGS.map((tag) => {
-  // 🚀 OPEN SOURCE → redirect CTA
-  if (tag === "OPEN SOURCE") {
-    return (
-      <button
-        key={tag}
-        onClick={() => router.push("/opensource")}
-        className="px-4 py-2 rounded-full border border-[#006D77]  text-[#006D77] hover:border-black transition-all"
-      >
-OPEN SOURCE
-      </button>
-    );
-  }
+              // 🚀 OPEN SOURCE → redirect CTA
+              if (tag === "OPEN SOURCE") {
+                return (
+                  <button
+                    key={tag}
+                    onClick={() => router.push("/opensource")}
+                    className="px-4 py-2 rounded-full border border-[#006D77]  text-[#006D77] hover:border-black transition-all"
+                  >
+                    OPEN SOURCE
+                  </button>
+                );
+              }
 
-  // 🔍 Normal filtering tags
-  return (
-    <button
-      key={tag}
-      onClick={() => setSelectedTag(tag)}
-      className={`px-4 py-2 rounded-full border transition-all ${
-        selectedTag === tag
-          ? "bg-black text-white"
-          : "text-gray-700 hover:bg-gray-100"
-      }`}
-    >
-      {tag}
-    </button>
-  );
-})}
+              return (
+                <button
+                  key={tag}
+                  onClick={() => setSelectedTag(tag)}
+                  className={`px-4 py-2 rounded-full border transition-all ${selectedTag === tag
+                      ? "bg-black text-white"
+                      : "text-gray-700 hover:bg-gray-100"
+                    }`}
+                >
+                  {tag}
+                </button>
+              );
+            })}
 
           </div>
 
