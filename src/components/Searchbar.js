@@ -141,7 +141,7 @@ export default function SearchBar() {
         className="w-full mt-10 px-4 sm:px-6 md:px-20"
       >
         <div className="flex flex-col sm:flex-row gap-4 w-full mb-10">
-          <div className="relative flex-1 w-full rounded-xl border bg-white z-50">
+          <div className="relative flex-1 w-full rounded-xl border bg-white z-10">
   {/* Left search icon */}
   <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
 
