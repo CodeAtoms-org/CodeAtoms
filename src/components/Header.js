@@ -25,11 +25,22 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-[#006D77] border-b border-b-gray-200">
-      <div className="mx-auto flex items-center justify-between px-6 md:pr-10 py-4">
+      <div className="mx-auto flex items-center justify-between px-6 md:pr-10 py-2.5">
         {/* Logo / Brand */}
-        <Link href="/" className="text-2xl text-white font-bold hover:text-gray-200 transition">
-          CodeAtoms
-        </Link>
+
+  {/* Logo / Brand */}
+  <Link
+    href="/"
+    className="flex items-center gap-3 text-2xl text-white font-bold hover:text-gray-200 transition"
+  >
+    <img
+      src="/logo.png"   // put your logo inside /public folder
+      alt="CodeAtoms Logo"
+      className="h-8 w-8 object-contain"
+    />
+    <span>CodeAtoms</span>
+  </Link>
+
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex text-white space-x-6 items-center">

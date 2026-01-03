@@ -49,29 +49,7 @@ export default function BelowSection() {
         </div>
 
       </section>
-      <section className="px-10 bg-white md:px-20 py-12">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-[#006D77] text-xl md:text-2xl  uppercase mb-10">
-            Benefits of Using CodeAtoms...
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {benefits.map((benefit, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl flex flex-col items-center text-center transition"
-              >
-                <img
-                  src={benefit.image}
-                  alt={benefit.title}
-                  className="md:w-32 md:h-32 w-42 h-42 object-cover mb-4"
-                />
-                <h3 className="text-lg text-gray-800">{benefit.title}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      
 
       {/* For Developers Section */}
       <section className="px-10 md:px-20 py-16 bg-gray-50">

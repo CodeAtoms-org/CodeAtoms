@@ -25,6 +25,58 @@ export default function ProfilePage() {
   const [selectedTool, setSelectedTool] = useState(null);
   const [updating, setUpdating] = useState(false);
 
+  const [ticketCount, setTicketCount] = useState(0);
+
+  const [downloadFiles, setDownloadFiles] = useState({});
+  const uploadReplacementFile = async (file, platform, toolUid) => {
+    const ext = file.name.split(".").pop();
+    const filePath = `${user.id}/${toolUid}/${platform}-${Date.now()}.${ext}`;
+
+    const { error } = await supabase.storage
+      .from("tool-downloads")
+      .upload(filePath, file, { upsert: true });
+
+    if (error) throw error;
+
+    const { data } = supabase.storage
+      .from("tool-downloads")
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
+  };
+
+  const deleteStorageFileIfAny = async (url) => {
+    if (!url?.includes("/storage/v1/object/public/")) return;
+
+    const path = url.split("/storage/v1/object/public/tool-downloads/")[1];
+    if (!path) return;
+
+    await supabase.storage
+      .from("tool-downloads")
+      .remove([path]);
+  };
+
+
+
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchTicketCount = async () => {
+      const { count } = await supabase
+        .from("tickets")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "open")
+        .eq("developer_uid", user.id);
+
+
+      setTicketCount(count || 0);
+    };
+
+    fetchTicketCount();
+  }, [user]);
+
+
+
   // 🟢 Fetch session and profile
   useEffect(() => {
     const fetchSession = async () => {
@@ -102,72 +154,59 @@ export default function ProfilePage() {
 
   // 🟢 Update tool in Supabase
   const handleUpdateTool = async () => {
-    if (!selectedTool) {
-      console.warn("⚠️ No tool selected for update.");
-      return;
-    }
+    if (!selectedTool) return;
 
     setUpdating(true);
 
-    console.group("🧩 TOOL UPDATE DEBUG LOG");
-
-    console.log("🟡 Selected tool object:", selectedTool);
-    console.log("🟡 selectedTool.uid type:", typeof selectedTool.uid, "| value:", selectedTool.uid);
-
-    // Check what’s actually in Supabase for this UID
-    const { data: checkData, error: checkError } = await supabase
-      .from("tools")
-      .select("uid, title")
-      .limit(10);
-
-    if (checkError) {
-      console.error("❌ Error fetching existing UIDs:", checkError);
-    } else {
-      console.log("📜 Sample of existing tool UIDs:", checkData.map(d => d.uid));
-    }
-
-    const updateData = {
-      title: selectedTool.title,
-      description: selectedTool.description,
-      content: selectedTool.content,
-      link: selectedTool.link,
-      download: selectedTool.download,
-      price: selectedTool.price ? Number(selectedTool.price) : 0,
-      type: selectedTool.type || [],  
-    };
-
-    console.log("🟢 Update payload:", updateData);
+    const updatedDownloads = { ...selectedTool.download };
 
     try {
-      const { data, error, status } = await supabase
+      for (const [platform, file] of Object.entries(downloadFiles)) {
+        if (!file) continue;
+
+        // Delete old file if exists
+        await deleteStorageFileIfAny(updatedDownloads[platform]);
+
+        // Upload new file
+        const newUrl = await uploadReplacementFile(
+          file,
+          platform,
+          selectedTool.uid
+        );
+
+        updatedDownloads[platform] = newUrl;
+      }
+
+      const updateData = {
+        title: selectedTool.title,
+        description: selectedTool.description,
+        content: selectedTool.content,
+        link: selectedTool.link,
+        price: selectedTool.price ? Number(selectedTool.price) : 0,
+        type: selectedTool.type,
+        download: updatedDownloads,
+      };
+
+      const { error } = await supabase
         .from("tools")
         .update(updateData)
-        .eq("id", selectedTool.id)
-        .select();
+        .eq("id", selectedTool.id);
 
-      console.log("🟢 Supabase update response:", { status, data, error });
+      if (error) throw error;
 
-      if (error) {
-        console.error("❌ Supabase error during update:", error);
-        toast.error("Failed to update tool.");
-      } else if (!data || data.length === 0) {
-        console.warn("⚠️ No rows matched this UID:", selectedTool.id);
-        toast.error("No matching tool found to update. Check UID.");
-      } else {
-        toast.success("Tool updated successfully!");
-        setShowDialog(false);
-        setUserTools(prev =>
-          prev.map(tool => (tool.uid === selectedTool.uid ? { ...tool, ...selectedTool } : tool))
-        );
-      }
+      toast.success("Tool updated successfully!");
+      setShowDialog(false);
+      setDownloadFiles({});
+      handleShowTools();
+
     } catch (err) {
-      console.error("🔥 Unexpected error during update:", err);
-      toast.error("Unexpected error occurred.");
+      console.error(err);
+      toast.error("Failed to update tool");
     }
 
-    console.groupEnd();
     setUpdating(false);
   };
+
 
 
 
@@ -235,7 +274,7 @@ export default function ProfilePage() {
                       Upload Your Tool
                     </h3>
                     <p className="text-gray-500 text-sm">
-                      Share your innovation
+                      Share your creations with the world
                     </p>
                   </div>
                 </div>
@@ -244,6 +283,25 @@ export default function ProfilePage() {
 
             {/* RIGHT COLUMN */}
             <div className="md:w-1/2 flex flex-col gap-6">
+
+              <div
+                className="bg-white rounded-2xl shadow-sm p-6 flex items-center justify-between cursor-pointer"
+                onClick={() => router.push("/customer-support?mode=developer")}
+              >
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    View Your Tool Status
+                  </h3>
+                  <p className="text-gray-500 text-sm">
+                    {ticketCount} active support ticket{ticketCount !== 1 ? "s" : ""}
+                  </p>
+                </div>
+
+                <span className="text-[#006D77] font-semibold">
+                  Open →
+                </span>
+              </div>
+
               {/* Tools Section */}
               <div className="bg-white rounded-2xl shadow-sm p-6 flex flex-col gap-4">
                 <div className="flex items-center gap-4 mb-2">
@@ -351,51 +409,115 @@ export default function ProfilePage() {
             {/* 🧩 Download JSON Editor */}
             <div className="mt-6">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Download Links
+                Downloads
               </label>
 
-              <div className="space-y-3">
-                {Object.entries(selectedTool.download || {}).map(([platform, url], i) => (
-                  <div
-                    key={i}
-                    className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2"
-                  >
-                    <input
-                      type="text"
-                      placeholder="Platform (e.g. Windows)"
-                      value={platform}
-                      onChange={(e) => {
-                        const newKey = e.target.value.trim();
-                        const updated = { ...selectedTool.download };
-                        delete updated[platform];
-                        updated[newKey] = url;
-                        setSelectedTool({ ...selectedTool, download: updated });
-                      }}
-                      className="flex-1 border border-gray-300 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
-                    />
+              {Object.entries(selectedTool.download || {}).map(([platform, url]) => (
+                <div key={platform} className="border rounded-xl p-3 mb-3 space-y-2">
 
-                    <input
-                      type="url"
-                      placeholder="https://example.com"
-                      value={url}
-                      onChange={(e) => {
-                        const updated = {
+                  {/* Platform */}
+                  <input
+                    type="text"
+                    value={platform}
+                    placeholder="Platform (e.g., Windows, MacOS)"
+                    onChange={(e) => {
+                      const newKey = e.target.value.trim();
+                      if (!newKey) return;
+
+                      const updated = { ...selectedTool.download };
+                      delete updated[platform];
+                      updated[newKey] = url;
+
+                      setSelectedTool({ ...selectedTool, download: updated });
+                    }}
+                    className="w-full border rounded-xl px-3 py-2"
+                  />
+
+                  {/* URL */}
+                  <input
+                    type="url"
+                    value={url}
+                    placeholder="Paste link"
+                    onChange={(e) => {
+                      setSelectedTool({
+                        ...selectedTool,
+                        download: {
                           ...selectedTool.download,
                           [platform]: e.target.value,
-                        };
-                        setSelectedTool({ ...selectedTool, download: updated });
-                      }}
-                      className="flex-[2] border border-gray-300 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
-                    />
+                        },
+                      });
+                    }}
+                    disabled={!!downloadFiles[platform]}
+                    className="w-full border rounded-xl px-3 py-2 disabled:opacity-50"
+                  />
 
+                  {/* File Upload */}
+                  <input
+                    type="file"
+                    disabled={!!selectedTool.download[platform] && selectedTool.download[platform].startsWith("http") && !downloadFiles[platform]}
+                    onChange={(e) => {
+                      setDownloadFiles(prev => ({
+                        ...prev,
+                        [platform]: e.target.files[0],
+                      }));
+                    }}
+                    className="text-sm text-gray-600"
+                  />
+
+                  {/* Remove */}
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await deleteStorageFileIfAny(url);
+
+                      const updated = { ...selectedTool.download };
+                      delete updated[platform];
+
+                      setSelectedTool({ ...selectedTool, download: updated });
+                    }}
+                    className="text-red-500 font-semibold"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+
+              <button
+                type="button"
+                onClick={() =>
+                  setSelectedTool({
+                    ...selectedTool,
+                    download: { ...(selectedTool.download || {}), "": "" },
+                  })
+                }
+                className="text-[#006D77] hover:underline text-sm"
+              >
+                + Add download
+              </button>
+            </div>
+
+
+            {/* 🏷️ Type (Tags) Editor */}
+            {/* 🏷️ Type (Tags) Editor */}
+            <div className="mt-6">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Tags
+              </label>
+
+              <div className="flex flex-wrap gap-2 mb-3">
+                {(selectedTool.type || []).map((t, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-2 bg-gray-200 px-3 py-1 rounded-xl"
+                  >
+                    <span>{t}</span>
                     <button
                       type="button"
                       onClick={() => {
-                        const updated = { ...selectedTool.download };
-                        delete updated[platform];
-                        setSelectedTool({ ...selectedTool, download: updated });
+                        const updated = selectedTool.type.filter((_, i) => i !== index);
+                        setSelectedTool({ ...selectedTool, type: updated });
                       }}
-                      className="text-red-500 font-bold text-xl hover:text-red-600 sm:self-center"
+                      className="text-red-500 font-bold hover:text-red-600"
                     >
                       ×
                     </button>
@@ -403,82 +525,40 @@ export default function ProfilePage() {
                 ))}
               </div>
 
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedTool({
-                    ...selectedTool,
-                    download: { ...(selectedTool.download || {}), "": "" },
-                  });
+              <input
+                type="text"
+                placeholder="Add a TYPE (press Enter)"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+
+                    let value = e.target.value.trim().toUpperCase();
+                    if (!value) return;
+
+                    let current = selectedTool.type || [];
+
+                    // Limit to max 3 tags
+                    if (current.length >= 3) {
+                      toast.error("You can add maximum 3 tags.");
+                      e.target.value = "";
+                      return;
+                    }
+
+                    // Prevent duplicates
+                    if (current.includes(value)) {
+                      toast.error("Tag already exists.");
+                      e.target.value = "";
+                      return;
+                    }
+
+                    const updated = [...current, value];
+                    setSelectedTool({ ...selectedTool, type: updated });
+                    e.target.value = "";
+                  }
                 }}
-                className="text-[#006D77] hover:underline text-sm mt-3 block"
-              >
-                + Add another download link
-              </button>
+                className="w-full border border-gray-300 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
+              />
             </div>
-
-            {/* 🏷️ Type (Tags) Editor */}
-{/* 🏷️ Type (Tags) Editor */}
-<div className="mt-6">
-  <label className="block text-sm font-semibold text-gray-700 mb-2">
-Tags
-  </label>
-
-  <div className="flex flex-wrap gap-2 mb-3">
-    {(selectedTool.type || []).map((t, index) => (
-      <div
-        key={index}
-        className="flex items-center gap-2 bg-gray-200 px-3 py-1 rounded-xl"
-      >
-        <span>{t}</span>
-        <button
-          type="button"
-          onClick={() => {
-            const updated = selectedTool.type.filter((_, i) => i !== index);
-            setSelectedTool({ ...selectedTool, type: updated });
-          }}
-          className="text-red-500 font-bold hover:text-red-600"
-        >
-          ×
-        </button>
-      </div>
-    ))}
-  </div>
-
-  <input
-    type="text"
-    placeholder="Add a TYPE (press Enter)"
-    onKeyDown={(e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-
-        let value = e.target.value.trim().toUpperCase();
-        if (!value) return;
-
-        let current = selectedTool.type || [];
-
-        // Limit to max 3 tags
-        if (current.length >= 3) {
-          toast.error("You can add maximum 3 tags.");
-          e.target.value = "";
-          return;
-        }
-
-        // Prevent duplicates
-        if (current.includes(value)) {
-          toast.error("Tag already exists.");
-          e.target.value = "";
-          return;
-        }
-
-        const updated = [...current, value];
-        setSelectedTool({ ...selectedTool, type: updated });
-        e.target.value = "";
-      }
-    }}
-    className="w-full border border-gray-300 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#006D77]"
-  />
-</div>
 
 
 

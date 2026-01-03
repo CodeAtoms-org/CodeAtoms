@@ -23,10 +23,15 @@ export default function UploadTool() {
     content: "",
     link: "",
     price: "",
-    uid: "", // slug field
+    uid: "",
+    license: "",        // ✅ NEW
+    integration: "",    // ✅ NEW
   });
 
-  const [downloads, setDownloads] = useState([{ platform: "", url: "" }]);
+const [downloads, setDownloads] = useState([
+  { platform: "", url: "", file: null, uploading: false }
+]);
+
 
   const predefinedTags = [
     "API",
@@ -97,64 +102,85 @@ export default function UploadTool() {
     setDownloads(updated);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
 
-    if (!form.uid || slugStatus !== "available") {
-      setError("Please enter a unique and valid URL slug.");
+  const uploadFileToSupabase = async (file, platform) => {
+  const ext = file.name.split(".").pop();
+  const filePath = `${user.id}/${form.uid}/${platform}-${Date.now()}.${ext}`;
+
+  const { error } = await supabase.storage
+    .from("tool-downloads")
+    .upload(filePath, file, { upsert: false });
+
+  if (error) throw error;
+
+  const { data } = supabase.storage
+    .from("tool-downloads")
+    .getPublicUrl(filePath);
+
+  return data.publicUrl;
+};
+
+
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+  setSubmitting(true);
+
+  const downloadJSON = {};
+
+  for (let d of downloads) {
+    if (!d.platform?.trim()) {
+      setError("Each download must have a platform name");
+      setSubmitting(false);
       return;
     }
 
-    if (!form.name || !form.title || form.type.length === 0) {
-      setError("Name, Title, and at least one Tag are required!");
-      return;
-    }
-
-    for (const d of downloads) {
-      if (!d.platform || !d.url) {
-        setError("All download entries must have both platform and URL!");
-        return;
-      }
-      try {
+    try {
+      if (d.file) {
+        const publicUrl = await uploadFileToSupabase(d.file, d.platform.trim());
+        downloadJSON[d.platform.trim()] = publicUrl;
+      } 
+      else if (d.url?.trim()) {
         new URL(d.url);
-      } catch {
-        setError(`Invalid URL: ${d.url}`);
-        return;
+        downloadJSON[d.platform.trim()] = d.url.trim();
+      } 
+      else {
+        throw new Error("Either upload a file or provide a URL");
       }
+    } catch (err) {
+      setError(err.message);
+      setSubmitting(false);
+      return;
     }
+  }
 
-    setSubmitting(true);
+  const formattedTags = `{${form.type.map(tag => `"${tag}"`).join(",")}}`;
+  const { error: insertError } = await supabase.from("tools").insert([
+    {
+      uid: form.uid,
+      owner: form.name,
+      owner_uid: user.id,
+      title: form.title,
+      description: form.description,
+      type: formattedTags,
+      content: form.content,
+      download: downloadJSON, // ✅ CORRECT DATA
+      link: form.link,
+      price: form.price ? Number(form.price) : 0,
+      license: form.license.trim(),
+      integration: form.integration.trim(),
+    },
+  ]);
 
-    const formattedTags = `{${form.type.map(tag => `"${tag}"`).join(",")}}`;
-    const downloadJSON = {};
-    downloads.forEach(d => {
-      downloadJSON[d.platform.trim()] = d.url.trim();
-    });
+  setSubmitting(false);
 
-    const { error: insertError } = await supabase.from("tools").insert([
-      {
-        uid: form.uid,
-        owner: form.name,
-        owner_uid: user?.id,
-        title: form.title,
-        description: form.description,
-        type: formattedTags,
-        content: form.content,
-        download: downloadJSON,
-        link: form.link,
-        price: form.price ? Number(form.price) : 0,
-      },
-    ]);
+  if (insertError) setError(insertError.message);
+  else {
+    toast.success("Tool uploaded successfully!");
+    router.push("/profile");
+  }
+};
 
-    setSubmitting(false);
-
-    if (insertError) setError(insertError.message);
-    else {
-      toast.success("Tool uploaded successfully!");
-      router.push("/profile");
-    }
-  };
 
   if (loading)
     return (
@@ -194,7 +220,7 @@ export default function UploadTool() {
                   name="uid"
                   value={form.uid}
                   onChange={(e) => handleSlugChange(e.target.value)}
-                  required
+
                   placeholder="your-tool-name"
                   className="flex-1 outline-none ml-1"
                 />
@@ -218,7 +244,7 @@ export default function UploadTool() {
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                required
+
                 className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
               />
             </div>
@@ -231,7 +257,7 @@ export default function UploadTool() {
                 name="title"
                 value={form.title}
                 onChange={handleChange}
-                required
+
                 className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
               />
             </div>
@@ -332,7 +358,7 @@ export default function UploadTool() {
                 name="description"
                 value={form.description}
                 onChange={handleChange}
-                required
+
                 rows={3}
                 className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
               />
@@ -345,58 +371,128 @@ export default function UploadTool() {
                 name="content"
                 value={form.content}
                 onChange={handleChange}
-                required
+
+
                 rows={5}
                 className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
               />
             </div>
 
+            {/* License */}
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                License *
+              </label>
+              <input
+                type="text"
+                name="license"
+                value={form.license}
+                onChange={handleChange}
+
+                placeholder="MIT • Commercial use allowed • No attribution"
+                className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
+              />
+              <p className="text-sm text-gray-500 mt-1">
+                Keep it short. Example: <em>MIT • Commercial use allowed • No attribution</em>
+              </p>
+            </div>
+
+            {/* Integration */}
+            <div>
+              <label className="block text-gray-700 font-medium mb-1">
+                Integration *
+              </label>
+              <textarea
+                name="integration"
+                value={form.integration}
+                onChange={handleChange}
+
+                rows={4}
+                placeholder={`Works well with:
+Node.js, Next.js, PostgreSQL
+
+Requires:
+Node.js 18+, PostgreSQL
+
+Notes:
+Docker recommended for local development.`}
+                className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
+              />
+              <p className="text-sm text-gray-500 mt-1">
+                Mention what it works with, what it requires, and any setup notes.
+              </p>
+            </div>
+
+
             {/* ✅ Multiple Download Links */}
             <div>
-              <label className="block text-gray-700 font-medium mb-2">Download Links *</label>
+  <label className="block text-gray-700 font-medium mb-2">
+    Download Links *
+  </label>
 
-              {downloads.map((d, i) => (
-                <div key={i} className="flex gap-3 mb-2 items-center">
-                  <input
-                    type="text"
-                    placeholder="Platform (e.g., Windows, Mac)"
-                    value={d.platform}
-                    onChange={(e) => handleDownloadChange(i, "platform", e.target.value)}
-                    className="flex-1 border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
-                  />
+  {downloads.map((d, i) => (
+    <div key={i} className="border rounded-xl p-4 mb-3 space-y-3">
+      {/* Platform */}
+      <input
+        type="text"
+        placeholder="Platform (Windows, Mac, Linux)"
+        value={d.platform}
+        onChange={(e) =>
+          handleDownloadChange(i, "platform", e.target.value)
+        }
+        className="w-full border rounded-xl p-3"
+      />
 
-                  <input
-                    type="url"
-                    placeholder="https://example.com/download"
-                    value={d.url}
-                    onChange={(e) => handleDownloadChange(i, "url", e.target.value)}
-                    className={`flex-[2] border rounded-xl p-3 focus:ring-2 ${/^https?:\/\/.+/.test(d.url)
-                        ? "border-gray-300 focus:ring-[#006D77]"
-                        : "border-red-400 focus:ring-red-400"
-                      }`}
-                  />
+      {/* OR Divider */}
+      
 
-                  {downloads.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeDownload(i)}
-                      className="text-red-500 font-bold"
-                    >
-                      ×
-                    </button>
-                  )}
-                </div>
-              ))}
+      {/* URL input */}
+      <input
+        type="url"
+        placeholder="https://example.com/download"
+        value={d.url}
+        onChange={(e) =>
+          handleDownloadChange(i, "url", e.target.value)
+        }
+        disabled={!!d.file}
+        className="w-full border rounded-xl p-3 disabled:opacity-50"
+      />
+      <p className="text-sm text-gray-500 text-center">OR upload file</p>
 
-              <button
-                type="button"
-                onClick={addDownload}
-                disabled={downloads.length >= 5}
-                className="text-[#006D77] hover:underline mt-2"
-              >
-                + Add another download link
-              </button>
-            </div>
+      {/* File Upload */}
+      <input
+        type="file"
+        disabled={!!d.url}
+        onChange={(e) => {
+          const updated = [...downloads];
+          updated[i].file = e.target.files[0];
+          setDownloads(updated);
+        }}
+        className="w-full  text-gray-600 text-sm"
+      />
+
+      {downloads.length > 1 && (
+        <button
+          type="button"
+          onClick={() => removeDownload(i)}
+          className="text-red-500 font-semibold"
+        >
+          Remove
+        </button>
+      )}
+    </div>
+  ))}
+
+  <button
+    type="button"
+    onClick={addDownload}
+    disabled={downloads.length >= 5}
+    className="text-[#006D77] hover:underline"
+  >
+    + Add another download
+  </button>
+</div>
+
 
 
             {/* Demo / Tool Link */}

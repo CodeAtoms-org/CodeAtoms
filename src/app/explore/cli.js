@@ -2,7 +2,8 @@
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "../../../supabase";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+
 import ClipLoader from "react-spinners/ClipLoader";
 import Header from "@/components/Header";
 import LoadingBar from "react-top-loading-bar";
@@ -10,6 +11,9 @@ import Footer from "@/components/Footer";
 
 export default function ExploreSection() {
   const [tools, setTools] = useState([]);
+  const searchParams = useSearchParams();
+const tagFromUrl = searchParams.get("tag");
+
   const [selectedTag, setSelectedTag] = useState("All");
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -54,6 +58,7 @@ export default function ExploreSection() {
   const { data, error } = await supabase
     .from("tools")
     .select("*")
+    .eq("done", "yes")
     .not("type", "cs", '{"OPEN SOURCE"}') // 🚫 exclude open source
     .order("created_at", { ascending: false });
 
@@ -66,6 +71,18 @@ export default function ExploreSection() {
 
   setLoading(false);
 };
+
+useEffect(() => {
+  if (tagFromUrl && tagFromUrl !== selectedTag) {
+    setSelectedTag(tagFromUrl);
+  }
+
+  // If no tag in URL, reset to All
+  if (!tagFromUrl) {
+    setSelectedTag("All");
+  }
+}, [tagFromUrl]);
+
 
 
   // ✅ Flatten tags from Postgres text[] arrays
@@ -155,16 +172,24 @@ OPEN SOURCE
   // 🔍 Normal filtering tags
   return (
     <button
-      key={tag}
-      onClick={() => setSelectedTag(tag)}
-      className={`px-4 py-2 rounded-full border transition-all ${
-        selectedTag === tag
-          ? "bg-black text-white"
-          : "text-gray-700 hover:bg-gray-100"
-      }`}
-    >
-      {tag}
-    </button>
+  key={tag}
+  onClick={() => {
+    setSelectedTag(tag);
+    router.push(
+      tag === "All"
+        ? "/explore"
+        : `/explore?tag=${encodeURIComponent(tag)}`
+    );
+  }}
+  className={`px-4 py-2 rounded-full border transition-all ${
+    selectedTag === tag
+      ? "bg-black text-white"
+      : "text-gray-700 hover:bg-gray-100"
+  }`}
+>
+  {tag}
+</button>
+
   );
 })}
 

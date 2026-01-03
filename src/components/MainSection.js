@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ClipLoader from "react-spinners/ClipLoader";
 import Link from "next/link";
 import LoadingBar from "react-top-loading-bar";
+import SearchBar from "./Searchbar";
 
 export default function ToolsSection() {
   const [tools, setTools] = useState([]);
@@ -25,6 +26,7 @@ export default function ToolsSection() {
       .from("tools")
       .select("*")
       .eq("home", "yes")
+      .eq("done", "yes")
       .not("type", "cs", '{"OPEN SOURCE"}') // 🚫 exclude open source
       .order("created_at", { ascending: false });
 
@@ -94,7 +96,7 @@ export default function ToolsSection() {
         (tool) => Array.isArray(tool.type) && tool.type.includes(selectedTag)
       );
 
-  // ✅ Group by type
+
   const groupedTools = {};
   tools.forEach((tool) => {
     if (Array.isArray(tool.type)) {
@@ -128,6 +130,8 @@ export default function ToolsSection() {
     gradients[Math.floor(Math.random() * gradients.length)];
 
   return (
+    <>
+    <SearchBar />
     <section className="px-6 md:mx-20 py-10 rounded-md bg-white">
       <Link href="/explore">
         <p className="text-center mb-10 text-xl hover:underline underline-offset-2 font-medium">
@@ -169,45 +173,19 @@ export default function ToolsSection() {
 
               return (
                 <button
-                  key={tag}
-                  onClick={() => setSelectedTag(tag)}
-                  className={`px-4 py-2 rounded-full border transition-all ${selectedTag === tag
-                      ? "bg-black text-white"
-                      : "text-gray-700 hover:bg-gray-100"
-                    }`}
-                >
-                  {tag}
-                </button>
+  key={tag}
+  onClick={() => {
+    router.push(`/explore?tag=${encodeURIComponent(tag)}`);
+  }}
+  className="px-4 py-2 rounded-full border transition-all text-gray-700 hover:bg-gray-100"
+>
+  {tag}
+</button>
+
               );
             })}
 
           </div>
-
-          {/* 🔥 PROMOTIONAL BANNER */}
-          <a
-            href="https://tracekit.dev/?ref=codeatoms" // 🔁 replace with actual website
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block mx-4 md:mx-10 mb-12"
-          >
-            <div className="relative overflow-hidden rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl transition">
-
-              {/* PROMO LABEL */}
-              <div className="absolute top-3 left-3 z-20">
-                <span className="bg-yellow-400 text-black text-[10px] md:text-xs font-bold px-3 py-1 rounded-full">
-                  PROMOTIONAL
-                </span>
-              </div>
-
-              {/* BANNER IMAGE */}
-              <img
-                src="/images/promotionbanner.png" // 🔁 your banner image path
-                alt="Trace Kit – Fix Production Bugs in Minutes"
-                className="w-full h-[100px] sm:h-[180px] md:h-[280px] object-fill"
-              />
-            </div>
-          </a>
-
 
           {/* ALL TOOLS VIEW */}
           {selectedTag === "All" ? (
@@ -322,5 +300,6 @@ export default function ToolsSection() {
       <LoadingBar className="gradient-bar" ref={loadingBar} />
 
     </section>
+    </>
   );
 }
