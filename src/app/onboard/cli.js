@@ -12,37 +12,68 @@ export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [agreed, setAgreed] = useState(false);
+
   const [message, setMessage] = useState("");
 
   // Email/Password Sign In or Sign Up
-  const handleAuth = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage("");
+ const handleAuth = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setMessage("");
 
-    try {
-      if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-        setMessage("Signed in successfully!");
-        router.push("/");
-      } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-        if (error) throw error;
-        setMessage("Account created! Please verify your email before signing in.");
-      }
-    } catch (error) {
-      setMessage(error.message);
-    } finally {
-      setLoading(false);
+  try {
+    if (!isLogin && !agreed) {
+      setMessage("You must accept the Terms & Conditions and Privacy Policy.");
+      return;
     }
-  };
+
+    if (isLogin) {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw error;
+      router.push("/");
+      return;
+    }
+
+    // 🔹 SIGN UP
+    const { error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (signUpError) throw signUpError;
+
+    // 🔥 IMMEDIATELY TRY LOGIN
+    const { error: signInError } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+    if (!signInError) {
+      // Login succeeded → account already existed
+      setMessage(
+        "An account with this email already exists. Please log in instead."
+      );
+      setIsLogin(true);
+      return;
+    }
+
+    // Login failed → new account, waiting for email verification
+    setMessage(
+      "Account created! Please verify your email before signing in."
+    );
+  } catch (error) {
+    setMessage(error.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   // Google Sign In
   const handleGoogleSignIn = async () => {
@@ -97,6 +128,39 @@ export default function AuthPage() {
             </div>
           </div>
 
+          {/* Terms & Privacy Agreement (Signup only) */}
+{!isLogin && (
+  <div className="flex items-start gap-2 text-sm text-gray-600">
+    <input
+      type="checkbox"
+      checked={agreed}
+      onChange={(e) => setAgreed(e.target.checked)}
+      className="mt-1"
+      required
+    />
+    <p>
+      I agree to the{" "}
+      <a
+        href="/terms"
+        target="_blank"
+        className="text-[#006D77] hover:underline"
+      >
+        Terms & Conditions
+      </a>{" "}
+      and{" "}
+      <a
+        href="/privacy-policy"
+        target="_blank"
+        className="text-[#006D77] hover:underline"
+      >
+        Privacy Policy
+      </a>
+      .
+    </p>
+  </div>
+)}
+
+
           <button
             type="submit"
             disabled={loading}
@@ -137,7 +201,7 @@ export default function AuthPage() {
         <div className="mt-6 text-center text-sm">
           {isLogin ? (
             <p>
-              Don’t have an account?{" "}
+              Don't have an account?{" "}
               <button
                 onClick={() => setIsLogin(false)}
                 className="text-[#006D77] font-medium hover:underline"

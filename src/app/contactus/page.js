@@ -18,8 +18,8 @@ export default function Contact() {
             Contact Us
           </h1>
           <p className="text-lg text-gray-600 text-center max-w-2xl mx-auto mb-16">
-            Whether you are an innovator, researcher, or partner — we do love to hear from you.  
-            Let us collaborate to push the boundaries of what technology can do.
+            Have questions, feedback, or need assistance? We're here to help!  
+            Reach out to us using the contact information below, and our team will get back to you as soon as possible.
           </p>
 
           <div className="grid gap-10">

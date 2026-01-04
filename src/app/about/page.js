@@ -19,8 +19,7 @@ export default function About() {
           <p className="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-16">
             CodeAtoms is a developer tool marketplace built to help developers access,
             share, and discover tools that accelerate innovation.  
-            Our goal is simple — to empower developers so they can focus on building
-            great things that shape the future.
+            
           </p>
 
           {/* Mission Section */}
@@ -40,42 +39,71 @@ export default function About() {
           {/* Vision Section */}
           
 
-          {/* Team Section */}
-          <div className="text-start mb-20">
-            <h2 className="text-2xl mb-8 text-[#006D77]">Our Team</h2>
-            <p className="text-gray-600 text-start  mx-auto mb-10">
-              Behind CodeAtoms is a small but dedicated team of developers and builders
-              who understand what developers truly need — simplicity, accessibility,
-              and a community that fuels innovation.
-            </p>
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                { name: "Aryan Vishwa", role: "Founder & CEO", img: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740" },
-                { name: "Riya Patel", role: "Product Head", img: "https://images.unsplash.com/photo-1588516903720-8ceb67f9ef84?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=888" },
-                { name: "Arjun Mehta", role: "Community Lead", img: "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&w=400&q=60" },
-              ].map((member, i) => (
-                <div key={i} className="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-md transition">
-                  <img
-                    src={member.img}
-                    alt={member.name}
-                    className="w-28 h-28 mx-auto rounded-full mb-4 object-cover"
-                  />
-                  <h3 className="text-xl">{member.name}</h3>
-                  <p className="text-gray-500">{member.role}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <div className="mb-20">
+  <h2 className="text-2xl mb-6 text-[#006D77] text-start">
+    Our Founder
+  </h2>
 
-          {/* Values Section */}
-          <div className="text-start">
-            <h2 className="text-2xl mb-6 text-[#006D77]">Our Values</h2>
-            <p className="text-gray-600 mx-auto mb-10">
-              At CodeAtoms, we believe in collaboration, innovation, and empowerment.  
-              We aim to build a platform that supports developers — not just with tools,
-              but with opportunities to grow, share, and inspire the global tech community.
-            </p>
-          </div>
+  <div className="flex flex-col md:flex-row py-10 items-start gap-10">
+    
+    {/* Left: Founder Image & Name */}
+    <div className="flex-shrink-0 text-center px-16  md:text-start">
+      <img
+        src="https://ifybiljwxpukkfycuxyr.supabase.co/storage/v1/object/public/avatars/6d44dfbe-f170-4cfb-a098-1d8a3992a5de/6d44dfbe-f170-4cfb-a098-1d8a3992a5de-1757566656331.png"
+        alt="Abhinav Sharma"
+        className="w-50 h-70 rounded-2xl object-cover mb-4"
+      />
+      <h3 className="text-xl font-semibold text-gray-900">
+        Abhinav Sharma
+      </h3>
+      <p className="text-gray-500">
+        Founder & CEO
+      </p>
+    </div>
+
+    {/* Right: Founder Story */}
+    <div className="text-gray-600 text-start py-6 leading-relaxed">
+      <p className="mb-4">
+        CodeAtoms was founded by Abhinav Sharma with a simple but powerful vision:
+        to create a platform where developers can discover, showcase, and monetize
+        high-quality tools without noise or friction.
+      </p>
+
+      <p className="mb-4">
+        As a builder himself, Abhinav experienced firsthand how difficult it was
+        to find reliable tools, validate quality, and trust marketplaces filled
+        with poorly documented or abandoned projects. CodeAtoms was born out of
+        that frustration.
+      </p>
+
+      <p>
+        Today, CodeAtoms focuses on clarity, documentation quality, and developer
+        trust—helping tool creators reach the right audience while giving users
+        confidence in what they build with.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<div className="">
+  <h2 className="text-2xl mb-6 text-[#006D77] text-start">
+    Join Us on Our Journey
+  </h2>
+  <p className="text-gray-600  mx-auto leading-relaxed">
+    We are just getting started.  
+    Our vision is to become the go-to platform for developers worldwide to find
+    and share tools that empower innovation.  
+    Whether you are a tool creator, buyer, or enthusiast, we invite you to join
+    us on this exciting journey.
+  </p>
+  <p className="text-gray-600 mx-auto leading-relaxed mt-4">
+    Together, we can build a thriving ecosystem where developers have everything
+    they need to turn ideas into reality—faster and better than ever before.
+  </p>
+  </div>
+
+         
         </div>
       </section>
       <Footer />

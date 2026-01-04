@@ -20,16 +20,15 @@ export default function HowToPublishYourTool() {
           </h1>
           <p className="text-gray-600 text-md">
             Publishing your tool on CodeAtoms allows developers around the world
-            to discover, use, and buy your product. This guide walks you through
-            the exact process of publishing — from filling in details to
-            showcasing your live demo.
+            to discover, use, and buy your product. <br></br>This guide walks you through
+            the exact process of publishing your tool step-by-step.
           </p>
 
           <h2 className="font-semibold text-md mt-8 mb-8">1. Go to the Upload Tool Page</h2>
           <p className="text-md">
             From the main navigation, click on the <strong>“Profile”</strong>{" "}
-            option. This page contains a publish your tool page which conatin simple form where you can enter your
-            tool details such as title, description, and type.
+            option. This page contains a publish your tool page which contains a simple form where you can enter your
+            tool details and submit it for review. <span className="font-bold">All </span>fields are required.
           </p>
 
           <Image
@@ -42,7 +41,7 @@ export default function HowToPublishYourTool() {
 
           <h2 className="font-semibold text-md mt-8 mb-8">2. Fill in the Tool Details</h2>
           <p className="text-md">
-            The <strong>Title</strong> and <strong>Tags</strong> are required. Choose a title that clearly describes your tool, and a tag
+            Enter your title, and a tag
             that matches what you have built.
           </p>
 
@@ -60,16 +59,26 @@ export default function HowToPublishYourTool() {
             className="rounded-xl  my-6"
           />
 
-          <h2 className="font-semibold text-md mt-8 mb-8">3. Add Extended Content (Important)</h2>
+          <h2 className="font-semibold text-md mt-8 mb-8">3. Fill Your Tool Details (Important)</h2>
           <p className="text-md">
-            The <strong>Content / Markdown</strong> section lets you include
-            detailed documentation — such as setup steps, usage examples, or
-            feature highlights. This field supports Markdown syntax, so you can
-            format your content professionally with headers, code blocks, and
-            lists.
+            The <strong>Content and Markdown</strong> section allows you to add detailed
+            documentation for your tool. This can include setup instructions, usage
+            examples, feature explanations, and any important technical notes.
           </p>
+
+          <p className="text-md mt-4">
+            You may also provide a direct link to your tool's download page or upload the
+            tool directly to CodeAtoms hosting. Please note that CodeAtoms supports file
+            uploads up to a maximum size of 50MB.
+          </p>
+
+          <p className="text-md mt-4">
+            Ensure the information is clear, structured, and comprehensive so users can
+            easily understand the purpose, functionality, and value of your tool.
+          </p>
+
           <Image
-            src="/images/guide-steps-3.png"
+            src="/images/guide-steps3.png"
             alt="Filling tool details"
             width={700}
             height={500}
@@ -77,54 +86,66 @@ export default function HowToPublishYourTool() {
           />
 
 
-          <h2 className="font-semibold text-md mt-8 mb-8">4. Add Links for Demo and Purchase</h2>
-          <p className="text-md">
-            If you have a live demo or GitHub repository, add the link in the{" "}
-            <strong>“Demo / Tool Link”</strong> field. This helps other
-            developers try out your tool before buying.
-          </p>
-          <p className="text-md">
-            This is the <strong>“Download URL”</strong> field where you can provide a direct link for users to download or purchase your tool. This could be a link to your product page, or any other relevant location.
-          </p>
-
-          
-
           <h2 className="font-semibold text-md mt-8 mb-8">5. Publish Your Tool</h2>
           <p className="text-md">
             Once everything is filled out, click the{" "}
-            <strong>“Upload Tool”</strong> button. Your submission will be saved
-            and instantly visible to others on the CodeAtoms marketplace.
+            <strong>“Upload Tool”</strong> button. Your submission will be reviewed by our team and
+            you will be notified once it is live on the marketplace.
           </p>
 
+          <div className="mb-6 mt-10 text-md ">
+            <h2 className="font-semibold text-xl mt-8 mb-4 text-gray-800">
+              Important
+            </h2>
+            <p className="mb-4">Incomplete or poorly structured submissions may result in your tool not
+              being approved on CodeAtoms.</p>
+            <strong >Highest impact on approval:</strong>
+            <ul className="list-disc mt-4 pl-5 space-y-2">
+              <li>
+
+
+                <li>Content and Markdown documentation</li>
+                <li>Working Demo or Tool link</li>
+
+              </li>
+
+
+
+
+            </ul>
+          </div>
+
+
+
           <h2 className="font-bold mt-12 mb-10 text-center text-[#006D77] text-2xl relative">
-  Tips for a Great Listing
-  <div className="absolute left-1/2 -translate-x-1/2 w-20 h-1 bg-[#006D77] rounded-full mt-2"></div>
-</h2>
+            Tips for a Great Listing
+            <div className="absolute left-1/2 -translate-x-1/2 w-20 h-1 bg-[#006D77] rounded-full mt-2"></div>
+          </h2>
 
-<div className="bg-[#F7FAFA] p-8 rounded-2xl shadow-md relative overflow-hidden">
-  {/* Decorative shapes */}
-  <div className="absolute top-0 left-0 w-24 h-24 bg-[#006D77]/10 rounded-br-[60%]"></div>
-  <div className="absolute bottom-0 right-0 w-24 h-24 bg-[#006D77]/10 rounded-tl-[60%]"></div>
+          <div className="bg-[#F7FAFA] p-8 rounded-2xl shadow-md relative overflow-hidden">
+            {/* Decorative shapes */}
+            <div className="absolute top-0 left-0 w-24 h-24 bg-[#006D77]/10 rounded-br-[60%]"></div>
+            <div className="absolute bottom-0 right-0 w-24 h-24 bg-[#006D77]/10 rounded-tl-[60%]"></div>
 
-  <ul className="relative space-y-4 text-md text-gray-700 font-medium">
-    <li className="flex items-start gap-3 hover:translate-x-1 transition-transform duration-200">
-      <span className="w-3 h-3 mt-2 bg-[#006D77] rounded-full flex-shrink-0"></span>
-      <span>Use a clear and descriptive title (avoid abbreviations).</span>
-    </li>
-    <li className="flex items-start gap-3 hover:translate-x-1 transition-transform duration-200">
-      <span className="w-3 h-3 mt-2 bg-[#006D77] rounded-full flex-shrink-0"></span>
-      <span>Keep your description short but informative.</span>
-    </li>
-    <li className="flex items-start gap-3 hover:translate-x-1 transition-transform duration-200">
-      <span className="w-3 h-3 mt-2 bg-[#006D77] rounded-full flex-shrink-0"></span>
-      <span>Provide a working demo link or short video.</span>
-    </li>
-    <li className="flex items-start gap-3 hover:translate-x-1 transition-transform duration-200">
-      <span className="w-3 h-3 mt-2 bg-[#006D77] rounded-full flex-shrink-0"></span>
-      <span>Add pricing or license details clearly.</span>
-    </li>
-  </ul>
-</div>
+            <ul className="relative space-y-4 text-md text-gray-700 font-medium">
+              <li className="flex items-start gap-3 hover:translate-x-1 transition-transform duration-200">
+                <span className="w-3 h-3 mt-2 bg-[#006D77] rounded-full flex-shrink-0"></span>
+                <span>Use a clear title (avoid abbreviations).</span>
+              </li>
+              <li className="flex items-start gap-3 hover:translate-x-1 transition-transform duration-200">
+                <span className="w-3 h-3 mt-2 bg-[#006D77] rounded-full flex-shrink-0"></span>
+                <span>Keep your description short but informative.</span>
+              </li>
+              <li className="flex items-start gap-3 hover:translate-x-1 transition-transform duration-200">
+                <span className="w-3 h-3 mt-2 bg-[#006D77] rounded-full flex-shrink-0"></span>
+                <span>Provide a working demo link.</span>
+              </li>
+              <li className="flex items-start gap-3 hover:translate-x-1 transition-transform duration-200">
+                <span className="w-3 h-3 mt-2 bg-[#006D77] rounded-full flex-shrink-0"></span>
+                <span>Add pricing, license and integration details clearly.</span>
+              </li>
+            </ul>
+          </div>
 
         </article>
       </main>

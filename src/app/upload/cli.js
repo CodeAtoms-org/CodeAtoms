@@ -28,9 +28,9 @@ export default function UploadTool() {
     integration: "",    // ✅ NEW
   });
 
-const [downloads, setDownloads] = useState([
-  { platform: "", url: "", file: null, uploading: false }
-]);
+  const [downloads, setDownloads] = useState([
+    { platform: "", url: "", file: null, uploading: false }
+  ]);
 
 
   const predefinedTags = [
@@ -104,82 +104,82 @@ const [downloads, setDownloads] = useState([
 
 
   const uploadFileToSupabase = async (file, platform) => {
-  const ext = file.name.split(".").pop();
-  const filePath = `${user.id}/${form.uid}/${platform}-${Date.now()}.${ext}`;
+    const ext = file.name.split(".").pop();
+    const filePath = `${user.id}/${form.uid}/${platform}-${Date.now()}.${ext}`;
 
-  const { error } = await supabase.storage
-    .from("tool-downloads")
-    .upload(filePath, file, { upsert: false });
+    const { error } = await supabase.storage
+      .from("tool-downloads")
+      .upload(filePath, file, { upsert: false });
 
-  if (error) throw error;
+    if (error) throw error;
 
-  const { data } = supabase.storage
-    .from("tool-downloads")
-    .getPublicUrl(filePath);
+    const { data } = supabase.storage
+      .from("tool-downloads")
+      .getPublicUrl(filePath);
 
-  return data.publicUrl;
-};
+    return data.publicUrl;
+  };
 
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
-  setSubmitting(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSubmitting(true);
 
-  const downloadJSON = {};
+    const downloadJSON = {};
 
-  for (let d of downloads) {
-    if (!d.platform?.trim()) {
-      setError("Each download must have a platform name");
-      setSubmitting(false);
-      return;
-    }
-
-    try {
-      if (d.file) {
-        const publicUrl = await uploadFileToSupabase(d.file, d.platform.trim());
-        downloadJSON[d.platform.trim()] = publicUrl;
-      } 
-      else if (d.url?.trim()) {
-        new URL(d.url);
-        downloadJSON[d.platform.trim()] = d.url.trim();
-      } 
-      else {
-        throw new Error("Either upload a file or provide a URL");
+    for (let d of downloads) {
+      if (!d.platform?.trim()) {
+        setError("Each download must have a platform name");
+        setSubmitting(false);
+        return;
       }
-    } catch (err) {
-      setError(err.message);
-      setSubmitting(false);
-      return;
+
+      try {
+        if (d.file) {
+          const publicUrl = await uploadFileToSupabase(d.file, d.platform.trim());
+          downloadJSON[d.platform.trim()] = publicUrl;
+        }
+        else if (d.url?.trim()) {
+          new URL(d.url);
+          downloadJSON[d.platform.trim()] = d.url.trim();
+        }
+        else {
+          throw new Error("Either upload a file or provide a URL");
+        }
+      } catch (err) {
+        setError(err.message);
+        setSubmitting(false);
+        return;
+      }
     }
-  }
 
-  const formattedTags = `{${form.type.map(tag => `"${tag}"`).join(",")}}`;
-  const { error: insertError } = await supabase.from("tools").insert([
-    {
-      uid: form.uid,
-      owner: form.name,
-      owner_uid: user.id,
-      title: form.title,
-      description: form.description,
-      type: formattedTags,
-      content: form.content,
-      download: downloadJSON, // ✅ CORRECT DATA
-      link: form.link,
-      price: form.price ? Number(form.price) : 0,
-      license: form.license.trim(),
-      integration: form.integration.trim(),
-    },
-  ]);
+    const formattedTags = `{${form.type.map(tag => `"${tag}"`).join(",")}}`;
+    const { error: insertError } = await supabase.from("tools").insert([
+      {
+        uid: form.uid,
+        owner: form.name,
+        owner_uid: user.id,
+        title: form.title,
+        description: form.description,
+        type: formattedTags,
+        content: form.content,
+        download: downloadJSON, // ✅ CORRECT DATA
+        link: form.link,
+        price: form.price ? Number(form.price) : 0,
+        license: form.license.trim(),
+        integration: form.integration.trim(),
+      },
+    ]);
 
-  setSubmitting(false);
+    setSubmitting(false);
 
-  if (insertError) setError(insertError.message);
-  else {
-    toast.success("Tool uploaded successfully!");
-    router.push("/profile");
-  }
-};
+    if (insertError) setError(insertError.message);
+    else {
+      toast.success("Tool uploaded successfully!");
+      router.push("/profile");
+    }
+  };
 
 
   if (loading)
@@ -244,6 +244,7 @@ const [downloads, setDownloads] = useState([
                 name="name"
                 value={form.name}
                 onChange={handleChange}
+                placeholder="Your full name or organization name"
 
                 className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
               />
@@ -358,7 +359,7 @@ const [downloads, setDownloads] = useState([
                 name="description"
                 value={form.description}
                 onChange={handleChange}
-
+                placeholder="A brief description of your tool."
                 rows={3}
                 className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
               />
@@ -371,8 +372,7 @@ const [downloads, setDownloads] = useState([
                 name="content"
                 value={form.content}
                 onChange={handleChange}
-
-
+                placeholder="Use Markdown format here."
                 rows={5}
                 className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-[#006D77]"
               />
@@ -426,72 +426,72 @@ Docker recommended for local development.`}
 
             {/* ✅ Multiple Download Links */}
             <div>
-  <label className="block text-gray-700 font-medium mb-2">
-    Download Links *
-  </label>
+              <label className="block text-gray-700 font-medium mb-2">
+                Download Links *
+              </label>
 
-  {downloads.map((d, i) => (
-    <div key={i} className="border rounded-xl p-4 mb-3 space-y-3">
-      {/* Platform */}
-      <input
-        type="text"
-        placeholder="Platform (Windows, Mac, Linux)"
-        value={d.platform}
-        onChange={(e) =>
-          handleDownloadChange(i, "platform", e.target.value)
-        }
-        className="w-full border rounded-xl p-3"
-      />
+              {downloads.map((d, i) => (
+                <div key={i} className="border rounded-xl p-4 mb-3 space-y-3">
+                  {/* Platform */}
+                  <input
+                    type="text"
+                    placeholder="Platform (Windows, Mac, Linux)"
+                    value={d.platform}
+                    onChange={(e) =>
+                      handleDownloadChange(i, "platform", e.target.value)
+                    }
+                    className="w-full border rounded-xl p-3"
+                  />
 
-      {/* OR Divider */}
-      
+                  {/* OR Divider */}
 
-      {/* URL input */}
-      <input
-        type="url"
-        placeholder="https://example.com/download"
-        value={d.url}
-        onChange={(e) =>
-          handleDownloadChange(i, "url", e.target.value)
-        }
-        disabled={!!d.file}
-        className="w-full border rounded-xl p-3 disabled:opacity-50"
-      />
-      <p className="text-sm text-gray-500 text-center">OR upload file</p>
 
-      {/* File Upload */}
-      <input
-        type="file"
-        disabled={!!d.url}
-        onChange={(e) => {
-          const updated = [...downloads];
-          updated[i].file = e.target.files[0];
-          setDownloads(updated);
-        }}
-        className="w-full  text-gray-600 text-sm"
-      />
+                  {/* URL input */}
+                  <input
+                    type="url"
+                    placeholder="https://example.com/download"
+                    value={d.url}
+                    onChange={(e) =>
+                      handleDownloadChange(i, "url", e.target.value)
+                    }
+                    disabled={!!d.file}
+                    className="w-full border rounded-xl p-3 disabled:opacity-50"
+                  />
+                  <p className="text-sm text-gray-500 text-center">OR upload file</p>
 
-      {downloads.length > 1 && (
-        <button
-          type="button"
-          onClick={() => removeDownload(i)}
-          className="text-red-500 font-semibold"
-        >
-          Remove
-        </button>
-      )}
-    </div>
-  ))}
+                  {/* File Upload */}
+                  <input
+                    type="file"
+                    disabled={!!d.url}
+                    onChange={(e) => {
+                      const updated = [...downloads];
+                      updated[i].file = e.target.files[0];
+                      setDownloads(updated);
+                    }}
+                    className="w-full  text-gray-600 text-sm"
+                  />
 
-  <button
-    type="button"
-    onClick={addDownload}
-    disabled={downloads.length >= 5}
-    className="text-[#006D77] hover:underline"
-  >
-    + Add another download
-  </button>
-</div>
+                  {downloads.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeDownload(i)}
+                      className="text-red-500 font-semibold"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+              ))}
+
+              <button
+                type="button"
+                onClick={addDownload}
+                disabled={downloads.length >= 5}
+                className="text-[#006D77] hover:underline"
+              >
+                + Add another download
+              </button>
+            </div>
 
 
 
@@ -532,6 +532,8 @@ Docker recommended for local development.`}
             </button>
 
           </form>
+          <p className="mt-4 text-red-400">*Tools with missing, misleading, or low-quality information may be rejected
+      during review.*</p>
         </div>
       </div>
       <Toaster position="top-right" toastOptions={{ duration: 4000 }} />

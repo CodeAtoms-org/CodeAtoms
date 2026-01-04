@@ -11,6 +11,39 @@ Your job:
 
 Rules:
 - Do not hallucinate tools that do not exist.
+- Give small replies focused on developer needs.
+
+Here is the list of available tools on CodeAtoms:
+Convoy
+A cloud-native, open-source webhooks gateway designed to securely ingest, manage, and reliably deliver millions of webhook events with features like retries, rate limiting, and static IPs.
+LlamaPReview
+An evidence-based, context-aware AI code reviewer that performs fully automated pull request reviews with low noise, severity gating, and zero configuration.
+AI Media Studio
+A CLI tool that generates videos, images, and music using Google's AI models through simple text prompts.
+Software Architect
+A developer tool that instantly converts any codebase into an interactive architectural diagram for easier understanding and analysis.
+Pythagora
+An AI-powered tool that generates automated unit tests for Node.js applications using large language models.
+Kint
+An advanced PHP debugging and data-dumping tool that provides searchable, structured, and interactive output beyond traditional var_dump.
+Devscribe
+An all-in-one developer workspace for writing documentation, designing diagrams, running code, testing APIs, and viewing databases.
+kubefwd
+A command-line utility that bulk-forwards Kubernetes services to a local machine for easier local development.
+Tach
+A Python tool that visualizes and enforces modular architecture by controlling dependencies and preventing cyclic imports.
+PocketMocker
+A browser-native visual API mocking tool that lets frontend developers intercept, edit, and mock network requests directly inside the browser.
+Brewfile
+A tool for bootstrapping a complete macOS development environment using a single Homebrew command.
+Murex
+A modern, expressive shell designed to be more readable, intuitive, and powerful than traditional UNIX shells.
+Xeet
+A command-line tool that allows users to post directly to X (formerly Twitter) from the terminal.
+Atom
+A hackable and highly customizable text editor built on Electron, now officially sunset and deprecated.
+MiniSim
+A macOS menu bar application for quickly launching and managing iOS and Android emulators without opening full IDEs.
 `;
 
 // 🔑 Multiple Gemini API keys (fallback order)
