@@ -1,58 +1,198 @@
 "use client";
-import { motion } from "framer-motion";
+
+import React from "react";
+import { Boxes, Package, ShieldCheck } from "lucide-react";
+import { BentoGrid, BentoCard } from "./BentoGrid";
 
 export default function BelowSection() {
-  const benefits = [
-    {
-      title: "Curated Tools",
-      image: "/images/benefits1.png",
-    },
-    {
-      title: "Save Time & Effort",
-      image: "/images/benefits2.png",
-    },
-    {
-      title: "Boost Creativity",
-      image: "/images/benefits3.png",
-    },
-  ];
 
-  const steps = [
-    {
-      step: 1,
-      title: "Sign Up",
-      description: "Create your account to start uploading and selling your tools.",
-    },
-    {
-      step: 2,
-      title: "List your Tool",
-      description: "Provide details about your tool, set a price, and make it available to the community.",
-    },
-    {
-      step: 3,
-      title: "Reach Customers",
-      description: "Reach a wide audience, earn revenue, and grow your developer brand.",
-    },
-  ];
-
+ const openSourceTools = [
+      {
+        name: "PocketMocker",
+        type: "NPM · DEV UTILITY",
+        description: "Browser-native visual API mocking tool.",
+        color: "bg-purple-500",
+      },
+      {
+        name: "Kint",
+        type: "CLI · DEV UTILITY",
+        description: "Advanced PHP data dumper.",
+        color: "bg-indigo-500",
+      },
+      {
+        name: "kubefwd",
+        type: "CLI · PRODUCTIVITY",
+        description: "Bulk Kubernetes port forwarding.",
+        color: "bg-orange-500",
+      },
+      {
+        name: "Pythagora",
+        type: "NPM · DEV UTILITY",
+        description: "Generate automated tests via LLMs.",
+        color: "bg-blue-500",
+      },
+      {
+        name: "Murex",
+        type: "CLI · DEV UTILITY",
+        description: "A smarter, more readable shell.",
+        color: "bg-green-500",
+      },
+      {
+        name: "Tach",
+        type: "CLI · DEV UTILITY",
+        description: "Enforce modular Python architecture.",
+        color: "bg-sky-500",
+      },
+      {
+        name: "Atom",
+        type: "DESKTOP · EDITOR",
+        description: "Hackable text editor (deprecated).",
+        color: "bg-gray-500",
+      },
+      {
+        name: "MiniSim",
+        type: "MACOS · DEV TOOL",
+        description: "Menu bar launcher for mobile emulators.",
+        color: "bg-rose-500",
+      },];
   return (
-    <>
-      {/* Benefits Section */}
-      <section className="px-10 md:px-20 py-20">
-        <div className="mx-auto flex flex-col gap-4 text-start md:text-center">
-          <p className="text-sm text-[#006D77] uppercase">
-            CodeAtoms
-          </p>
-          <h2 className="text-lg md:text-xl lg:text-xl text-gray-900">
-            "Every great idea deserves the right tools - so you can build boldly, Freely, and innovate without limits."
-          </h2>
+    <section className="px-10 md:px-20 py-10 bg-white">
+      <div className="mx-auto max-w-7xl flex flex-col items-center text-center gap-4">
+
+        {/* Quote */}
+        <p className="text-sm md:text-base text-gray-600 max-w-3xl">
+          “Every great idea deserves the right tools — so you can build boldly,
+          freely, and innovate without limits.”
+        </p>
+
+        {/* Icon */}
+        <div className="flex items-center justify-center mt-20  text-[#006D77]">
+<h2 className="">CODEATOMS</h2>
         </div>
 
-      </section>
-      
+        {/* Heading */}
+        <h2 className="text-2xl md:text-2xl lg:text-3xl font-semibold text-gray-900">
+          The Home of Developer Tools
+        </h2>
 
-      {/* For Developers Section */}
-    
-    </>
+        {/* Subheading */}
+        <p className="text-base md:text-md text-gray-600 max-w-2xl">
+          The most trusted marketplace for developers
+        </p>
+
+        {/* Bento Grid */}
+        <div className="mt-14 w-full">
+  <BentoGrid>
+    {/* Card 1 — Large */}
+    <BentoCard
+      name="Discover Developer Tools"
+      description="Explore the best tools curated for modern developers."
+      href="/explore"
+      cta="Explore tools"
+      className="md:col-span-2"
+      background={
+        <img
+          src="/images/cardtools.png"
+          alt=""
+          className="h-full w-full object-contain"
+        />
+      }
+    />
+
+    {/* Card 2 */}
+    <BentoCard
+      name="Browse by Category"
+      description="Find tools by language, framework, or use case."
+      href="/explore"
+      cta="Get started"
+      Icon={Boxes}
+      className="md:col-span-1"
+      background={
+        <img
+          src="/images/cardcategories.png"
+          alt=""
+          className="h-full w-full object-contain"
+        />
+      }
+    />
+
+    {/* Card 3 */}
+    <BentoCard
+      name="Verified Developer Reviews"
+      description="Real feedback from developers who actually use the tools."
+      href="/"
+      cta="Browse Marketplace"
+      Icon={ShieldCheck}
+      className="md:col-span-1"
+      background={
+        <img
+          src="/images/cardreview.png"
+          alt=""
+          className="h-full w-full object-contain"
+        />
+      }
+    />
+
+    {/* Card 4 — Full width */}
+    <BentoCard
+      name="Customer Support"
+      description="Get help directly from tool creators when you need it."
+      href="/"
+      cta="Browse marketplace"
+      Icon={Boxes}
+      className="md:col-span-2"
+      background={
+        <img
+          src="/images/cardsupport.png"
+          alt=""
+          className="h-full w-full object-contain"
+        />
+      }
+    />
+  </BentoGrid>
+</div>
+<><h2 className="text-2xl mt-20 md:text-2xl lg:text-3xl font-semibold text-gray-900">
+          OPEN SOURCE
+        </h2>
+
+        {/* Subheading */}
+        <p className="text-base md:text-md text-gray-600 max-w-2xl">
+We contain some of the most popular open source developer tools in the world.
+        </p>
+
+        {/* OPEN SOURCE GRID */}
+<div className="grid grid-cols-1 sm:grid-cols-2 mt-10 lg:grid-cols-4 gap-6">
+        {openSourceTools.map((tool) => (
+          <div
+            key={tool.name}
+            className="rounded-2xl bg-white border border-gray-200 p-6 transition-all hover:shadow-lg hover:-translate-y-1"
+          >
+            {/* Header */}
+            <div className="flex items-center gap-3">
+              <span className={`h-2.5 w-2.5 rounded-full ${tool.color}`} />
+              <h3 className="text-lg font-semibold text-gray-900">
+                {tool.name}
+              </h3>
+            </div>
+
+            {/* Stars */}
+            <div className="mt-2 flex items-center gap-1 text-sm text-gray-500">
+              
+              {tool.type}
+            </div>
+
+            {/* Description */}
+            <p className="mt-4 text-sm text-gray-600 leading-relaxed">
+              {tool.description}
+            </p>
+          </div>
+        ))}
+      </div>
+
+</>
+<h3 className="mt-10">Created with love for Developers.</h3>
+
+      </div>
+    </section>
   );
 }
