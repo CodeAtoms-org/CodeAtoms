@@ -16,25 +16,30 @@ export default function About() {
           <h1 className="text-2xl md:text-3xl mb-8 text-center text-[#006D77]">
             About CodeAtoms
           </h1>
-          <p className="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-16">
-            CodeAtoms is a developer tool marketplace built to help developers access,
-            share, and discover tools that accelerate innovation.  
-            
-          </p>
+          <p className="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-16 leading-relaxed">
+  CodeAtoms is built around a simple belief: Developers create the most value
+  when they are allowed to focus on building.
+</p>
+
 
           {/* Mission Section */}
-          <div className="grid gap-12 items-center mb-20">
-            <div>
-              <h2 className="text-2xl mb-4 text-[#006D77]">Our Mission</h2>
-              <p className="text-gray-600 leading-relaxed">
-                Our mission is to make high-quality developer tools accessible to everyone.
-                We want to eliminate the barriers that slow down innovation by bringing
-                together a community-driven marketplace where developers can publish,
-                explore, and utilize tools that make building faster and smarter.
-              </p>
-            </div>
-            
-          </div>
+         <div className="grid gap-12 items-center mb-20">
+  <div>
+    <h2 className="text-2xl mb-4 text-[#006D77]">Why CodeAtoms Exists</h2>
+    <p className="text-gray-600 leading-relaxed mb-4">
+      A Thing Worth Making
+Software today runs on developer tools created by people who care deeply about solving real problems. These tools often begin as focused solutions, built with clarity and intent, not with the goal of forming a company.
+
+    </p>
+    <p className="text-gray-600 leading-relaxed mb-4">
+      Yet, as soon as a tool becomes valuable, developers are expected to take on responsibilities far beyond building. Payments, licensing, support, compliance, and trust infrastructure quickly become part of the job.
+    </p>
+    <p className="text-gray-600 leading-relaxed">
+     CodeAtoms is worth making because developers should be allowed to focus on building useful tools, while the operational work required to sell them is handled professionally and reliably.
+    </p>
+  </div>
+</div>
+
 
           {/* Vision Section */}
           
@@ -49,7 +54,7 @@ export default function About() {
     {/* Left: Founder Image & Name */}
     <div className="flex-shrink-0 text-center px-16  md:text-start">
       <img
-        src="https://ifybiljwxpukkfycuxyr.supabase.co/storage/v1/object/public/avatars/6d44dfbe-f170-4cfb-a098-1d8a3992a5de/6d44dfbe-f170-4cfb-a098-1d8a3992a5de-1757566656331.png"
+        src="/images/ceoimage.png"
         alt="Abhinav Sharma"
         className="w-50 h-70 rounded-2xl object-cover mb-4"
       />
@@ -63,23 +68,19 @@ export default function About() {
 
     {/* Right: Founder Story */}
     <div className="text-gray-600 text-start py-6 leading-relaxed">
+      <p className="mb-4"> CodeAtoms did not start as a product idea. It started with a belief I kept hearing.
+</p>
+
+
       <p className="mb-4">
-        CodeAtoms was founded by Abhinav Sharma with a simple but powerful vision:
-        to create a platform where developers can discover, showcase, and monetize
-        high-quality tools without noise or friction.
+        Many people believe that a meaningful company can only be built with large teams, capital, and scale from the beginning. That a single builder cannot create something serious or long lasting on their own.
       </p>
 
       <p className="mb-4">
-        As a builder himself, Abhinav experienced firsthand how difficult it was
-        to find reliable tools, validate quality, and trust marketplaces filled
-        with poorly documented or abandoned projects. CodeAtoms was born out of
-        that frustration.
+        I wanted to prove that a single person can build a real company by focusing on the right problems and making careful choices. CodeAtoms is the result of that thinking. It is built slowly, deliberately, and with respect for developers and the work they do.
       </p>
-
-      <p>
-        Today, CodeAtoms focuses on clarity, documentation quality, and developer
-        trust—helping tool creators reach the right audience while giving users
-        confidence in what they build with.
+      <p className="">
+        As a developer myself, I cared about clarity, trust, and usefulness more than speed or noise. CodeAtoms reflects that approach. It is built to last, and it is built with the belief that meaningful companies can begin with one focused builder.
       </p>
     </div>
 
@@ -91,15 +92,12 @@ export default function About() {
     Join Us on Our Journey
   </h2>
   <p className="text-gray-600  mx-auto leading-relaxed">
-    We are just getting started.  
-    Our vision is to become the go-to platform for developers worldwide to find
-    and share tools that empower innovation.  
-    Whether you are a tool creator, buyer, or enthusiast, we invite you to join
-    us on this exciting journey.
+   CodeAtoms helps developers sell and share their tools without taking on the full operational burden of running a business. Payments, access, licensing, and trust are treated as infrastructure, not distractions.
+
   </p>
   <p className="text-gray-600 mx-auto leading-relaxed mt-4">
-    Together, we can build a thriving ecosystem where developers have everything
-    they need to turn ideas into reality—faster and better than ever before.
+    This contribution allows creators to publish their work with confidence and buyers to purchase tools with clarity and trust, improving the experience on both sides.
+More importantly, it supports a healthier ecosystem, where developers can create value sustainably, decide how far they want to scale, and remain focused on the work that matters most.
   </p>
   </div>
 

@@ -510,7 +510,7 @@ Docker recommended for local development.`}
 
             {/* Price */}
             <div>
-              <label className="block text-gray-700 font-medium mb-1">Price (INR)</label>
+              <label className="block text-gray-700 font-medium mb-1">Price (USD)</label>
               <input
                 type="number"
                 name="price"
