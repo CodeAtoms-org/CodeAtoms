@@ -7,6 +7,41 @@ export const metadata = {
   title: "How to Publish Your Tool on CodeAtoms",
   description:
     "A step-by-step guide on publishing your tool on CodeAtoms marketplace.",
+
+  openGraph: {
+    title: "How to Publish Your Tool on CodeAtoms",
+    description:
+      "A step-by-step guide on publishing your tool on CodeAtoms marketplace.",
+    url: "https://www.codeatoms.org/guides/how-to-publish-your-tool",
+    siteName: "CodeAtoms",
+    type: "article",
+    images: [
+      {
+        url: "https://www.codeatoms.org/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "How to Publish Your Tool on CodeAtoms",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "How to Publish Your Tool on CodeAtoms",
+    description:
+      "A step-by-step guide on publishing your tool on CodeAtoms marketplace.",
+    images: ["https://www.codeatoms.org/og-image.png"],
+    creator: "@CodeAtomsHQ",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true, 
+    }},
+    alternates: {
+      canonical: "https://www.codeatoms.org/guides/how-to-publish-your-tool",
+    },
 };
 
 export default function HowToPublishYourTool() {

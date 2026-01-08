@@ -4,7 +4,43 @@ import Footer from "@/components/Footer";
 export const metadata = {
   title: "About Us | CodeAtoms",
   description:
-    "Learn more about CodeAtoms — the developer tool marketplace empowering developers to build their best ideas with ease and speed.",
+    "Learn more about CodeAtoms the developer tool marketplace. Our mission, vision, and the team dedicated to support developers worldwide.",
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true, 
+    }},
+    alternates: {
+      canonical: "https://www.codeatoms.org/about",
+    },
+
+  openGraph: {
+    title: "About Us | CodeAtoms",
+    description:
+      "Discover the story behind CodeAtoms, our mission to empower developers, and the team driving innovation in the developer tool marketplace.",
+    url: "https://www.codeatoms.org/about",
+    siteName: "CodeAtoms",
+    type: "website",
+    images: [
+      {
+        url: "https://www.codeatoms.org/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "About CodeAtoms Developer Marketplace",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Us | CodeAtoms",
+    description:
+      "Learn more about CodeAtoms the developer tool marketplace. Our mission, vision, and the team dedicated to support developers worldwide.",
+    images: ["https://www.codeatoms.org/og-image.png"],
+    creator: "@CodeAtomsHQ",
+  },
 };
 
 export default function About() {

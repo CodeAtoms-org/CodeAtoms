@@ -17,12 +17,10 @@ export default function Terms() {
           <h1 className="text-2xl md:text-3xl text-center mb-6 text-[#006D77]">
             Terms & Conditions
           </h1>
-
           <p className="text-gray-600 mb-10 text-center">
             By accessing or using CodeAtoms, you agree to be bound by these Terms
             and Conditions. Please read them carefully before using the platform.
           </p>
-
           <div className="space-y-10 mb-16">
 
             {/* 1 */}
@@ -61,7 +59,7 @@ export default function Terms() {
                 Sellers are solely responsible for the accuracy, functionality,
                 security, licensing, and legality of the tools they upload.
                 CodeAtoms does not guarantee that any tool will function as
-                expected or meet a buyer’s requirements.
+                expected or meet a buyer's requirements.
               </p>
             </div>
 
@@ -98,8 +96,8 @@ export default function Terms() {
                 6. Refunds and Disputes
               </h2>
               <p className="text-gray-600">
-                Refund eligibility, if any, is determined by the seller’s stated
-                refund policy and CodeAtoms’ dispute resolution guidelines.
+                Refund eligibility, if any, is determined by the seller's stated
+                refund policy and CodeAtoms' dispute resolution guidelines.
                 CodeAtoms reserves the right to mediate disputes but is not
                 obligated to issue refunds.
               </p>
@@ -126,7 +124,7 @@ export default function Terms() {
                 Sellers retain ownership of their tools and content. By uploading
                 content, you grant CodeAtoms a non-exclusive license to host,
                 display, and promote it on the platform. Buyers receive only the
-                rights granted under the tool’s license.
+                rights granted under the tool's license.
               </p>
             </div>
 

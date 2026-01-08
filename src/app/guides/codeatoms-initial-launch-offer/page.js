@@ -7,6 +7,17 @@ export const metadata = {
   title: "CodeAtoms Initial Launch Offer",
   description:
     "Discover the exclusive benefits of CodeAtoms' Initial Launch Offer for early users and developers.",
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true, 
+    }},
+    alternates: {
+      canonical: "https://www.codeatoms.org/guides/codeatoms-initial-launch-offer",
+    },
 };
 
 export default function HowToPublishYourTool() {

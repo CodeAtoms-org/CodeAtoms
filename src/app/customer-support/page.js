@@ -2,6 +2,12 @@ import { Suspense } from "react";
 
 import CustomerSupport from "./cli";
 
+export const metadata = {
+  title: "Customer Support | CodeAtoms",
+  description:
+    "Get help and support for your developer tools on CodeAtoms. Our dedicated customer support team is here to assist you with any questions or issues you may have.",
+};
+
 export default function CustomerSupportPage() {
   return (
     <Suspense fallback={<Loading />}>

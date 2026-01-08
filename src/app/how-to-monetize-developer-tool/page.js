@@ -73,6 +73,9 @@ export default function MonetizeDeveloperToolPage() {
 
 
             <main className="mt-20 text-black mx-4 max-w-6xl md:mx-auto py-16">
+                 <div className="absolute top-10 left-10 w-24 h-24 bg-[#006D77]/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-32 h-32 bg-[#83C5BE]/20 rounded-full blur-2xl"></div>
+
                 <h2 className="mb-4">CODEATOMS GUIDES</h2>
                 <section id="intro">
                     <div className="flex items-center gap-4 mb-6">

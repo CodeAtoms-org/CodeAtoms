@@ -13,7 +13,7 @@ export default function Footer() {
             <span className="text-2xl ">CodeAtoms</span>
           </div>
           <p className="text-gray-700 text-sm">
-            Made with love for Tech People.
+            Made with love for Tech People. 
           </p>
         </div>
 
@@ -39,16 +39,22 @@ export default function Footer() {
             <a href="/help" className="text-gray-700 hover:text-[#006D77] transition">FAQs</a>
           </div>
 
-          {/* Column 3 */}
+
           <div className="flex flex-col gap-3">
             <h4 className=" text-lg">Legal</h4>
             <a href="/privacy-policy" className="text-gray-700 hover:text-[#006D77] transition">Privacy Policy</a>
             <a href="/terms" className="text-gray-700 hover:text-[#006D77] transition">Terms of Service</a>
           </div>
+
           <div className="flex flex-col max-w-40 gap-3">
             <h4 className=" text-lg">Guides</h4>
             <a href="/guides/how-to-publish-your-tool" className="text-gray-700 hover:text-[#006D77] transition">How to Publish your Tool</a>
             <a href="/guides/codeatoms-initial-launch-offer" className="text-gray-700 hover:text-[#006D77] transition">CodeAtoms Initial Launch Offer</a>
+          </div>
+          <div className="flex flex-col max-w-40 gap-3">
+            <h4 className=" text-lg">Articles</h4>
+            <a href="/article/sell-developer-tool-without-building-saas" className="text-gray-700 hover:text-[#006D77] transition">Sell Developer Tools Without Building SaaS</a>
+            <a href="/article/why-codeatoms-is-the-best-platform-to-buy-and-sell-developer-tools" className="text-gray-700 hover:text-[#006D77] transition">Best Platform to Buy and Sell Developer Tools</a>
           </div>
         </div>
       </div>
