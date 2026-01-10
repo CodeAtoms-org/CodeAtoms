@@ -136,13 +136,13 @@ export default function HowToPublishYourTool() {
               being approved on CodeAtoms.</p>
             <strong >Highest impact on approval:</strong>
             <ul className="list-disc mt-4 pl-5 space-y-2">
-              <li>
+
 
 
                 <li>Content and Markdown documentation</li>
                 <li>Working Demo or Tool link</li>
 
-              </li>
+
 
 
 

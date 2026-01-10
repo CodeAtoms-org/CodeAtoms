@@ -1,5 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import GuideCTAButtons from "@/components/GuideCTAButtons";
+
 
 export const metadata = {
   title: "How to Sell a Developer Tool | CodeAtoms",
@@ -57,7 +59,7 @@ export default function SellDeveloperToolPage() {
         <div className="absolute top-10 left-10 w-24 h-24 bg-[#006D77]/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-32 h-32 bg-[#83C5BE]/20 rounded-full blur-2xl"></div>
 
-        <h2 className="mb-4">CODEATOMS GUIDES</h2>
+        <h2 className="mb-4">CODEATOMS - THE DEVELOPER TOOLS MARKETPLACE - GUIDES</h2>
 
         {/* INTRO */}
         <section id="intro">
@@ -206,87 +208,138 @@ export default function SellDeveloperToolPage() {
     Step 3: Market Your Developer Tool (Execution Plan)
   </h2>
 
-  <p className="text-gray-600 mb-4">
-    Marketing a developer tool is not about shouting louder.
-    It is about showing up where developers already discuss problems.
+  <p className="text-gray-600 mb-10 max-w-2xl">
+    Marketing a developer tool is not about promotion.
+    It’s about being visible where developers already talk about problems.
+    These are the only platforms that consistently work.
   </p>
 
-  <p className="text-gray-600 mb-6">
-    For developer tools, the most effective platforms are:
-    Reddit and X (Twitter). LinkedIn can help , but it is secondary.
-  </p>
+  {/* CARDS */}
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-  {/* REDDIT */}
-  <h3 className="text-2xl font-semibold mb-4">
-    Reddit: Problem-First Marketing
-  </h3>
+    {/* REDDIT CARD */}
+    <div className="rounded-2xl border bg-white p-6 hover:shadow-lg transition">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center font-bold text-orange-600">
+          R
+        </div>
+        <h3 className="text-xl font-semibold">Reddit</h3>
+      </div>
 
-  <p className="text-gray-600 mb-4">
-    Reddit works because developers openly talk about real problems.
-    They don't want tools. They want solutions.
-  </p>
+      <p className="text-sm text-gray-600 mb-4">
+        Best platform for developer tools.
+        Developers openly discuss real production problems here.
+      </p>
 
-  <ul className="list-disc pl-6 text-gray-600 space-y-2 mb-4">
-    <li>Find subreddits where your target developers hang out</li>
-    <li>Read posts daily to understand recurring pain points</li>
-    <li>Comment with real solutions , not links</li>
-    <li>Share your tool only when it naturally solves the problem</li>
-  </ul>
+      <ul className="text-sm text-gray-600 space-y-2">
+        <li>• Find subreddits where your users hang out</li>
+        <li>• Read posts daily to spot repeated pain points</li>
+        <li>• Comment with solutions, not links</li>
+        <li>• Share your tool only when it genuinely helps</li>
+      </ul>
 
-  <p className="text-gray-600 mb-6">
-    If your post feels like marketing, it will fail.
-    If it feels like help, it will convert.
-  </p>
+      <div className="mt-4 text-sm text-gray-500">
+        Rule: If it feels like marketing, don’t post it.
+      </div>
+    </div>
 
-  {/* X / TWITTER */}
-  <h3 className="text-2xl font-semibold mb-4">
-    X (Twitter): Build in Public Distribution
-  </h3>
+    {/* X / TWITTER CARD */}
+    <div className="rounded-2xl border bg-white p-6 hover:shadow-lg transition">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold">
+          X
+        </div>
+        <h3 className="text-xl font-semibold">X (Twitter)</h3>
+      </div>
 
-  <p className="text-gray-600 mb-4">
-    X works because developers follow developers.
-    It is a long-term distribution engine, not a launch platform.
-  </p>
+      <p className="text-sm text-gray-600 mb-4">
+        Best platform for long-term distribution.
+        Developers follow builders, not brands.
+      </p>
 
-  <ul className="list-disc pl-6 text-gray-600 space-y-2 mb-4">
-    <li>Share what you are building and why</li>
-    <li>Post small learnings from real usage</li>
-    <li>Talk about problems before talking about features</li>
-    <li>Link to your tool only when context makes sense</li>
-  </ul>
+      <ul className="text-sm text-gray-600 space-y-2">
+        <li>• Build in public</li>
+        <li>• Share real learnings from usage</li>
+        <li>• Talk about problems before features</li>
+        <li>• Link only when context is natural</li>
+      </ul>
 
-  <p className="text-gray-600 mb-6">
-    Consistency beats virality.
-    One useful post per day compounds over time.
-  </p>
+      <div className="mt-4 text-sm text-gray-500">
+        Rule: One useful post per day &gt; viral launches.
+      </div>
+    </div>
 
-  {/* LINKEDIN */}
-  <h3 className="text-2xl font-semibold mb-4">
-    LinkedIn: Secondary but Strategic
-  </h3>
+    {/* LINKEDIN CARD */}
+    <div className="rounded-2xl border bg-white p-6 hover:shadow-lg transition">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-600">
+          in
+        </div>
+        <h3 className="text-xl font-semibold">LinkedIn</h3>
+      </div>
 
-  <p className="text-gray-600 mb-4">
-    LinkedIn is useful for credibility, not discovery.
-  </p>
+      <p className="text-sm text-gray-600 mb-4">
+        Secondary channel.
+        Useful for credibility, not discovery.
+      </p>
 
-  <ul className="list-disc pl-6 text-gray-600 space-y-2 mb-4">
-    <li>Share lessons learned building the tool</li>
-    <li>Explain technical decisions in simple terms</li>
-    <li>Avoid hype-driven or motivational content</li>
-  </ul>
+      <ul className="text-sm text-gray-600 space-y-2">
+        <li>• Share technical decisions</li>
+        <li>• Write about lessons learned</li>
+        <li>• Explain trade-offs clearly</li>
+        <li>• Avoid hype and motivational content</li>
+      </ul>
 
-  <p className="text-gray-600 mb-6">
-    LinkedIn helps validate your work.
-    Reddit and X help distribute it.
-  </p>
+      <div className="mt-4 text-sm text-gray-500">
+        Rule: Credibility &gt; reach.
+      </div>
+    </div>
 
-  {/* FINAL */}
-  <p className="text-gray-600">
-    The best marketing strategy for developer tools is simple:
-    <br />
-    Solve real problems in public, consistently.
+  </div>
+
+  {/* FINAL LINE */}
+  <p className="text-gray-600 mt-10 max-w-2xl">
+    The strongest marketing strategy for developer tools is simple:
+    solve real problems in public, consistently.
   </p>
 </section>
+<section id="conclusion">
+  <h2 className="text-3xl font-semibold mb-6">
+    Conclusion
+  </h2>
+
+  <p className="text-gray-600 mb-4">
+    Selling a developer tool is about building trust through
+    transparency, ease of access, and clear value demonstration.
+  </p>
+
+  <p className="text-gray-600 mb-4">
+    By choosing the right sales channel, listing effectively on CodeAtoms,
+    and marketing where developers already discuss problems,
+    you can successfully sell your developer tool.
+  </p>
+
+  <p className="text-gray-600">
+    Focus on solving real problems in public,
+    and the sales will follow.
+  </p>
+</section>
+
+<GuideCTAButtons
+  links={[
+    {
+      href: "/guides/how-to-publish-your-tool",
+      label: "How to Publish Your Tool on CodeAtoms",
+
+    },
+    {
+      href: "/guides/codeatoms-initial-launch-offer",
+      label: "CodeAtoms Initial Launch Offer",
+
+    },
+  ]}
+/>
+
 
 
           </article>
